@@ -4,6 +4,11 @@ declare global {
 		username: string
 		password: string
 	}
+	interface UserInfo {
+		user_id: number
+		username: string
+		password: string
+	}
 }
 const typeProfiles: TypeProfile[] = [
 	{
@@ -11,6 +16,13 @@ const typeProfiles: TypeProfile[] = [
 		profile: {
 			keyNames: ['username', 'password'],
 			keyTypes: ['string', 'string'],
+		},
+	},
+	{
+		name: 'UserInfo',
+		profile: {
+			keyNames: ['user_id', 'username', 'password'],
+			keyTypes: ['number', 'string', 'string'],
 		},
 	},
 ]
