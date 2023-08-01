@@ -1,7 +1,6 @@
 import express from 'express'
 import bodyParser from 'body-parser'
-import handleCreateUser from './func/http/handleCreateUser'
-import handleLoginUser from './func/http/handleLoginUser'
+import * as httpFunc from './func/http'
 
 const app = express()
 const port = 3000
@@ -14,8 +13,8 @@ app.use((_req, res, next) => {
 })
 app.use(bodyParser.json())
 
-app.post('/createuser', handleCreateUser)
-app.post('/loginuser', handleLoginUser)
+app.post('/createuser', httpFunc.handleCreateUser)
+app.post('/loginuser', httpFunc.handleLoginUser)
 
 app.listen(port, () => {
 	console.log('listening on port 3000')
