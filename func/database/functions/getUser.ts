@@ -5,7 +5,7 @@ import { db } from './users_connection'
  * @param user The `UserCredentials` object.
  * @returns The `UserInfo` object, containing `user_id`, if match is found. Otherwise, returns `undefined`.
  */
-function checkCredentials(user: UserCredentials): UserInfo | undefined {
+export function getUser(user: UserCredentials): UserInfo | undefined {
 	const sql = 'SELECT * FROM user WHERE username = ? AND password = ?;'
 	const stmt = db.prepare(sql)
 	const res = stmt.all(user.username, user.password) as UserInfo[]
@@ -15,3 +15,4 @@ function checkCredentials(user: UserCredentials): UserInfo | undefined {
 		return undefined
 	}
 }
+export default getUser

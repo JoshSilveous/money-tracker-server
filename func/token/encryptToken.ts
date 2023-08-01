@@ -15,3 +15,4 @@ function encryptToken(payload: object) {
 
 	return token
 }
+export default encryptToken

@@ -14,3 +14,4 @@ function decryptToken(token: string) {
 		throw new Error((error as Error).message)
 	}
 }
+export default decryptToken

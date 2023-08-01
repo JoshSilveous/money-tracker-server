@@ -11,3 +11,5 @@ function createUser(user: UserCredentials) {
 	const res = stmt.run(user.username, user.password)
 	return res.lastInsertRowid as number
 }
+
+export default createUser
