@@ -93,6 +93,7 @@ interface TypeProfile {
  * @param object The object to check
  * @param typeProfile The TypeProfile's name, should be identicle to `Interface` name.
  * Error thrown if typeProfile doesn't exist
+ *
  * Union types can be used
  *
  * (e.x. `"UserData & TokenData"`)
