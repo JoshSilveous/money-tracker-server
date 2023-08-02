@@ -1,6 +1,8 @@
 import createUserSRC from './functions/createUser'
 import getUserSRC from './functions/getUser'
 import verifyDBFileExistsSRC from './functions/verifyDBFileExists'
+import getUserDataSRC from './functions/getUserData'
+import getUserFilePathSRC from './functions/getUserFilePath'
 
 /**
  * Creates a new user in the database.
@@ -18,7 +20,18 @@ export const getUser = getUserSRC
 
 /**
  * Checks if a user has an existing DB file
- * @param user_id the user's ID (also the file name)
  * @return `Boolean`
  */
 export const verifyDBFileExists = verifyDBFileExistsSRC
+
+/**
+ * Get the path to a user's db file
+ */
+export const getUserFilePath = getUserFilePathSRC
+
+/**
+ * Gets all user data from the `transaction` table
+ * @param user_id
+ * @returns `Transaction[]`
+ */
+export const getUserData = getUserDataSRC
