@@ -72,7 +72,7 @@ interface TypeProfile {
  * Error thrown if typeProfile doesn't exist
  * Union types can be used
  *
- * (e.x. `"UserData | TokenData"`)
+ * (e.x. `"UserData & TokenData"`)
  * @returns Boolean
  */
 export function isTypeProfile(object: any, typeProfile: string) {
@@ -87,7 +87,7 @@ export function isTypeProfile(object: any, typeProfile: string) {
 		inputTypeProfilesArr.forEach((inputTypeProf, inputTypeProfIndex) => {
 			// loop over each type provided
 			let typeProfileFound = false
-			typeProfiles.forEach((typeProf) => {
+			typeProfiles.some((typeProf) => {
 				// loop over each TypeProfile defined in this file
 
 				if (typeProf.name === inputTypeProf) {
@@ -105,6 +105,7 @@ export function isTypeProfile(object: any, typeProfile: string) {
 							tempTypeProfile!.profile.keyTypes.push(keyType)
 						})
 					}
+					return true // stop the iteration
 				}
 			})
 			if (!typeProfileFound) {
@@ -112,9 +113,10 @@ export function isTypeProfile(object: any, typeProfile: string) {
 			}
 		})
 	} else {
-		typeProfiles.forEach((typeProf) => {
+		typeProfiles.some((typeProf) => {
 			if (typeProf.name === inputTypeProfilesArr[0]) {
 				tempTypeProfile = typeProf
+				return true // stop the iteration
 			}
 		})
 	}
