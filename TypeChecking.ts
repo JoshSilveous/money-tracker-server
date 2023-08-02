@@ -80,7 +80,6 @@ export function isTypeProfile(object: any, typeProfile: string) {
 	const inputTypeProfilesArr = typeProfile.split(' & ')
 
 	let tempTypeProfile: TypeProfile | undefined
-
 	if (inputTypeProfilesArr.length > 1) {
 		// if user provided multiple types
 
@@ -95,8 +94,15 @@ export function isTypeProfile(object: any, typeProfile: string) {
 					typeProfileFound = true
 					if (inputTypeProfIndex === 0) {
 						// for the first provided TypeProfile, create a copy
-						tempTypeProfile = typeProf
+						tempTypeProfile = {
+							name: typeProf.name,
+							profile: {
+								keyNames: [...typeProf.profile.keyNames],
+								keyTypes: [...typeProf.profile.keyTypes],
+							},
+						}
 					} else {
+						tempTypeProfile!.name += ' & ' + inputTypeProf
 						// for each subsequent TypeProfile, merge the key data to the temporary
 						typeProf.profile.keyNames.forEach((keyName) => {
 							tempTypeProfile!.profile.keyNames.push(keyName)
@@ -115,15 +121,13 @@ export function isTypeProfile(object: any, typeProfile: string) {
 	} else {
 		typeProfiles.some((typeProf) => {
 			if (typeProf.name === inputTypeProfilesArr[0]) {
-				tempTypeProfile = typeProf
+				tempTypeProfile = { ...typeProf }
 				return true // stop the iteration
 			}
 		})
 	}
 
-	if (tempTypeProfile == undefined) {
-		throw Error(`Type Profile ${typeProfile} doesn't exist!`)
-	} else {
+	if (tempTypeProfile !== undefined) {
 		const objectKeys = Object.keys(object)
 		if (
 			JSON.stringify(objectKeys) !==
@@ -140,6 +144,8 @@ export function isTypeProfile(object: any, typeProfile: string) {
 		}
 
 		return true
+	} else {
+		throw Error(`Type Profile ${typeProfile} doesn't exist!`)
 	}
 }
 
