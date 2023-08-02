@@ -17,6 +17,7 @@ app.use(bodyParser.json())
 app.post('/createuser', httpFunc.handleCreateUser)
 app.post('/loginuser', httpFunc.handleLoginUser)
 app.get('/requestdata', httpFunc.handleRequestData)
+app.post('/newtransaction', httpFunc.handleInsertTransaction)
 
 app.listen(port, () => {
 	console.log('listening on port 3000')

@@ -22,6 +22,15 @@ declare global {
 		name: string
 		amount: number
 	}
+	interface NewTransaction {
+		name: string
+		amount: number
+	}
+	interface UserInsertTransactionRequest {
+		username: string
+		token: string
+		transaction: NewTransaction
+	}
 }
 const typeProfiles: TypeProfile[] = [
 	{
@@ -57,6 +66,20 @@ const typeProfiles: TypeProfile[] = [
 		profile: {
 			keyNames: ['transaction_id', 'name', 'amount'],
 			keyTypes: ['number', 'string', 'number'],
+		},
+	},
+	{
+		name: 'NewTransaction',
+		profile: {
+			keyNames: ['name', 'amount'],
+			keyTypes: ['string', 'number'],
+		},
+	},
+	{
+		name: 'UserInsertTransactionRequest',
+		profile: {
+			keyNames: ['username', 'token', 'transaction'],
+			keyTypes: ['string', 'string', 'object'],
 		},
 	},
 ]

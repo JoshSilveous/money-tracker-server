@@ -3,6 +3,7 @@ import getUserSRC from './functions/getUser'
 import verifyDBFileExistsSRC from './functions/verifyDBFileExists'
 import getUserDataSRC from './functions/getUserData'
 import getUserFilePathSRC from './functions/getUserFilePath'
+import insertTransactionSRC from './functions/insertTransaction'
 
 /**
  * Creates a new user in the database.
@@ -35,3 +36,11 @@ export const getUserFilePath = getUserFilePathSRC
  * @returns `Transaction[]`
  */
 export const getUserData = getUserDataSRC
+
+/**
+ * Inserts a transaction into a user's database
+ * @param user_id The user's ID
+ * @param transaction The `NewTransaction` object (no ID)
+ * @returns The newly created `transaction_id`
+ */
+export const insertTransaction = insertTransactionSRC
