@@ -7,7 +7,10 @@ function insertTransaction(user_id: number, transaction: NewTransaction) {
         INSERT INTO transactions (name, amount) VALUES (?, ?);
     `
 	const stmt = db.prepare(sql)
-	const res = stmt.run(transaction.name, transaction.amount)
+	const res = stmt.run(
+		transaction.name,
+		Math.round(transaction.amount * 100) / 100
+	)
 	db.close()
 	return res.lastInsertRowid as number
 }
