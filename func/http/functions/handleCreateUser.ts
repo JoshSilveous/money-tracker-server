@@ -7,14 +7,14 @@ const handleCreateUser: RequestHandler = function (req, res) {
 	if (!isTypeProfile(req.body, 'UserCredentials')) {
 		res.statusCode = 406
 		res.send({
-			description: 'ERROR_FORMAT',
+			description: 'ERROR_REQUEST_FORMAT',
 			message:
 				'Incorrect data sent. Either keys or value types are incorrect',
 		})
 		return
 	}
 
-	const data = req.body
+	const data = req.body as UserCredentials
 
 	// check password strength (NOT IMPLEMENTED YET)
 
@@ -32,7 +32,7 @@ const handleCreateUser: RequestHandler = function (req, res) {
 		const errMsg = (e as Error).message
 		if (errMsg === 'UNIQUE constraint failed: user.username') {
 			res.send({
-				description: 'ERROR_DUPLICATE',
+				description: 'ERROR_DUPLICATE_USERNAME',
 				message: 'Username already taken.',
 			})
 			console.log(
@@ -40,7 +40,7 @@ const handleCreateUser: RequestHandler = function (req, res) {
 			)
 		} else if (errMsg === 'UNIQUE constraint failed: user.password') {
 			res.send({
-				description: 'ERROR_DUPLICATE',
+				description: 'ERROR_DUPLICATE_PASSWORD',
 				message: 'Password already taken.',
 			})
 			console.log(

@@ -8,14 +8,14 @@ const handleLoginUser: RequestHandler = function (req, res) {
 	if (!isTypeProfile(req.body, 'UserCredentials')) {
 		res.statusCode = 406
 		res.send({
-			description: 'ERROR_FORMAT',
+			description: 'ERROR_REQUEST_FORMAT',
 			message:
 				'Incorrect data sent. Either keys or value types are incorrect',
 		})
 		return
 	}
 
-	const data = req.body
+	const data = req.body as UserCredentials
 
 	try {
 		// attempt to get user info from database
