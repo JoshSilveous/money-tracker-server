@@ -18,7 +18,7 @@ const NEW_USER_TABLE = `
         category_id INTEGER,
         account_id INTEGER,
         FOREIGN KEY (category_id) REFERENCES categories(category_id),
-        FOREIGN KEY (account_id) REFERENCES categories(account_id)
+        FOREIGN KEY (account_id) REFERENCES accounts(account_id)
     );
     CREATE TABLE earnings (
         earning_id INTEGER PRIMARY KEY AUTOINCREMENT,
