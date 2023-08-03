@@ -25,7 +25,6 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 		})
 		return
 	}
-	const payload = data.payload as NewTransaction
 
 	// check for issues decrypting token
 	try {
@@ -46,9 +45,9 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 		return
 	}
 
-	const decryptedToken = decryptToken(data.token) as UserInfo & TokenData
+	const decryptedToken = decryptToken(data.token) as TokenData
 	// check if token payload matches format
-	if (!isTypeProfile(decryptedToken, 'UserInfo & TokenData')) {
+	if (!isTypeProfile(decryptedToken, 'TokenData')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_TOKEN_FORMAT',
@@ -68,10 +67,12 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
+	const inputTransaction = data.payload as NewTransaction
+
 	try {
 		const newTransactionID = insertTransaction(
 			decryptedToken.user_id!,
-			payload
+			inputTransaction
 		)
 		res.statusCode = 200
 		res.send({

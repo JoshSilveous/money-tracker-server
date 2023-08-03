@@ -30,7 +30,10 @@ const handleLoginUser: RequestHandler = function (req, res) {
 			})
 		} else {
 			// if user found, generate a token and send it to the user
-			const token = encryptToken(userInfo)
+			const token = encryptToken({
+				user_id: userInfo.user_id,
+				username: userInfo.username,
+			})
 			res.statusCode = 200
 			res.send({
 				description: 'SUCCESS',

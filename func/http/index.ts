@@ -1,7 +1,8 @@
-import handleCreateUserSRC from './functions/handleCreateUser'
-import handleLoginUserSRC from './functions/handleLoginUser'
-import handleRequestDataSRC from './functions/handleRequestData'
-import handleInsertTransactionSRC from './functions/handleInsertTransaction'
+import handleCreateUserSRC from './handlers/handleCreateUser'
+import handleLoginUserSRC from './handlers/handleLoginUser'
+import handleRequestDataSRC from './handlers/handleRequestData'
+import handleInsertTransactionSRC from './handlers/handleInsertTransaction'
+import handleUpdateTransactionSRC from './handlers/handleUpdateTransaction'
 
 /**
  * Handles HTTP Request for `/createuser`
@@ -18,4 +19,12 @@ export const handleLoginUser = handleLoginUserSRC
  */
 export const handleRequestData = handleRequestDataSRC
 
+/**
+ * Handles HTTP Request for `/inserttransaction`
+ */
 export const handleInsertTransaction = handleInsertTransactionSRC
+
+/**
+ * Handles HTTP Request for `/updatetransaction`
+ */
+export const handleUpdateTransaction = handleUpdateTransactionSRC

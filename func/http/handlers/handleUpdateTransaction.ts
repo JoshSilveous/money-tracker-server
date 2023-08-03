@@ -1,11 +1,11 @@
 import { RequestHandler } from 'express'
 import { isTypeProfile } from '../../../TypeChecking'
 import decryptToken from '../../token/decryptToken'
-import { getUserData } from '../../database'
+import { deleteTransaction, updateTransaction } from '../../database'
 
-const handleRequestData: RequestHandler = function (req, res) {
+const handleUpdateTransaction: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
-	if (!isTypeProfile(req.body, 'UserGetRequest')) {
+	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
@@ -14,8 +14,17 @@ const handleRequestData: RequestHandler = function (req, res) {
 		})
 		return
 	}
+	const data = req.body as UserPostRequest
 
-	const data = req.body as UserGetRequest
+	// make sure provided NewTransaction is in correct format
+	if (!isTypeProfile(data.payload, 'Transaction')) {
+		res.statusCode = 406
+		res.send({
+			description: 'ERROR_REQUEST_FORMAT',
+			message: 'Transaction data in incorrect format.',
+		})
+		return
+	}
 
 	// check for issues decrypting token
 	try {
@@ -36,9 +45,9 @@ const handleRequestData: RequestHandler = function (req, res) {
 		return
 	}
 
-	const decryptedToken = decryptToken(data.token) as UserInfo & TokenData
+	const decryptedToken = decryptToken(data.token) as TokenData
 	// check if token payload matches format
-	if (!isTypeProfile(decryptedToken, 'UserInfo & TokenData')) {
+	if (!isTypeProfile(decryptedToken, 'TokenData')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_TOKEN_FORMAT',
@@ -58,13 +67,14 @@ const handleRequestData: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
+	const inputTransaction = data.payload as Transaction
+
 	try {
-		const userData = getUserData(decryptedToken.user_id)
+		updateTransaction(decryptedToken.user_id!, inputTransaction)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
-			message: 'Data successfully retrieved',
-			data: userData,
+			message: 'Data successfully updated',
 		})
 	} catch (e) {
 		res.statusCode = 500
@@ -75,4 +85,4 @@ const handleRequestData: RequestHandler = function (req, res) {
 	}
 }
 
-export default handleRequestData
+export default handleUpdateTransaction
