@@ -26,52 +26,52 @@ declare global {
 	interface Category {
 		category_id: number
 		name: string
-		description?: string
+		description: string | undefined
 	}
 	interface NewCategory {
 		name: string
-		description?: string
+		description: string | undefined
 	}
 	interface Account {
 		account_id: number
 		name: string
-		description?: string
+		description: string | undefined
 	}
 	interface NewAccount {
 		name: string
-		description?: string
+		description: string | undefined
 	}
 	interface Transaction {
 		transaction_id: number
 		name: string
 		timestamp: number
-		notes?: string
+		notes: string | undefined
 		amount: number
-		category_id?: number
-		account_id?: number
+		category_id: number  | undefined
+		account_id: number | undefined
 	}
 	interface NewTransaction {
 		name: string
 		timestamp: number
-		notes?: string
+		notes: string | undefined
 		amount: number
-		category_id?: number
-		account_id?: number
+		category_id: number | undefined
+		account_id: number | undefined
 	}
 	interface Earning {
 		earning_id: number
 		name: string
 		timestamp: number
-		notes?: string
+		notes: string | undefined
 		amount: number
-		account_id?: number
+		account_id: number | undefined
 	}
 	interface NewEarning {
 		name: string
 		timestamp: number
-		notes?: string
+		notes: string | undefined
 		amount: number
-		account_id?: number
+		account_id: number
 	}
 }
 const typeProfiles: TypeProfile[] = [
