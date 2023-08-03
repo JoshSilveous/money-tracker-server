@@ -19,12 +19,6 @@ function createUser(user: UserCredentials) {
 	// create new user db file and create tables
 	const newUsersDBFile = new SQLite(newUsersDBFilePath)
 	newUsersDBFile.exec(NEW_USER_TABLE)
-	newUsersDBFile.exec(
-		`INSERT INTO transactions (name, amount) VALUES ('testor', 123);
-		INSERT INTO transactions (name, amount) VALUES ('testy', 1723);
-		INSERT INTO transactions (name, amount) VALUES ('tesst', 1243);
-		INSERT INTO transactions (name, amount) VALUES ('teast', 1213);`
-	)
 	newUsersDBFile.close()
 
 	return res.lastInsertRowid as number
