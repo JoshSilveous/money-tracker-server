@@ -10,6 +10,8 @@ declare global {
 		password: string
 	}
 	interface TokenData {
+		user_id: number
+		username: string
 		iat: number
 		exp: number
 	}
@@ -92,8 +94,8 @@ const typeProfiles: TypeProfile[] = [
 	{
 		name: 'TokenData',
 		profile: {
-			keyNames: ['iat', 'exp'],
-			keyTypes: ['number', 'number'],
+			keyNames: ['user_id', 'username', 'iat', 'exp'],
+			keyTypes: ['number', 'string', 'number', 'number'],
 		},
 	},
 	{
@@ -290,10 +292,6 @@ export function isTypeProfile(object: any, typeProfile: string): boolean {
 		const objectKeys = Object.keys(object)
 		const objectValueTypes = Object.values(object).map((val) => typeof val)
 		const objectValues = Object.values(object)
-		// identify optional attributes
-		console.log(tempTypeProfile)
-		console.log(objectKeys)
-		console.log(objectValueTypes)
 
 		let isMatch = true
 
@@ -321,7 +319,6 @@ export function isTypeProfile(object: any, typeProfile: string): boolean {
 				// if they do not match, but isOptional is true,
 				// check for "null"
 				// otherwise, return false
-				console.log(objectValues[index])
 				if (
 					!(
 						isOptional &&
@@ -329,16 +326,8 @@ export function isTypeProfile(object: any, typeProfile: string): boolean {
 						objectValues[index] !== 'null'
 					)
 				) {
-					console.log('passed optional')
 					isMatch = false
 					return true // exit loop
-				} else {
-					console.log(
-						'act',
-						actualValueType,
-						'val',
-						objectValues[index]
-					)
 				}
 			}
 		})
