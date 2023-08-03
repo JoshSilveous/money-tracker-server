@@ -4,6 +4,8 @@ import verifyDBFileExistsSRC from './functions/verifyDBFileExists'
 import getUserDataSRC from './functions/getUserData'
 import getUserFilePathSRC from './functions/getUserFilePath'
 import insertTransactionSRC from './functions/insertTransaction'
+import updateTransactionSRC from './functions/updateTransaction'
+import deleteTransactionSRC from './functions/deleteTransaction'
 
 /**
  * Creates a new user in the database.
@@ -44,3 +46,17 @@ export const getUserData = getUserDataSRC
  * @returns The newly created `transaction_id`
  */
 export const insertTransaction = insertTransactionSRC
+
+/**
+ * Updates a transaction in a user's database
+ * @param user_id The user's ID
+ * @param transaction The `Transaction` object (WITH ID)
+ */
+export const updateTransaction = updateTransactionSRC
+
+/**
+ * Deletes a transaction from a user's database
+ * @param user_id The user's ID
+ * @param transaction_id The transaction's ID
+ */
+export const deleteTransaction = deleteTransactionSRC

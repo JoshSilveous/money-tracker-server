@@ -12,12 +12,11 @@ function insertTransaction(user_id: number, transaction: NewTransaction) {
 	const res = stmt.run(
 		transaction.name,
 		Math.round(transaction.amount * 100) / 100,
-		transaction.notes === undefined ? null : transaction.notes,
+		transaction.notes,
 		transaction.amount,
-		transaction.category_id === undefined ? null : transaction.category_id,
-		transaction.account_id === undefined ? null : transaction.account_id,
+		transaction.category_id,
+		transaction.account_id
 	)
-	// stopped here
 	db.close()
 	return res.lastInsertRowid as number
 }
