@@ -13,63 +13,63 @@ declare global {
 		iat: number
 		exp: number
 	}
-	interface UserDataRequest {
+	interface UserGetRequest {
 		username: string
 		token: string
 	}
-	interface UserInsertTransactionRequest {
+	interface UserPostRequest {
 		username: string
 		token: string
-		transaction: NewTransaction
+		payload: object
 	}
 
 	interface Category {
 		category_id: number
 		name: string
-		description: string | undefined
+		description: string | null
 	}
 	interface NewCategory {
 		name: string
-		description: string | undefined
+		description: string | null
 	}
 	interface Account {
 		account_id: number
 		name: string
-		description: string | undefined
+		description: string | null
 	}
 	interface NewAccount {
 		name: string
-		description: string | undefined
+		description: string | null
 	}
 	interface Transaction {
 		transaction_id: number
 		name: string
 		timestamp: number
-		notes: string | undefined
+		notes: string | null
 		amount: number
-		category_id: number  | undefined
-		account_id: number | undefined
+		category_id: number | null
+		account_id: number | null
 	}
 	interface NewTransaction {
 		name: string
 		timestamp: number
-		notes: string | undefined
+		notes: string | null
 		amount: number
-		category_id: number | undefined
-		account_id: number | undefined
+		category_id: number | null
+		account_id: number | null
 	}
 	interface Earning {
 		earning_id: number
 		name: string
 		timestamp: number
-		notes: string | undefined
+		notes: string | null
 		amount: number
-		account_id: number | undefined
+		account_id: number | null
 	}
 	interface NewEarning {
 		name: string
 		timestamp: number
-		notes: string | undefined
+		notes: string | null
 		amount: number
 		account_id: number
 	}
@@ -97,16 +97,16 @@ const typeProfiles: TypeProfile[] = [
 		},
 	},
 	{
-		name: 'UserDataRequest',
+		name: 'UserGetRequest',
 		profile: {
 			keyNames: ['username', 'token'],
 			keyTypes: ['string', 'string'],
 		},
 	},
 	{
-		name: 'UserInsertTransactionRequest',
+		name: 'UserPostRequest',
 		profile: {
-			keyNames: ['username', 'token', 'transaction'],
+			keyNames: ['username', 'token', 'payload'],
 			keyTypes: ['string', 'string', 'object'],
 		},
 	},
@@ -141,38 +141,82 @@ const typeProfiles: TypeProfile[] = [
 	{
 		name: 'Transaction',
 		profile: {
-			keyNames: ['transaction_id', 'name', 'timestamp', '?notes', 'amount', '?category_id', '?account_id'],
-			keyTypes: ['number', 'string','number', 'string', 'number', 'number', 'number'],
+			keyNames: [
+				'transaction_id',
+				'name',
+				'timestamp',
+				'?notes',
+				'amount',
+				'?category_id',
+				'?account_id',
+			],
+			keyTypes: [
+				'number',
+				'string',
+				'number',
+				'string',
+				'number',
+				'number',
+				'number',
+			],
 		},
 	},
 	{
 		name: 'NewTransaction',
 		profile: {
-			keyNames: ['name', 'timestamp', '?notes', 'amount', '?category_id', '?account_id'],
-			keyTypes: ['string', 'number', 'string', 'number', 'number', 'number'],
+			keyNames: [
+				'name',
+				'timestamp',
+				'?notes',
+				'amount',
+				'?category_id',
+				'?account_id',
+			],
+			keyTypes: [
+				'string',
+				'number',
+				'string',
+				'number',
+				'number',
+				'number',
+			],
 		},
 	},
 	{
 		name: 'Earning',
 		profile: {
-			keyNames: ['earning_id', 'name', 'timestamp', '?notes', 'amount', '?account_id'],
-			keyTypes: ['number', 'string','number', 'string', 'number', 'number'],
+			keyNames: [
+				'earning_id',
+				'name',
+				'timestamp',
+				'?notes',
+				'amount',
+				'?account_id',
+			],
+			keyTypes: [
+				'number',
+				'string',
+				'number',
+				'string',
+				'number',
+				'number',
+			],
 		},
 	},
 	{
 		name: 'NewEarning',
 		profile: {
 			keyNames: ['name', 'timestamp', '?notes', 'amount', '?account_id'],
-			keyTypes: ['string','number', 'string', 'number', 'number'],
+			keyTypes: ['string', 'number', 'string', 'number', 'number'],
 		},
 	},
 	{
-		name: "test",
+		name: 'test',
 		profile: {
 			keyNames: ['one', '?two'],
-			keyTypes: ['string', 'string']
-		}
-	}
+			keyTypes: ['string', 'string'],
+		},
+	},
 ]
 
 interface TypeProfile {
@@ -242,24 +286,19 @@ export function isTypeProfile(object: any, typeProfile: string): boolean {
 		})
 	}
 
-	
-
 	if (tempTypeProfile !== undefined) {
-
 		const objectKeys = Object.keys(object)
 		const objectValueTypes = Object.values(object).map((val) => typeof val)
-
+		const objectValues = Object.values(object)
 		// identify optional attributes
 		console.log(tempTypeProfile)
 		console.log(objectKeys)
 		console.log(objectValueTypes)
 
-
 		let isMatch = true
 
 		// compare each key
 		tempTypeProfile.profile.keyNames.some((keyName, index) => {
-
 			const thisKeyType = tempTypeProfile!.profile.keyTypes[index]
 			const actualKeyName = objectKeys[index]
 			const actualValueType = objectValueTypes[index]
@@ -267,7 +306,9 @@ export function isTypeProfile(object: any, typeProfile: string): boolean {
 			// if a key is optional (indicated with "?keyname")
 			// remove the ? and set isOptional to true
 			let isOptional = keyName[0] === '?'
-			if (isOptional) {keyName = keyName.slice(1)}
+			if (isOptional) {
+				keyName = keyName.slice(1)
+			}
 
 			// compare object keyName with profile keyName
 			if (keyName !== actualKeyName) {
@@ -277,17 +318,29 @@ export function isTypeProfile(object: any, typeProfile: string): boolean {
 
 			// compare object valueType with profile valueType
 			if (actualValueType !== thisKeyType) {
-
 				// if they do not match, but isOptional is true,
-				// check for "undefined"
+				// check for "null"
 				// otherwise, return false
-				if (!(isOptional && actualValueType === "undefined")) {
+				console.log(objectValues[index])
+				if (
+					!(
+						isOptional &&
+						actualValueType === 'object' &&
+						objectValues[index] !== 'null'
+					)
+				) {
 					console.log('passed optional')
 					isMatch = false
 					return true // exit loop
+				} else {
+					console.log(
+						'act',
+						actualValueType,
+						'val',
+						objectValues[index]
+					)
 				}
 			}
-
 		})
 		return isMatch
 	} else {
