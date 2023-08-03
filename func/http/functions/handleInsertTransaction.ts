@@ -5,7 +5,7 @@ import { insertTransaction } from '../../database'
 
 const handleInsertTransaction: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
-	if (!isTypeProfile(req.body, 'UserInsertTransactionRequest')) {
+	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
@@ -14,10 +14,10 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 		})
 		return
 	}
-	const data = req.body as UserInsertTransactionRequest
+	const data = req.body as UserPostRequest
 
 	// make sure provided NewTransaction is in correct format
-	if (!isTypeProfile(data.transaction, 'NewTransaction')) {
+	if (!isTypeProfile(data.payload, 'NewTransaction')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
@@ -25,6 +25,7 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 		})
 		return
 	}
+	const payload = data.payload as NewTransaction
 
 	// check for issues decrypting token
 	try {
@@ -70,7 +71,7 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 	try {
 		const newTransactionID = insertTransaction(
 			decryptedToken.user_id!,
-			data.transaction
+			payload
 		)
 		res.statusCode = 200
 		res.send({

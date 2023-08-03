@@ -5,7 +5,7 @@ import { getUserData } from '../../database'
 
 const handleRequestData: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
-	if (!isTypeProfile(req.body, 'UserDataRequest')) {
+	if (!isTypeProfile(req.body, 'UserGetRequest')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
@@ -15,7 +15,7 @@ const handleRequestData: RequestHandler = function (req, res) {
 		return
 	}
 
-	const data = req.body as UserDataRequest
+	const data = req.body as UserGetRequest
 
 	// check for issues decrypting token
 	try {
