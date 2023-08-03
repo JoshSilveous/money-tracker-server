@@ -17,19 +17,61 @@ declare global {
 		username: string
 		token: string
 	}
-	interface Transaction {
-		transaction_id: number
-		name: string
-		amount: number
-	}
-	interface NewTransaction {
-		name: string
-		amount: number
-	}
 	interface UserInsertTransactionRequest {
 		username: string
 		token: string
 		transaction: NewTransaction
+	}
+
+	interface Category {
+		category_id: number
+		name: string
+		description?: string
+	}
+	interface NewCategory {
+		name: string
+		description?: string
+	}
+	interface Account {
+		account_id: number
+		name: string
+		description?: string
+	}
+	interface NewAccount {
+		name: string
+		description?: string
+	}
+	interface Transaction {
+		transaction_id: number
+		name: string
+		timestamp: number
+		notes?: string
+		amount: number
+		category_id?: number
+		account_id?: number
+	}
+	interface NewTransaction {
+		name: string
+		timestamp: number
+		notes?: string
+		amount: number
+		category_id?: number
+		account_id?: number
+	}
+	interface Earning {
+		earning_id: number
+		name: string
+		timestamp: number
+		notes?: string
+		amount: number
+		account_id?: number
+	}
+	interface NewEarning {
+		name: string
+		timestamp: number
+		notes?: string
+		amount: number
+		account_id?: number
 	}
 }
 const typeProfiles: TypeProfile[] = [
@@ -62,26 +104,75 @@ const typeProfiles: TypeProfile[] = [
 		},
 	},
 	{
-		name: 'Transaction',
-		profile: {
-			keyNames: ['transaction_id', 'name', 'amount'],
-			keyTypes: ['number', 'string', 'number'],
-		},
-	},
-	{
-		name: 'NewTransaction',
-		profile: {
-			keyNames: ['name', 'amount'],
-			keyTypes: ['string', 'number'],
-		},
-	},
-	{
 		name: 'UserInsertTransactionRequest',
 		profile: {
 			keyNames: ['username', 'token', 'transaction'],
 			keyTypes: ['string', 'string', 'object'],
 		},
 	},
+	{
+		name: 'Category',
+		profile: {
+			keyNames: ['category_id', 'name', '?description'],
+			keyTypes: ['number', 'string', 'string'],
+		},
+	},
+	{
+		name: 'NewCategory',
+		profile: {
+			keyNames: ['name', '?description'],
+			keyTypes: ['string', 'string'],
+		},
+	},
+	{
+		name: 'Account',
+		profile: {
+			keyNames: ['account_id', 'name', '?description'],
+			keyTypes: ['number', 'string', 'string'],
+		},
+	},
+	{
+		name: 'NewAccount',
+		profile: {
+			keyNames: ['name', '?description'],
+			keyTypes: ['string', 'string'],
+		},
+	},
+	{
+		name: 'Transaction',
+		profile: {
+			keyNames: ['transaction_id', 'name', 'timestamp', '?notes', 'amount', '?category_id', '?account_id'],
+			keyTypes: ['number', 'string','number', 'string', 'number', 'number', 'number'],
+		},
+	},
+	{
+		name: 'NewTransaction',
+		profile: {
+			keyNames: ['name', 'timestamp', '?notes', 'amount', '?category_id', '?account_id'],
+			keyTypes: ['string', 'number', 'string', 'number', 'number', 'number'],
+		},
+	},
+	{
+		name: 'Earning',
+		profile: {
+			keyNames: ['earning_id', 'name', 'timestamp', '?notes', 'amount', '?account_id'],
+			keyTypes: ['number', 'string','number', 'string', 'number', 'number'],
+		},
+	},
+	{
+		name: 'NewEarning',
+		profile: {
+			keyNames: ['name', 'timestamp', '?notes', 'amount', '?account_id'],
+			keyTypes: ['string','number', 'string', 'number', 'number'],
+		},
+	},
+	{
+		name: "test",
+		profile: {
+			keyNames: ['one', '?two'],
+			keyTypes: ['string', 'string']
+		}
+	}
 ]
 
 interface TypeProfile {
@@ -99,7 +190,7 @@ interface TypeProfile {
  * (e.x. `"UserData & TokenData"`)
  * @returns Boolean
  */
-export function isTypeProfile(object: any, typeProfile: string) {
+export function isTypeProfile(object: any, typeProfile: string): boolean {
 	// create array from provided typeProfile
 	const inputTypeProfilesArr = typeProfile.split(' & ')
 
@@ -151,23 +242,54 @@ export function isTypeProfile(object: any, typeProfile: string) {
 		})
 	}
 
-	if (tempTypeProfile !== undefined) {
-		const objectKeys = Object.keys(object)
-		if (
-			JSON.stringify(objectKeys) !==
-			JSON.stringify(tempTypeProfile.profile.keyNames)
-		) {
-			return false
-		}
-		const objectValueTypes = Object.values(object).map((val) => typeof val)
-		if (
-			JSON.stringify(objectValueTypes) !==
-			JSON.stringify(tempTypeProfile.profile.keyTypes)
-		) {
-			return false
-		}
+	
 
-		return true
+	if (tempTypeProfile !== undefined) {
+
+		const objectKeys = Object.keys(object)
+		const objectValueTypes = Object.values(object).map((val) => typeof val)
+
+		// identify optional attributes
+		console.log(tempTypeProfile)
+		console.log(objectKeys)
+		console.log(objectValueTypes)
+
+
+		let isMatch = true
+
+		// compare each key
+		tempTypeProfile.profile.keyNames.some((keyName, index) => {
+
+			const thisKeyType = tempTypeProfile!.profile.keyTypes[index]
+			const actualKeyName = objectKeys[index]
+			const actualValueType = objectValueTypes[index]
+
+			// if a key is optional (indicated with "?keyname")
+			// remove the ? and set isOptional to true
+			let isOptional = keyName[0] === '?'
+			if (isOptional) {keyName = keyName.slice(1)}
+
+			// compare object keyName with profile keyName
+			if (keyName !== actualKeyName) {
+				isMatch = false
+				return true // exit loop
+			}
+
+			// compare object valueType with profile valueType
+			if (actualValueType !== thisKeyType) {
+
+				// if they do not match, but isOptional is true,
+				// check for "undefined"
+				// otherwise, return false
+				if (!(isOptional && actualValueType === "undefined")) {
+					console.log('passed optional')
+					isMatch = false
+					return true // exit loop
+				}
+			}
+
+		})
+		return isMatch
 	} else {
 		throw Error(`Type Profile ${typeProfile} doesn't exist!`)
 	}
