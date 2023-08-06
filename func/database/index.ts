@@ -6,6 +6,9 @@ import getUserFilePathSRC from './functions/Users/getUserFilePath'
 import insertTransactionSRC from './functions/Transactions/insertTransaction'
 import updateTransactionSRC from './functions/Transactions/updateTransaction'
 import deleteTransactionSRC from './functions/Transactions/deleteTransaction'
+import insertEarningSRC from './functions/Earnings/insertEarning'
+import updateEarningSRC from './functions/Earnings/updateEarning'
+import deleteEarningSRC from './functions/Earnings/deleteEarning'
 
 /**
  * Creates a new user in the database.
@@ -60,3 +63,25 @@ export const updateTransaction = updateTransactionSRC
  * @param transaction_id The transaction's ID
  */
 export const deleteTransaction = deleteTransactionSRC
+
+/**
+ * Inserts a earning into a user's database
+ * @param user_id The user's ID
+ * @param earning The `NewEarning` object (no ID)
+ * @returns The newly created `earning_id`
+ */
+export const insertEarning = insertEarningSRC
+
+/**
+ * Updates a earning in a user's database
+ * @param user_id The user's ID
+ * @param earning The `Earning` object (WITH ID)
+ */
+export const updateEarning = updateEarningSRC
+
+/**
+ * Deletes a earning from a user's database
+ * @param user_id The user's ID
+ * @param earning_id The earning's ID
+ */
+export const deleteEarning = deleteEarningSRC

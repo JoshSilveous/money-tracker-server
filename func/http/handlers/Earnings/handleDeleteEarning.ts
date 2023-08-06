@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
-import { deleteTransaction } from '../../../database'
+import { deleteEarning } from '../../../database'
 
-const handleDeleteTransaction: RequestHandler = function (req, res) {
+const handleDeleteEarning: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -16,12 +16,12 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	}
 	const data = req.body as UserPostRequest
 
-	// make sure provided NewTransaction is in correct format
-	if (!isTypeProfile(data.payload, 'TransactionID')) {
+	// make sure provided NewEarning is in correct format
+	if (!isTypeProfile(data.payload, 'EarningID')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
-			message: 'Transaction data in incorrect format.',
+			message: 'Earning data in incorrect format.',
 		})
 		return
 	}
@@ -68,25 +68,25 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
-	const inputTransaction = data.payload as TransactionID
+	const inputEarning = data.payload as EarningID
 
 	try {
-		const newTransactionID = deleteTransaction(
+		const newEarningID = deleteEarning(
 			decryptedToken.user_id!,
-			inputTransaction.transaction_id
+			inputEarning.earning_id
 		)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
 			message: 'Data successfully deleted',
-			newTransactionID: newTransactionID,
+			newEarningID: newEarningID,
 		})
 	} catch (e) {
 		res.statusCode = 500
-		if ((e as Error).message === 'transaction_id not found') {
+		if ((e as Error).message === 'earning_id not found') {
 			res.send({
 				description: 'ERROR_ID_NOT_FOUND',
-				message: `Transaction ID ${inputTransaction.transaction_id} not found.`,
+				message: `Earning ID ${inputEarning.earning_id} not found.`,
 			})
 		}
 
@@ -97,4 +97,4 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	}
 }
 
-export default handleDeleteTransaction
+export default handleDeleteEarning

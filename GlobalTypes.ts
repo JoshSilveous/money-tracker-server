@@ -77,6 +77,9 @@ declare global {
 		amount: number
 		account_id: number
 	}
+	interface EarningID {
+		earning_id: number
+	}
 	interface TypeProfile {
 		name: string
 		profile: { keyNames: string[]; keyTypes: string[] }
@@ -223,6 +226,13 @@ export const typeProfiles: TypeProfile[] = [
 		profile: {
 			keyNames: ['name', 'timestamp', '?notes', 'amount', '?account_id'],
 			keyTypes: ['string', 'number', 'string', 'number', 'number'],
+		},
+	},
+	{
+		name: 'EarningID',
+		profile: {
+			keyNames: ['earning_id'],
+			keyTypes: ['number'],
 		},
 	},
 	{

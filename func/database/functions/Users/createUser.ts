@@ -1,4 +1,5 @@
 import NEW_USER_TABLE from '../../scripts/NEW_USER_TABLE'
+import getUserFilePath from './getUserFilePath'
 import { db } from './users_connection'
 import SQLite from 'better-sqlite3'
 
@@ -7,14 +8,7 @@ function createUser(user: UserCredentials) {
 	const stmt = db.prepare(sql)
 	const res = stmt.run(user.username, user.password)
 
-	// create path to new user db file
-	const thisFilePath = __dirname.split('\\')
-	thisFilePath.pop()
-	const newUsersDBFilePath =
-		thisFilePath.join('\\') +
-		'\\data\\userdata\\' +
-		res.lastInsertRowid +
-		'.db'
+	const newUsersDBFilePath = getUserFilePath(res.lastInsertRowid as number)
 
 	// create new user db file and create tables
 	const newUsersDBFile = new SQLite(newUsersDBFilePath)

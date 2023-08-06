@@ -3,6 +3,7 @@ import SQLite from 'better-sqlite3'
 // get absolute path to 'users.db' file
 const thisFilePath = __dirname.split('\\')
 thisFilePath.pop()
+thisFilePath.pop()
 const userFilePath = thisFilePath.join('\\') + '\\data\\users.db'
 
 // create database connection
