@@ -1,11 +1,11 @@
-import createUserSRC from './functions/createUser'
-import getUserSRC from './functions/getUser'
-import verifyDBFileExistsSRC from './functions/verifyDBFileExists'
-import getUserDataSRC from './functions/getUserData'
-import getUserFilePathSRC from './functions/getUserFilePath'
-import insertTransactionSRC from './functions/insertTransaction'
-import updateTransactionSRC from './functions/updateTransaction'
-import deleteTransactionSRC from './functions/deleteTransaction'
+import createUserSRC from './functions/Users/createUser'
+import getUserSRC from './functions/Users/getUser'
+import verifyDBFileExistsSRC from './functions/Users/verifyDBFileExists'
+import getUserDataSRC from './functions/Users/getUserData'
+import getUserFilePathSRC from './functions/Users/getUserFilePath'
+import insertTransactionSRC from './functions/Transactions/insertTransaction'
+import updateTransactionSRC from './functions/Transactions/updateTransaction'
+import deleteTransactionSRC from './functions/Transactions/deleteTransaction'
 
 /**
  * Creates a new user in the database.

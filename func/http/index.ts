@@ -1,9 +1,9 @@
 import handleCreateUserSRC from './handlers/handleCreateUser'
 import handleLoginUserSRC from './handlers/handleLoginUser'
 import handleRequestDataSRC from './handlers/handleRequestData'
-import handleInsertTransactionSRC from './handlers/handleInsertTransaction'
-import handleUpdateTransactionSRC from './handlers/handleUpdateTransaction'
-import handleDeleteTransactionSRC from './handlers/handleDeleteTransaction'
+import handleInsertTransactionSRC from './handlers/Transactions/handleInsertTransaction'
+import handleUpdateTransactionSRC from './handlers/Transactions/handleUpdateTransaction'
+import handleDeleteTransactionSRC from './handlers/Transactions/handleDeleteTransaction'
 
 /**
  * Handles HTTP Request for `/createuser`

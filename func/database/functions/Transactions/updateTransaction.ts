@@ -1,6 +1,5 @@
 import SQLite from 'better-sqlite3'
-import { getUserFilePath } from '..'
-
+import { getUserFilePath } from '../..'
 function updateTransaction(user_id: number, transaction: Transaction) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `

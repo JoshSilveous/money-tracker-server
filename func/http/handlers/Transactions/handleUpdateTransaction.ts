@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express'
-import isTypeProfile from '../../isTypeProfile'
-import decryptToken from '../../token/decryptToken'
-import { deleteTransaction, insertTransaction } from '../../database'
+import isTypeProfile from '../../../isTypeProfile'
+import decryptToken from '../../../token/decryptToken'
+import { updateTransaction } from '../../../database'
 
-const handleDeleteTransaction: RequestHandler = function (req, res) {
+const handleUpdateTransaction: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -17,7 +17,7 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	const data = req.body as UserPostRequest
 
 	// make sure provided NewTransaction is in correct format
-	if (!isTypeProfile(data.payload, 'TransactionID')) {
+	if (!isTypeProfile(data.payload, 'Transaction')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
@@ -46,7 +46,6 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	}
 
 	const decryptedToken = decryptToken(data.token) as TokenData
-
 	// check if token payload matches format
 	if (!isTypeProfile(decryptedToken, 'TokenData')) {
 		res.statusCode = 406
@@ -68,28 +67,17 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
-	const inputTransaction = data.payload as TransactionID
+	const inputTransaction = data.payload as Transaction
 
 	try {
-		const newTransactionID = deleteTransaction(
-			decryptedToken.user_id!,
-			inputTransaction.transaction_id
-		)
+		updateTransaction(decryptedToken.user_id!, inputTransaction)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
-			message: 'Data successfully deleted',
-			newTransactionID: newTransactionID,
+			message: 'Data successfully updated',
 		})
 	} catch (e) {
 		res.statusCode = 500
-		if ((e as Error).message === 'transaction_id not found') {
-			res.send({
-				description: 'ERROR_ID_NOT_FOUND',
-				message: `Transaction ID ${inputTransaction.transaction_id} not found.`,
-			})
-		}
-
 		res.send({
 			description: 'ERROR_SERVER',
 			message: 'Unexpected server error: ' + e,
@@ -97,4 +85,4 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	}
 }
 
-export default handleDeleteTransaction
+export default handleUpdateTransaction

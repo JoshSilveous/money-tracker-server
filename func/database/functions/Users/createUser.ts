@@ -1,4 +1,4 @@
-import NEW_USER_TABLE from '../scripts/NEW_USER_TABLE'
+import NEW_USER_TABLE from '../../scripts/NEW_USER_TABLE'
 import { db } from './users_connection'
 import SQLite from 'better-sqlite3'
 

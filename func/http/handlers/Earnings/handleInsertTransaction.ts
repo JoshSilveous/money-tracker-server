@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
-import isTypeProfile from '../../isTypeProfile'
-import decryptToken from '../../token/decryptToken'
-import { insertTransaction } from '../../database'
+import isTypeProfile from '../../../isTypeProfile'
+import decryptToken from '../../../token/decryptToken'
+import { insertTransaction } from '../../../database'
 
 const handleInsertTransaction: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
