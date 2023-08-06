@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import { isTypeProfile } from '../../../TypeChecking'
+import isTypeProfile from '../../types/isTypeProfile'
 import decryptToken from '../../token/decryptToken'
 import { getUserData } from '../../database'
 

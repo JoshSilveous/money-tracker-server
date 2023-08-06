@@ -1,6 +1,5 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '..'
-
 function getUserData(user_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 

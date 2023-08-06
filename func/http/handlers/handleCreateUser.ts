@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express-serve-static-core'
-import { isTypeProfile } from '../../../TypeChecking'
+import isTypeProfile from '../../types/isTypeProfile'
 import { createUser } from '../../database'
 
 const handleCreateUser: RequestHandler = function (req, res) {
