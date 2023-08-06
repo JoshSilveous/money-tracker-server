@@ -19,6 +19,7 @@ app.post('/loginuser', httpFunc.handleLoginUser)
 app.get('/requestdata', httpFunc.handleRequestData)
 app.post('/inserttransaction', httpFunc.handleInsertTransaction)
 app.post('/updatetransaction', httpFunc.handleUpdateTransaction)
+app.post('/deleteTransaction', httpFunc.handleDeleteTransaction)
 
 app.listen(port, () => {
 	console.log('listening on port 3000')

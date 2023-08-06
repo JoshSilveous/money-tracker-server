@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express'
-import isTypeProfile from '../../types/isTypeProfile'
+import isTypeProfile from '../../isTypeProfile'
 import decryptToken from '../../token/decryptToken'
-import { insertTransaction } from '../../database'
+import { deleteTransaction, insertTransaction } from '../../database'
 
 const handleDeleteTransaction: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
@@ -17,7 +17,7 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	const data = req.body as UserPostRequest
 
 	// make sure provided NewTransaction is in correct format
-	if (!isTypeProfile(data.payload, 'NewTransaction')) {
+	if (!isTypeProfile(data.payload, 'TransactionID')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
@@ -46,6 +46,7 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	}
 
 	const decryptedToken = decryptToken(data.token) as TokenData
+
 	// check if token payload matches format
 	if (!isTypeProfile(decryptedToken, 'TokenData')) {
 		res.statusCode = 406
@@ -67,21 +68,28 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
-	const inputTransaction = data.payload as NewTransaction
+	const inputTransaction = data.payload as TransactionID
 
 	try {
-		const newTransactionID = insertTransaction(
+		const newTransactionID = deleteTransaction(
 			decryptedToken.user_id!,
-			inputTransaction
+			inputTransaction.transaction_id
 		)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
-			message: 'Data successfully inserted',
+			message: 'Data successfully deleted',
 			newTransactionID: newTransactionID,
 		})
 	} catch (e) {
 		res.statusCode = 500
+		if ((e as Error).message === 'transaction_id not found') {
+			res.send({
+				description: 'ERROR_ID_NOT_FOUND',
+				message: `Transaction ID ${inputTransaction.transaction_id} not found.`,
+			})
+		}
+
 		res.send({
 			description: 'ERROR_SERVER',
 			message: 'Unexpected server error: ' + e,

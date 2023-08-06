@@ -5,11 +5,13 @@ function deleteTransaction(user_id: number, transaction_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         DELETE FROM transactions
-
 			WHERE transaction_id = ?;
     `
 	const stmt = db.prepare(sql)
-	stmt.run(transaction_id)
+	const res = stmt.run(transaction_id)
+	if (res.changes === 0) {
+		throw Error('transaction_id not found')
+	}
 	db.close()
 	return
 }

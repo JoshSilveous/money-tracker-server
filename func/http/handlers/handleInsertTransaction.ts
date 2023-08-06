@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express'
-import isTypeProfile from '../../types/isTypeProfile'
+import isTypeProfile from '../../isTypeProfile'
 import decryptToken from '../../token/decryptToken'
 import { insertTransaction } from '../../database'
 

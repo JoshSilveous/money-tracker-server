@@ -67,6 +67,14 @@ function isTypeProfile(object: any, typeProfile: string): boolean {
 		const objectValueTypes = Object.values(object).map((val) => typeof val)
 		const objectValues = Object.values(object)
 
+		// compare lengths
+		if (
+			objectKeys.length !== tempTypeProfile.profile.keyNames.length ||
+			objectValueTypes.length !== tempTypeProfile.profile.keyTypes.length
+		) {
+			return false
+		}
+
 		let isMatch = true
 
 		// compare each key

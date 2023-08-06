@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express-serve-static-core'
-import isTypeProfile from '../../types/isTypeProfile'
+import isTypeProfile from '../../isTypeProfile'
 import { getUser } from '../../database'
 import encryptToken from '../../token/encryptToken'
 

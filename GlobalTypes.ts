@@ -59,6 +59,9 @@ declare global {
 		category_id: number | null
 		account_id: number | null
 	}
+	interface TransactionID {
+		transaction_id: number
+	}
 	interface Earning {
 		earning_id: number
 		name: string
@@ -164,6 +167,13 @@ export const typeProfiles: TypeProfile[] = [
 				'number',
 				'number',
 			],
+		},
+	},
+	{
+		name: 'TransactionID',
+		profile: {
+			keyNames: ['transaction_id'],
+			keyTypes: ['number'],
 		},
 	},
 	{
