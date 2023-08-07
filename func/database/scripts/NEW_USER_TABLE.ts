@@ -27,7 +27,7 @@ const NEW_USER_TABLE = `
         notes VARCHAR,
         amount INTEGER NOT NULL,
         account_id INTEGER,
-        FOREIGN KEY (account_id) REFERENCES categories(account_id)
+        FOREIGN KEY (account_id) REFERENCES accounts(account_id)
     );
 `
 export default NEW_USER_TABLE
