@@ -1,29 +1,9 @@
-transaction
-    transaction_id
-    name
-    timestamp
-    notes
-    amount
-        spent is negative
-        gained is positive
-    category_id
-    account_id
+## Next steps
 
-earnings
-    income_id
-    name
-    timestamp
-    notes
-    amount
-    account_id
-
-categories
-    category_id
-    name
-    description
-
-accounts
-    account_id
-    name
-    description
-
+-   Add get functions for specific transactions / earnings / categories / accounts (for edit pages)
+-   Add get function for the overview pages
+    -   SortBy Parameter
+    -   ResultCount Parameter
+        Look into LIMIT and OFFSET SQLite parameters
+        Handle page calculations on the server side
+-   Add function to get the total number of results, with number of pages (based on input)
