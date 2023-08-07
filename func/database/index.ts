@@ -9,6 +9,12 @@ import deleteTransactionSRC from './functions/Transactions/deleteTransaction'
 import insertEarningSRC from './functions/Earnings/insertEarning'
 import updateEarningSRC from './functions/Earnings/updateEarning'
 import deleteEarningSRC from './functions/Earnings/deleteEarning'
+import insertCategorySRC from './functions/Categories/insertCategory'
+import updateCategorySRC from './functions/Categories/updateCategory'
+import deleteCategorySRC from './functions/Categories/deleteCategory'
+import insertAccountSRC from './functions/Accounts/insertAccount'
+import updateAccountSRC from './functions/Accounts/updateAccount'
+import deleteAccountSRC from './functions/Accounts/deleteAccount'
 
 /**
  * Creates a new user in the database.
@@ -85,3 +91,47 @@ export const updateEarning = updateEarningSRC
  * @param earning_id The earning's ID
  */
 export const deleteEarning = deleteEarningSRC
+
+/**
+ * Inserts a category into a user's database
+ * @param user_id The user's ID
+ * @param earning The `NewCategory` object (no ID)
+ * @returns The newly created `category_id`
+ */
+export const insertCategory = insertCategorySRC
+
+/**
+ * Updates a category in a user's database
+ * @param user_id The user's ID
+ * @param earning The `Category` object (WITH ID)
+ */
+export const updateCategory = updateCategorySRC
+
+/**
+ * Deletes a category from a user's database
+ * @param user_id The user's ID
+ * @param earning_id The category's ID
+ */
+export const deleteCategory = deleteCategorySRC
+
+/**
+ * Inserts a account into a user's database
+ * @param user_id The user's ID
+ * @param earning The `NewAccount` object (no ID)
+ * @returns The newly created `account_id`
+ */
+export const insertAccount = insertAccountSRC
+
+/**
+ * Updates a account in a user's database
+ * @param user_id The user's ID
+ * @param earning The `Account` object (WITH ID)
+ */
+export const updateAccount = updateAccountSRC
+
+/**
+ * Deletes a account from a user's database
+ * @param user_id The user's ID
+ * @param earning_id The account's ID
+ */
+export const deleteAccount = deleteAccountSRC

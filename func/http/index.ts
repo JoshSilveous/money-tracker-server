@@ -7,6 +7,12 @@ import handleDeleteTransactionSRC from './handlers/Transactions/handleDeleteTran
 import handleInsertEarningSRC from './handlers/Earnings/handleInsertEarning'
 import handleUpdateEarningSRC from './handlers/Earnings/handleUpdateEarning'
 import handleDeleteEarningSRC from './handlers/Earnings/handleDeleteEarning'
+import handleInsertCategorySRC from './handlers/Categories/handleInsertCategory'
+import handleUpdateCategorySRC from './handlers/Categories/handleUpdateCategory'
+import handleDeleteCategorySRC from './handlers/Categories/handleDeleteCategory'
+import handleInsertAccountSRC from './handlers/Accounts/handleInsertAccount'
+import handleUpdateAccountSRC from './handlers/Accounts/handleUpdateAccount'
+import handleDeleteAccountSRC from './handlers/Accounts/handleDeleteAccount'
 
 /**
  * Handles HTTP Request for `/createuser`
@@ -52,3 +58,33 @@ export const handleUpdateEarning = handleUpdateEarningSRC
  * Handles HTTP Request for `/deleteearning`
  */
 export const handleDeleteEarning = handleDeleteEarningSRC
+
+/**
+ * Handles HTTP Request for `/insertcategory`
+ */
+export const handleInsertCategory = handleInsertCategorySRC
+
+/**
+ * Handles HTTP Request for `/updatecategory`
+ */
+export const handleUpdateCategory = handleUpdateCategorySRC
+
+/**
+ * Handles HTTP Request for `/deletecategory`
+ */
+export const handleDeleteCategory = handleDeleteCategorySRC
+
+/**
+ * Handles HTTP Request for `/insertaccount`
+ */
+export const handleInsertAccount = handleInsertAccountSRC
+
+/**
+ * Handles HTTP Request for `/updateaccount`
+ */
+export const handleUpdateAccount = handleUpdateAccountSRC
+
+/**
+ * Handles HTTP Request for `/deleteaccount`
+ */
+export const handleDeleteAccount = handleDeleteAccountSRC

@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
-import { updateEarning } from '../../../database'
+import { deleteCategory } from '../../../database'
 
-const handleUpdateEarning: RequestHandler = function (req, res) {
+const handleDeleteCategory: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -16,12 +16,12 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 	const data = req.body as UserPostRequest
 
-	// make sure provided NewEarning is in correct format
-	if (!isTypeProfile(data.payload, 'Earning')) {
+	// make sure provided NewCategory is in correct format
+	if (!isTypeProfile(data.payload, 'CategoryID')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
-			message: 'Earning data in incorrect format.',
+			message: 'Category data in incorrect format.',
 		})
 		return
 	}
@@ -46,6 +46,7 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 
 	const decryptedToken = decryptToken(data.token) as TokenData
+
 	// check if token payload matches format
 	if (!isTypeProfile(decryptedToken, 'TokenData')) {
 		res.statusCode = 406
@@ -67,17 +68,28 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
-	const inputEarning = data.payload as Earning
+	const inputCategory = data.payload as CategoryID
 
 	try {
-		updateEarning(decryptedToken.user_id!, inputEarning)
+		const newCategoryID = deleteCategory(
+			decryptedToken.user_id!,
+			inputCategory.category_id
+		)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
-			message: 'Data successfully updated',
+			message: 'Data successfully deleted',
+			newCategoryID: newCategoryID,
 		})
 	} catch (e) {
 		res.statusCode = 500
+		if ((e as Error).message === 'category_id not found') {
+			res.send({
+				description: 'ERROR_ID_NOT_FOUND',
+				message: `Category ID ${inputCategory.category_id} not found.`,
+			})
+		}
+
 		res.send({
 			description: 'ERROR_SERVER',
 			message: 'Unexpected server error: ' + e,
@@ -85,4 +97,4 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 }
 
-export default handleUpdateEarning
+export default handleDeleteCategory

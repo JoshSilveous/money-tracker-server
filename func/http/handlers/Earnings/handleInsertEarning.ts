@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
-import { insertTransaction } from '../../../database'
+import { insertEarning } from '../../../database'
 
-const handleInsertTransaction: RequestHandler = function (req, res) {
+const handleInsertEarning: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -16,12 +16,12 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 	}
 	const data = req.body as UserPostRequest
 
-	// make sure provided NewTransaction is in correct format
-	if (!isTypeProfile(data.payload, 'NewTransaction')) {
+	// make sure provided NewEarning is in correct format
+	if (!isTypeProfile(data.payload, 'NewEarning')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
-			message: 'Transaction data in incorrect format.',
+			message: 'Earning data in incorrect format.',
 		})
 		return
 	}
@@ -67,18 +67,18 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
-	const inputTransaction = data.payload as NewTransaction
+	const inputEarning = data.payload as NewEarning
 
 	try {
-		const newTransactionID = insertTransaction(
+		const newEarningID = insertEarning(
 			decryptedToken.user_id!,
-			inputTransaction
+			inputEarning
 		)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
 			message: 'Data successfully inserted',
-			newTransactionID: newTransactionID,
+			newEarningID: newEarningID,
 		})
 	} catch (e) {
 		res.statusCode = 500
@@ -89,4 +89,4 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 	}
 }
 
-export default handleInsertTransaction
+export default handleInsertEarning

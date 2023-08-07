@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
-import { updateEarning } from '../../../database'
+import { insertCategory } from '../../../database'
 
-const handleUpdateEarning: RequestHandler = function (req, res) {
+const handleInsertCategory: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -16,12 +16,12 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 	const data = req.body as UserPostRequest
 
-	// make sure provided NewEarning is in correct format
-	if (!isTypeProfile(data.payload, 'Earning')) {
+	// make sure provided NewCategory is in correct format
+	if (!isTypeProfile(data.payload, 'NewCategory')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
-			message: 'Earning data in incorrect format.',
+			message: 'Category data in incorrect format.',
 		})
 		return
 	}
@@ -67,14 +67,18 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
-	const inputEarning = data.payload as Earning
+	const inputCategory = data.payload as NewCategory
 
 	try {
-		updateEarning(decryptedToken.user_id!, inputEarning)
+		const newCategoryID = insertCategory(
+			decryptedToken.user_id!,
+			inputCategory
+		)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
-			message: 'Data successfully updated',
+			message: 'Data successfully inserted',
+			newCategoryID: newCategoryID,
 		})
 	} catch (e) {
 		res.statusCode = 500
@@ -85,4 +89,4 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 }
 
-export default handleUpdateEarning
+export default handleInsertCategory

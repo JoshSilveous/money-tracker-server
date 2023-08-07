@@ -33,6 +33,9 @@ declare global {
 		name: string
 		description: string | null
 	}
+	interface CategoryID {
+		category_id: number
+	}
 	interface Account {
 		account_id: number
 		name: string
@@ -41,6 +44,9 @@ declare global {
 	interface NewAccount {
 		name: string
 		description: string | null
+	}
+	interface AccountID {
+		account_id: number
 	}
 	interface Transaction {
 		transaction_id: number

@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
-import { updateEarning } from '../../../database'
+import { deleteAccount } from '../../../database'
 
-const handleUpdateEarning: RequestHandler = function (req, res) {
+const handleDeleteAccount: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -16,12 +16,12 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 	const data = req.body as UserPostRequest
 
-	// make sure provided NewEarning is in correct format
-	if (!isTypeProfile(data.payload, 'Earning')) {
+	// make sure provided NewAccount is in correct format
+	if (!isTypeProfile(data.payload, 'AccountID')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
-			message: 'Earning data in incorrect format.',
+			message: 'Account data in incorrect format.',
 		})
 		return
 	}
@@ -46,6 +46,7 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 
 	const decryptedToken = decryptToken(data.token) as TokenData
+
 	// check if token payload matches format
 	if (!isTypeProfile(decryptedToken, 'TokenData')) {
 		res.statusCode = 406
@@ -67,17 +68,28 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
-	const inputEarning = data.payload as Earning
+	const inputAccount = data.payload as AccountID
 
 	try {
-		updateEarning(decryptedToken.user_id!, inputEarning)
+		const newAccountID = deleteAccount(
+			decryptedToken.user_id!,
+			inputAccount.account_id
+		)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
-			message: 'Data successfully updated',
+			message: 'Data successfully deleted',
+			newAccountID: newAccountID,
 		})
 	} catch (e) {
 		res.statusCode = 500
+		if ((e as Error).message === 'account_id not found') {
+			res.send({
+				description: 'ERROR_ID_NOT_FOUND',
+				message: `Account ID ${inputAccount.account_id} not found.`,
+			})
+		}
+
 		res.send({
 			description: 'ERROR_SERVER',
 			message: 'Unexpected server error: ' + e,
@@ -85,4 +97,4 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 }
 
-export default handleUpdateEarning
+export default handleDeleteAccount

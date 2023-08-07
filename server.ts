@@ -23,6 +23,12 @@ app.post('/deletetransaction', httpFunc.handleDeleteTransaction)
 app.post('/insertearning', httpFunc.handleInsertEarning)
 app.post('/updateearning', httpFunc.handleUpdateEarning)
 app.post('/deleteearning', httpFunc.handleDeleteEarning)
+app.post('/insertcategory', httpFunc.handleInsertCategory)
+app.post('/updatecategory', httpFunc.handleUpdateCategory)
+app.post('/deletecategory', httpFunc.handleDeleteCategory)
+app.post('/insertaccount', httpFunc.handleInsertAccount)
+app.post('/updateaccount', httpFunc.handleUpdateAccount)
+app.post('/deleteaccount', httpFunc.handleDeleteAccount)
 
 app.listen(port, () => {
 	console.log('listening on port 3000')
