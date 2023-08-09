@@ -3,7 +3,6 @@ import bodyParser from 'body-parser'
 import * as httpFunc from './func/http'
 
 const app = express()
-const port = 3000
 
 app.use((_req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*')
@@ -38,6 +37,4 @@ app.post('/insertaccount', httpFunc.handleInsertAccount)
 app.post('/updateaccount', httpFunc.handleUpdateAccount)
 app.post('/deleteaccount', httpFunc.handleDeleteAccount)
 
-app.listen(port, () => {
-	console.log('listening on port 3000')
-})
+export { app }

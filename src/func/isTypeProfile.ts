@@ -1,4 +1,4 @@
-import { typeProfiles } from '../GlobalTypes'
+import { typeProfiles } from '../../GlobalTypes'
 /**
  * Checks an object's type, compared to it's TypeProfile (defined in `TypeChecking.ts`)
  * @param object The object to check
