@@ -4,7 +4,7 @@ function getAccount(user_id: number, account_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         SELECT *
-            FROM categories
+            FROM accounts
 			WHERE account_id = ?;
     `
 	const stmt = db.prepare(sql)

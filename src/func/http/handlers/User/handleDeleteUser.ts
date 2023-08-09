@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express'
-import isTypeProfile from '../../isTypeProfile'
-import decryptToken from '../../token/decryptToken'
-import { getUserData } from '../../database'
+import isTypeProfile from '../../../isTypeProfile'
+import decryptToken from '../../../token/decryptToken'
+import { deleteUser } from '../../../database'
 
-const handleRequestData: RequestHandler = function (req, res) {
+const handleDeleteUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserGetRequest')) {
 		res.statusCode = 406
@@ -59,20 +59,27 @@ const handleRequestData: RequestHandler = function (req, res) {
 
 	// request is valid at this point
 	try {
-		const userData = getUserData(decryptedToken.user_id)
+		deleteUser(decryptedToken.user_id)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
-			message: 'Data successfully retrieved',
-			data: userData,
+			message: 'User successfully deleted',
 		})
 	} catch (e) {
-		res.statusCode = 500
-		res.send({
-			description: 'ERROR_SERVER',
-			message: 'Unexpected server error: ' + e,
-		})
+		if ((e as Error).message === 'user_id not found') {
+			res.statusCode = 400
+			res.send({
+				description: 'ERROR_ID_NOT_FOUND',
+				message: `User ID ${decryptedToken.user_id} not found.`,
+			})
+		} else {
+			res.statusCode = 500
+			res.send({
+				description: 'ERROR_SERVER',
+				message: 'Unexpected server error: ' + e,
+			})
+		}
 	}
 }
 
-export default handleRequestData
+export default handleDeleteUser

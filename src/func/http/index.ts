@@ -1,6 +1,7 @@
-import handleCreateUserSRC from './handlers/handleCreateUser'
-import handleLoginUserSRC from './handlers/handleLoginUser'
-import handleRequestDataSRC from './handlers/handleRequestData'
+import handleCreateUserSRC from './handlers/User/handleCreateUser'
+import handleLoginUserSRC from './handlers/User/handleLoginUser'
+import handleRequestDataSRC from './handlers/User/handleRequestData'
+import handleDeleteUserSRC from './handlers/User/handleDeleteUser'
 
 import handleGetTransactionSRC from './handlers/Transactions/handleGetTransaction'
 import handleInsertTransactionSRC from './handlers/Transactions/handleInsertTransaction'
@@ -40,6 +41,11 @@ export const handleLoginUser = handleLoginUserSRC
  * Handles HTTP Request for `/requestdata`
  */
 export const handleRequestData = handleRequestDataSRC
+
+/**
+ * Handles HTTP Request for `/loginuser`
+ */
+export const handleDeleteUser = handleDeleteUserSRC
 
 /* ----------------------- */
 /*  TRANSACTION FUNCTIONS  */

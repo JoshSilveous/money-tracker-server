@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express-serve-static-core'
-import isTypeProfile from '../../isTypeProfile'
-import { createUser } from '../../database'
+import isTypeProfile from '../../../isTypeProfile'
+import { createUser } from '../../../database'
 
 const handleCreateUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape

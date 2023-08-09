@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express-serve-static-core'
-import isTypeProfile from '../../isTypeProfile'
-import { getUser } from '../../database'
-import encryptToken from '../../token/encryptToken'
+import isTypeProfile from '../../../isTypeProfile'
+import { getUser } from '../../../database'
+import encryptToken from '../../../token/encryptToken'
 
 const handleLoginUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
