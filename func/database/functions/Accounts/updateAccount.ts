@@ -9,8 +9,11 @@ function updateAccount(user_id: number, account: Account) {
 			WHERE account_id = ?;
     `
 	const stmt = db.prepare(sql)
-	stmt.run(account.name, account.description, account.account_id)
+	const res = stmt.run(account.name, account.description, account.account_id)
 	db.close()
+	if (res.changes === 0) {
+		throw Error('account_id not found')
+	}
 	return
 }
 export default updateAccount

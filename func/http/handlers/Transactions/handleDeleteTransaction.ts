@@ -71,7 +71,7 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 	const inputTransaction = data.payload as TransactionID
 
 	try {
-		const newTransactionID = deleteTransaction(
+		deleteTransaction(
 			decryptedToken.user_id!,
 			inputTransaction.transaction_id
 		)
@@ -79,21 +79,21 @@ const handleDeleteTransaction: RequestHandler = function (req, res) {
 		res.send({
 			description: 'SUCCESS',
 			message: 'Data successfully deleted',
-			newTransactionID: newTransactionID,
 		})
 	} catch (e) {
-		res.statusCode = 500
 		if ((e as Error).message === 'transaction_id not found') {
+			res.statusCode = 400
 			res.send({
 				description: 'ERROR_ID_NOT_FOUND',
 				message: `Transaction ID ${inputTransaction.transaction_id} not found.`,
 			})
+		} else {
+			res.statusCode = 500
+			res.send({
+				description: 'ERROR_SERVER',
+				message: 'Unexpected server error: ' + e,
+			})
 		}
-
-		res.send({
-			description: 'ERROR_SERVER',
-			message: 'Unexpected server error: ' + e,
-		})
 	}
 }
 

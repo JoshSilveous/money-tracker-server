@@ -77,11 +77,19 @@ const handleUpdateCategory: RequestHandler = function (req, res) {
 			message: 'Data successfully updated',
 		})
 	} catch (e) {
-		res.statusCode = 500
-		res.send({
-			description: 'ERROR_SERVER',
-			message: 'Unexpected server error: ' + e,
-		})
+		if ((e as Error).message === 'category_id not found') {
+			res.statusCode = 400
+			res.send({
+				description: 'ERROR_ID_NOT_FOUND',
+				message: `Category ID ${inputCategory.category_id} not found.`,
+			})
+		} else {
+			res.statusCode = 500
+			res.send({
+				description: 'ERROR_SERVER',
+				message: 'Unexpected server error: ' + e,
+			})
+		}
 	}
 }
 

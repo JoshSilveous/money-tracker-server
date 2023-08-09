@@ -71,29 +71,26 @@ const handleDeleteAccount: RequestHandler = function (req, res) {
 	const inputAccount = data.payload as AccountID
 
 	try {
-		const newAccountID = deleteAccount(
-			decryptedToken.user_id!,
-			inputAccount.account_id
-		)
+		deleteAccount(decryptedToken.user_id!, inputAccount.account_id)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
 			message: 'Data successfully deleted',
-			newAccountID: newAccountID,
 		})
 	} catch (e) {
-		res.statusCode = 500
 		if ((e as Error).message === 'account_id not found') {
+			res.statusCode = 400
 			res.send({
 				description: 'ERROR_ID_NOT_FOUND',
 				message: `Account ID ${inputAccount.account_id} not found.`,
 			})
+		} else {
+			res.statusCode = 500
+			res.send({
+				description: 'ERROR_SERVER',
+				message: 'Unexpected server error: ' + e,
+			})
 		}
-
-		res.send({
-			description: 'ERROR_SERVER',
-			message: 'Unexpected server error: ' + e,
-		})
 	}
 }
 

@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
-import { updateEarning } from '../../../database'
+import { getEarning } from '../../../database'
 
-const handleUpdateEarning: RequestHandler = function (req, res) {
+const handleGetEarning: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -17,7 +17,7 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	const data = req.body as UserPostRequest
 
 	// make sure provided NewEarning is in correct format
-	if (!isTypeProfile(data.payload, 'Earning')) {
+	if (!isTypeProfile(data.payload, 'EarningID')) {
 		res.statusCode = 406
 		res.send({
 			description: 'ERROR_REQUEST_FORMAT',
@@ -46,6 +46,7 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 
 	const decryptedToken = decryptToken(data.token) as TokenData
+
 	// check if token payload matches format
 	if (!isTypeProfile(decryptedToken, 'TokenData')) {
 		res.statusCode = 406
@@ -67,14 +68,18 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 
 	// request is valid at this point
-	const inputEarning = data.payload as Earning
+	const inputEarning = data.payload as EarningID
 
 	try {
-		updateEarning(decryptedToken.user_id!, inputEarning)
+		const earning = getEarning(
+			decryptedToken.user_id!,
+			inputEarning.earning_id
+		)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
-			message: 'Data successfully updated',
+			message: 'Data successfully retrieved',
+			earning: earning,
 		})
 	} catch (e) {
 		if ((e as Error).message === 'earning_id not found') {
@@ -93,4 +98,4 @@ const handleUpdateEarning: RequestHandler = function (req, res) {
 	}
 }
 
-export default handleUpdateEarning
+export default handleGetEarning

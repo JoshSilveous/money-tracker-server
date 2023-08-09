@@ -12,7 +12,7 @@ function updateEarning(user_id: number, earning: Earning) {
 			WHERE earning_id = ?;
     `
 	const stmt = db.prepare(sql)
-	stmt.run(
+	const res = stmt.run(
 		earning.name,
 		Math.round(earning.amount * 100) / 100,
 		earning.notes,
@@ -21,6 +21,9 @@ function updateEarning(user_id: number, earning: Earning) {
 		earning.earning_id
 	)
 	db.close()
+	if (res.changes === 0) {
+		throw Error('earning_id not found')
+	}
 	return
 }
 export default updateEarning

@@ -14,7 +14,7 @@ function updateTransaction(user_id: number, transaction: Transaction) {
 			WHERE transaction_id = ?;
     `
 	const stmt = db.prepare(sql)
-	stmt.run(
+	const res = stmt.run(
 		transaction.name,
 		Math.round(transaction.amount * 100) / 100,
 		transaction.notes,
@@ -24,6 +24,9 @@ function updateTransaction(user_id: number, transaction: Transaction) {
 		transaction.transaction_id
 	)
 	db.close()
+	if (res.changes === 0) {
+		throw Error('transaction_id not found')
+	}
 	return
 }
 export default updateTransaction

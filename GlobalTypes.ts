@@ -135,6 +135,13 @@ export const typeProfiles: TypeProfile[] = [
 		},
 	},
 	{
+		name: 'CategoryID',
+		profile: {
+			keyNames: ['category_id'],
+			keyTypes: ['number'],
+		},
+	},
+	{
 		name: 'NewCategory',
 		profile: {
 			keyNames: ['name', '?description'],
@@ -146,6 +153,13 @@ export const typeProfiles: TypeProfile[] = [
 		profile: {
 			keyNames: ['account_id', 'name', '?description'],
 			keyTypes: ['number', 'string', 'string'],
+		},
+	},
+	{
+		name: 'AccountID',
+		profile: {
+			keyNames: ['account_id'],
+			keyTypes: ['number'],
 		},
 	},
 	{

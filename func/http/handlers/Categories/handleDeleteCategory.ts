@@ -71,29 +71,26 @@ const handleDeleteCategory: RequestHandler = function (req, res) {
 	const inputCategory = data.payload as CategoryID
 
 	try {
-		const newCategoryID = deleteCategory(
-			decryptedToken.user_id!,
-			inputCategory.category_id
-		)
+		deleteCategory(decryptedToken.user_id!, inputCategory.category_id)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
 			message: 'Data successfully deleted',
-			newCategoryID: newCategoryID,
 		})
 	} catch (e) {
-		res.statusCode = 500
 		if ((e as Error).message === 'category_id not found') {
+			res.statusCode = 400
 			res.send({
 				description: 'ERROR_ID_NOT_FOUND',
 				message: `Category ID ${inputCategory.category_id} not found.`,
 			})
+		} else {
+			res.statusCode = 500
+			res.send({
+				description: 'ERROR_SERVER',
+				message: 'Unexpected server error: ' + e,
+			})
 		}
-
-		res.send({
-			description: 'ERROR_SERVER',
-			message: 'Unexpected server error: ' + e,
-		})
 	}
 }
 

@@ -17,15 +17,23 @@ app.use(bodyParser.json())
 app.post('/createuser', httpFunc.handleCreateUser)
 app.post('/loginuser', httpFunc.handleLoginUser)
 app.get('/requestdata', httpFunc.handleRequestData)
+
+app.post('/gettransaction', httpFunc.handleGetTransaction)
 app.post('/inserttransaction', httpFunc.handleInsertTransaction)
 app.post('/updatetransaction', httpFunc.handleUpdateTransaction)
 app.post('/deletetransaction', httpFunc.handleDeleteTransaction)
+
+app.post('/getearning', httpFunc.handleGetEarning)
 app.post('/insertearning', httpFunc.handleInsertEarning)
 app.post('/updateearning', httpFunc.handleUpdateEarning)
 app.post('/deleteearning', httpFunc.handleDeleteEarning)
+
+app.post('/getcategory', httpFunc.handleGetCategory)
 app.post('/insertcategory', httpFunc.handleInsertCategory)
 app.post('/updatecategory', httpFunc.handleUpdateCategory)
 app.post('/deletecategory', httpFunc.handleDeleteCategory)
+
+app.post('/getaccount', httpFunc.handleGetAccount)
 app.post('/insertaccount', httpFunc.handleInsertAccount)
 app.post('/updateaccount', httpFunc.handleUpdateAccount)
 app.post('/deleteaccount', httpFunc.handleDeleteAccount)

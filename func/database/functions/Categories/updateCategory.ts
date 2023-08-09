@@ -9,8 +9,15 @@ function updateCategory(user_id: number, category: Category) {
 			WHERE category_id = ?;
     `
 	const stmt = db.prepare(sql)
-	stmt.run(category.name, category.description, category.category_id)
+	const res = stmt.run(
+		category.name,
+		category.description,
+		category.category_id
+	)
 	db.close()
+	if (res.changes === 0) {
+		throw Error('category_id not found')
+	}
 	return
 }
 export default updateCategory

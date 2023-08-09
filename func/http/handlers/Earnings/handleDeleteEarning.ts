@@ -71,29 +71,26 @@ const handleDeleteEarning: RequestHandler = function (req, res) {
 	const inputEarning = data.payload as EarningID
 
 	try {
-		const newEarningID = deleteEarning(
-			decryptedToken.user_id!,
-			inputEarning.earning_id
-		)
+		deleteEarning(decryptedToken.user_id!, inputEarning.earning_id)
 		res.statusCode = 200
 		res.send({
 			description: 'SUCCESS',
 			message: 'Data successfully deleted',
-			newEarningID: newEarningID,
 		})
 	} catch (e) {
-		res.statusCode = 500
 		if ((e as Error).message === 'earning_id not found') {
+			res.statusCode = 400
 			res.send({
 				description: 'ERROR_ID_NOT_FOUND',
 				message: `Earning ID ${inputEarning.earning_id} not found.`,
 			})
+		} else {
+			res.statusCode = 500
+			res.send({
+				description: 'ERROR_SERVER',
+				message: 'Unexpected server error: ' + e,
+			})
 		}
-
-		res.send({
-			description: 'ERROR_SERVER',
-			message: 'Unexpected server error: ' + e,
-		})
 	}
 }
 

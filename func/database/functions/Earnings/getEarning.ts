@@ -1,18 +1,18 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
-
-function deleteEarning(user_id: number, earning_id: number) {
+function getEarning(user_id: number, earning_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
-        DELETE FROM earnings
+        SELECT *
+			FROM earnings
 			WHERE earning_id = ?;
     `
 	const stmt = db.prepare(sql)
-	const res = stmt.run(earning_id)
+	const res = stmt.all(earning_id)
 	db.close()
-	if (res.changes === 0) {
+	if (res.length === 0) {
 		throw Error('earning_id not found')
 	}
-	return
+	return res[0] as Earning
 }
-export default deleteEarning
+export default getEarning
