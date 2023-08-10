@@ -2,6 +2,7 @@ import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
 import { insertEarning } from '../../../database'
+import validateToken from '../../../token/validateToken'
 
 const handleInsertEarning: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
@@ -26,67 +27,27 @@ const handleInsertEarning: RequestHandler = function (req, res) {
 		return
 	}
 
-	// check for issues decrypting token
-	try {
-		decryptToken(data.token)
-	} catch (e) {
-		res.statusCode = 406
-		if ((e as Error).message === 'jwt expired') {
+	const tokenIsValid = validateToken(data.username, data.token, res)
+
+	if (tokenIsValid) {
+		const inputEarning = data.payload as NewEarning
+		const user_id = (decryptToken(data.token) as TokenData).user_id
+
+		try {
+			const newEarningID = insertEarning(user_id, inputEarning)
+			res.statusCode = 200
 			res.send({
-				description: 'ERROR_TOKEN_EXPIRED',
-				message: 'Token expired.',
+				description: 'SUCCESS',
+				message: 'Data successfully inserted',
+				newEarningID: newEarningID,
 			})
-		} else {
+		} catch (e) {
+			res.statusCode = 500
 			res.send({
-				description: 'ERROR_TOKEN_FORMAT',
-				message: 'Unexpected error decrypting token: ' + e,
+				description: 'ERROR_SERVER',
+				message: 'Unexpected server error: ' + e,
 			})
 		}
-		return
-	}
-
-	const decryptedToken = decryptToken(data.token) as TokenData
-	// check if token payload matches format
-	if (!isTypeProfile(decryptedToken, 'TokenData')) {
-		res.statusCode = 406
-		res.send({
-			description: 'ERROR_TOKEN_FORMAT',
-			message: 'Invalid token data',
-		})
-		return
-	}
-
-	// check if token username matches provided username
-	if (decryptedToken.username !== data.username) {
-		res.statusCode = 406
-		res.send({
-			description: 'ERROR_TOKEN_FORMAT',
-			message: 'Token does not match provided username',
-		})
-		return
-	}
-
-	// request is valid at this point
-	const inputEarning = data.payload as NewEarning
-
-	try {
-		const newEarningID = insertEarning(
-			decryptedToken.user_id!,
-			inputEarning
-		)
-		res.statusCode = 200
-		res.send({
-			description: 'SUCCESS',
-			message: 'Data successfully inserted',
-			newEarningID: newEarningID,
-		})
-	} catch (e) {
-		res.statusCode = 500
-		res.send({
-			description: 'ERROR_SERVER',
-			message: 'Unexpected server error: ' + e,
-		})
 	}
 }
-
 export default handleInsertEarning

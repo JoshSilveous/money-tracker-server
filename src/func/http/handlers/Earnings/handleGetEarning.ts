@@ -2,6 +2,7 @@ import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
 import { getEarning } from '../../../database'
+import validateToken from '../../../token/validateToken'
 
 const handleGetEarning: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
@@ -26,74 +27,34 @@ const handleGetEarning: RequestHandler = function (req, res) {
 		return
 	}
 
-	// check for issues decrypting token
-	try {
-		decryptToken(data.token)
-	} catch (e) {
-		res.statusCode = 406
-		if ((e as Error).message === 'jwt expired') {
+	const tokenIsValid = validateToken(data.username, data.token, res)
+
+	if (tokenIsValid) {
+		const inputEarning = data.payload as EarningID
+		const user_id = (decryptToken(data.token) as TokenData).user_id
+
+		try {
+			const earning = getEarning(user_id, inputEarning.earning_id)
+			res.statusCode = 200
 			res.send({
-				description: 'ERROR_TOKEN_EXPIRED',
-				message: 'Token expired.',
+				description: 'SUCCESS',
+				message: 'Data successfully retrieved',
+				earning: earning,
 			})
-		} else {
-			res.send({
-				description: 'ERROR_TOKEN_FORMAT',
-				message: 'Unexpected error decrypting token: ' + e,
-			})
-		}
-		return
-	}
-
-	const decryptedToken = decryptToken(data.token) as TokenData
-
-	// check if token payload matches format
-	if (!isTypeProfile(decryptedToken, 'TokenData')) {
-		res.statusCode = 406
-		res.send({
-			description: 'ERROR_TOKEN_FORMAT',
-			message: 'Invalid token data',
-		})
-		return
-	}
-
-	// check if token username matches provided username
-	if (decryptedToken.username !== data.username) {
-		res.statusCode = 406
-		res.send({
-			description: 'ERROR_TOKEN_FORMAT',
-			message: 'Token does not match provided username',
-		})
-		return
-	}
-
-	// request is valid at this point
-	const inputEarning = data.payload as EarningID
-
-	try {
-		const earning = getEarning(
-			decryptedToken.user_id!,
-			inputEarning.earning_id
-		)
-		res.statusCode = 200
-		res.send({
-			description: 'SUCCESS',
-			message: 'Data successfully retrieved',
-			earning: earning,
-		})
-	} catch (e) {
-		if ((e as Error).message === 'earning_id not found') {
-			res.statusCode = 400
-			res.send({
-				description: 'ERROR_ID_NOT_FOUND',
-				message: `Earning ID ${inputEarning.earning_id} not found.`,
-			})
-		} else {
-			res.statusCode = 500
-			res.send({
-				description: 'ERROR_SERVER',
-				message: 'Unexpected server error: ' + e,
-			})
+		} catch (e) {
+			if ((e as Error).message === 'earning_id not found') {
+				res.statusCode = 400
+				res.send({
+					description: 'ERROR_ID_NOT_FOUND',
+					message: `Earning ID ${inputEarning.earning_id} not found.`,
+				})
+			} else {
+				res.statusCode = 500
+				res.send({
+					description: 'ERROR_SERVER',
+					message: 'Unexpected server error: ' + e,
+				})
+			}
 		}
 	}
 }
