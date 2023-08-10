@@ -1,5 +1,7 @@
 import request from 'supertest'
 import { app } from '../src/api'
+import encryptToken from '../src/func/token/encryptToken'
+import { getUser } from '../src/func/database'
 
 let server
 beforeAll(() => {
@@ -10,28 +12,110 @@ afterAll((done) => {
 	server.close(done) // Close the server when all tests are done
 })
 
-describe('User Database Operations', () => {
+describe('Operations', () => {
 	const newUserCredentials: UserCredentials = {
 		username: 'jest_test_new_user',
 		password: 'jest_test_new_user',
 	}
 	let token: string
+	describe('User / Token Functions', () => {
+		it('should create a new user', async () => {
+			const response = await request(app)
+				.post('/createuser')
+				.send(newUserCredentials)
+			expect(response.status).toBe(200)
+		})
 
-	it('should create a new user', async () => {
-		const response = await request(app)
-			.post('/createuser')
-			.send(newUserCredentials)
-		expect(response.status).toBe(200)
-	})
-	it('should login as new user', async () => {
-		const response = await request(app)
-			.post('/loginuser')
-			.send(newUserCredentials)
+		it('should error due to duplicate username', async () => {
+			const response = await request(app)
+				.post('/createuser')
+				.send({
+					...newUserCredentials,
+					password: 'example_unique_pass',
+				})
+			expect(response.status).toBe(406)
+			expect(response.body.description).toBe('ERROR_DUPLICATE_USERNAME')
+		})
 
-		expect(response.status).toBe(200)
-		if (response.status === 200) {
-			token = response.body.token
-		}
+		it('should error due to duplicate password', async () => {
+			const response = await request(app)
+				.post('/createuser')
+				.send({
+					...newUserCredentials,
+					username: 'example_unique_username',
+				})
+			expect(response.status).toBe(406)
+			expect(response.body.description).toBe('ERROR_DUPLICATE_PASSWORD')
+		})
+
+		it('should login as new user', async () => {
+			const response = await request(app)
+				.post('/loginuser')
+				.send(newUserCredentials)
+
+			expect(response.status).toBe(200)
+			if (response.status === 200) {
+				token = response.body.token
+			}
+		})
+
+		it('should error due to token format', async () => {
+			const response = await request(app)
+				.post('/insertcategory')
+				.send({
+					username: newUserCredentials.username,
+					token: 'Invalid Token Example',
+					payload: {
+						name: 'TestCategory',
+						description: 'A new Category created by Jest.',
+					},
+				})
+			expect(response.statusCode).toBe(406)
+			expect(response.body.message).toContain(
+				'Unexpected error decrypting token'
+			)
+		})
+
+		it('should error due to mismatched token structure', async () => {
+			const badToken = encryptToken({
+				user_id: getUser(newUserCredentials).user_id,
+				username: newUserCredentials.username,
+				exampleBadStructure: 'Example Bad Structure',
+			})
+			const response = await request(app)
+				.post('/insertcategory')
+				.send({
+					username: newUserCredentials.username,
+					token: badToken,
+					payload: {
+						name: 'TestCategory',
+						description: 'A new Category created by Jest.',
+					},
+				})
+			expect(response.statusCode).toBe(406)
+			expect(response.body.message).toBe('Invalid token data')
+		})
+
+		it('should error due to mismatched username', async () => {
+			const badToken = encryptToken({
+				user_id: getUser(newUserCredentials).user_id,
+				username: 'Invalid Username Example',
+			})
+			const response = await request(app)
+				.post('/insertcategory')
+				.send({
+					username: newUserCredentials.username,
+					token: badToken,
+					payload: {
+						name: 'TestCategory',
+						description: 'A new Category created by Jest.',
+					},
+				})
+			expect(response.statusCode).toBe(406)
+			expect(response.body.message).toBe(
+				'Token does not match provided username'
+			)
+		})
 	})
 
 	let newCategoryID: number
