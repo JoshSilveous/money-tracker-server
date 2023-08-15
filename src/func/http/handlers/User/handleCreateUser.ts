@@ -24,7 +24,6 @@ const handleCreateUser: RequestHandler = function (req, res) {
 
 		// if success, notify user
 		res.json({ description: 'SUCCESS', message: 'Account created.' })
-		console.log('New user created with user_id =', newUserID)
 	} catch (e) {
 		// if failure, check if UNIQUE constraint was violated
 
@@ -35,21 +34,14 @@ const handleCreateUser: RequestHandler = function (req, res) {
 				description: 'ERROR_DUPLICATE_USERNAME',
 				message: 'Username already taken.',
 			})
-			console.log(
-				`ERROR: attempted new user with username "${data.username}", already taken.`
-			)
 		} else if (errMsg === 'UNIQUE constraint failed: user.password') {
 			res.send({
 				description: 'ERROR_DUPLICATE_PASSWORD',
 				message: 'Password already taken.',
 			})
-			console.log(
-				`ERROR: attempted new user with password "${data.password}", already taken.`
-			)
 		} else {
 			// if not a SQL UNIQUE error, must be server issue, notify user
 			res.statusCode = 500
-			console.log(e)
 			res.send({
 				description: 'ERROR_SERVER',
 				message: e,
