@@ -6,21 +6,25 @@ import getUserFilePathSRC from './functions/Users/getUserFilePath'
 import deleteUserSRC from './functions/Users/deleteUser'
 
 import getTransactionSRC from './functions/Transactions/getTransaction'
+import getAllTransactionsSRC from './functions/Transactions/getAllTransactions'
 import insertTransactionSRC from './functions/Transactions/insertTransaction'
 import updateTransactionSRC from './functions/Transactions/updateTransaction'
 import deleteTransactionSRC from './functions/Transactions/deleteTransaction'
 
 import getEarningSRC from './functions/Earnings/getEarning'
+import getAllEarningsSRC from './functions/Earnings/getAllEarnings'
 import insertEarningSRC from './functions/Earnings/insertEarning'
 import updateEarningSRC from './functions/Earnings/updateEarning'
 import deleteEarningSRC from './functions/Earnings/deleteEarning'
 
 import getCategorySRC from './functions/Categories/getCategory'
+import getAllCategoriesSRC from './functions/Categories/getAllCategories'
 import insertCategorySRC from './functions/Categories/insertCategory'
 import updateCategorySRC from './functions/Categories/updateCategory'
 import deleteCategorySRC from './functions/Categories/deleteCategory'
 
 import getAccountSRC from './functions/Accounts/getAccount'
+import getAllAccountsSRC from './functions/Accounts/getAllAccounts'
 import insertAccountSRC from './functions/Accounts/insertAccount'
 import updateAccountSRC from './functions/Accounts/updateAccount'
 import deleteAccountSRC from './functions/Accounts/deleteAccount'
@@ -80,6 +84,13 @@ export const deleteUser = deleteUserSRC
 export const getTransaction = getTransactionSRC
 
 /**
+ * Retrieves all Transactions from the user's database
+ * @param user_id The user's ID
+ * @returns The `Transaction` object array
+ */
+export const getAllTransactions = getAllTransactionsSRC
+
+/**
  * Inserts a transaction into a user's database
  * @param user_id The user's ID
  * @param transaction The `NewTransaction` object (no ID)
@@ -112,6 +123,13 @@ export const deleteTransaction = deleteTransactionSRC
  * @returns The `Earning` object
  */
 export const getEarning = getEarningSRC
+
+/**
+ * Retrieves all Earnings from the user's database
+ * @param user_id The user's ID
+ * @returns The `Earning` object array
+ */
+export const getAllEarnings = getAllEarningsSRC
 
 /**
  * Inserts a earning into a user's database
@@ -148,6 +166,13 @@ export const deleteEarning = deleteEarningSRC
 export const getCategory = getCategorySRC
 
 /**
+ * Retrieves all Categories from the user's database
+ * @param user_id The user's ID
+ * @returns The `Category` object array
+ */
+export const getAllCategories = getAllCategoriesSRC
+
+/**
  * Inserts a category into a user's database
  * @param user_id The user's ID
  * @param earning The `NewCategory` object (no ID)
@@ -180,6 +205,13 @@ export const deleteCategory = deleteCategorySRC
  * @returns The `Account` object
  */
 export const getAccount = getAccountSRC
+
+/**
+ * Retrieves all Accounts from the user's database
+ * @param user_id The user's ID
+ * @returns The `Account` object array
+ */
+export const getAllAccounts = getAllAccountsSRC
 
 /**
  * Inserts a account into a user's database
