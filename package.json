@@ -12,7 +12,7 @@
 		"jsonwebtoken": "^9.0.1"
 	},
 	"scripts": {
-		"start": "ts-node .\\src\\server.ts",
+		"start": "ts-node .\\src\\start_server.ts",
 		"test": "jest --detectOpenHandles"
 	},
 	"devDependencies": {
