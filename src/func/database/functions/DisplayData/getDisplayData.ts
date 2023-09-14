@@ -29,21 +29,16 @@ function getDisplayData(
             categories.name AS category_name, 
             accounts.name AS account_name 
             FROM transactions 
-                INNER JOIN categories
+                LEFT JOIN categories
                     ON transactions.category_id = categories.category_id
-                INNER JOIN accounts
+                LEFT JOIN accounts
                     ON transactions.account_id = accounts.account_id
             ORDER BY ${orderBy} ${orderByDirection}
-            LIMIT ${resPerPage} OFFSET ${orderByDirection}
+            LIMIT ${resPerPage} OFFSET ${pageOffset}
         ;
     `
 	const stmt = db.prepare(sql)
-	const res = stmt.all(
-		orderBy,
-		orderByDirection,
-		resPerPage,
-		orderByDirection
-	) as DisplayData[]
+	const res = stmt.all() as DisplayData[]
 	return res
 }
 export default getDisplayData

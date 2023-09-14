@@ -5,6 +5,8 @@ import getUserDataSRC from './functions/Users/getUserData'
 import getUserFilePathSRC from './functions/Users/getUserFilePath'
 import deleteUserSRC from './functions/Users/deleteUser'
 
+import getDisplayDataSRC from './functions/DisplayData/getDisplayData'
+
 import getTransactionSRC from './functions/Transactions/getTransaction'
 import getAllTransactionsSRC from './functions/Transactions/getAllTransactions'
 import insertTransactionSRC from './functions/Transactions/insertTransaction'
@@ -70,6 +72,17 @@ export const getUserData = getUserDataSRC
  * @param user_id
  */
 export const deleteUser = deleteUserSRC
+
+/**
+ * Get's a chunk of DisplayData for the user, sorted by parameters.
+ * @param user_id
+ * @param resPerPage Results per page
+ * @param thisPage The page requested
+ * @param orderBy The category name to be ordered by
+ * @param orderByDirection `"ASC"` or `"DESC"`
+ * @returns An array of `DataDisplay` objects
+ */
+export const getDisplayData = getDisplayDataSRC
 
 /* ----------------------- */
 /*  TRANSACTION FUNCTIONS  */
