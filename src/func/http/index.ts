@@ -3,6 +3,8 @@ import handleLoginUserSRC from './handlers/User/handleLoginUser'
 import handleRequestDataSRC from './handlers/User/handleRequestData'
 import handleDeleteUserSRC from './handlers/User/handleDeleteUser'
 
+import handleGetDisplayDataSRC from './handlers/DisplayData/handleGetDisplayData'
+
 import handleGetTransactionSRC from './handlers/Transactions/handleGetTransaction'
 import handleInsertTransactionSRC from './handlers/Transactions/handleInsertTransaction'
 import handleUpdateTransactionSRC from './handlers/Transactions/handleUpdateTransaction'
@@ -46,6 +48,11 @@ export const handleRequestData = handleRequestDataSRC
  * Handles HTTP Request for `/loginuser`
  */
 export const handleDeleteUser = handleDeleteUserSRC
+
+/**
+ * handles HTTP Request for `/getDisplayData`
+ */
+export const handleGetDisplayData = handleGetDisplayDataSRC
 
 /* ----------------------- */
 /*  TRANSACTION FUNCTIONS  */

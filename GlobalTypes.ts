@@ -86,6 +86,20 @@ declare global {
 	interface EarningID {
 		earning_id: number
 	}
+	interface DisplayData {
+		transaction_id: number
+		transaction_name: string
+		timestamp: number
+		amount: number
+		category_name: string
+		account_name: string
+	}
+	interface DisplayDataRequest {
+		resPerPage: number
+		thisPage: number
+		orderBy: 'timestamp' | 'name' | 'category' | 'account' | 'amount'
+		orderByDirection: 'ASC' | 'DESC'
+	}
 	interface TypeProfile {
 		name: string
 		profile: { keyNames: string[]; keyTypes: string[] }
@@ -125,6 +139,13 @@ export const typeProfiles: TypeProfile[] = [
 		profile: {
 			keyNames: ['username', 'token', 'payload'],
 			keyTypes: ['string', 'string', 'object'],
+		},
+	},
+	{
+		name: 'DisplayDataRequest',
+		profile: {
+			keyNames: ['resPerPage', 'thisPage', 'orderBy', 'orderByDirection'],
+			keyTypes: ['number', 'number', 'string', 'string'],
 		},
 	},
 	{
@@ -253,6 +274,30 @@ export const typeProfiles: TypeProfile[] = [
 		profile: {
 			keyNames: ['earning_id'],
 			keyTypes: ['number'],
+		},
+	},
+
+	{
+		name: 'Transaction',
+		profile: {
+			keyNames: [
+				'transaction_id',
+				'name',
+				'timestamp',
+				'?notes',
+				'amount',
+				'?category_id',
+				'?account_id',
+			],
+			keyTypes: [
+				'number',
+				'string',
+				'number',
+				'string',
+				'number',
+				'number',
+				'number',
+			],
 		},
 	},
 	{

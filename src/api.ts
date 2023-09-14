@@ -18,6 +18,8 @@ app.post('/loginuser', httpFunc.handleLoginUser)
 app.get('/requestdata', httpFunc.handleRequestData)
 app.post('/deleteuser', httpFunc.handleDeleteUser)
 
+app.post('/getdisplaydata', httpFunc.handleGetDisplayData)
+
 app.post('/gettransaction', httpFunc.handleGetTransaction)
 app.post('/inserttransaction', httpFunc.handleInsertTransaction)
 app.post('/updatetransaction', httpFunc.handleUpdateTransaction)
