@@ -86,6 +86,14 @@ declare global {
 	interface EarningID {
 		earning_id: number
 	}
+	interface DisplayData {
+		transaction_id: number
+		transaction_name: string
+		timestamp: number
+		amount: number
+		category_name: string
+		account_name: string
+	}
 	interface TypeProfile {
 		name: string
 		profile: { keyNames: string[]; keyTypes: string[] }

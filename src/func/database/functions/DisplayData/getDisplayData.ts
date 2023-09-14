@@ -1,3 +1,5 @@
+import SQLite from 'better-sqlite3'
+import { getUserFilePath } from '../..'
 // okay, this one's gonna be complicated.
 // we need to accept parameters to limit how many results per page, and which page the user is on.
 // also accepts ORDER BY parameters
@@ -10,7 +12,38 @@
 function getDisplayData(
 	user_id: number,
 	resPerPage: number,
-	amtPerPage: number,
-	orderBy: 'date' | 'name' | 'category' | 'account' | 'amount'
-) {}
+	thisPage: number,
+	orderBy: 'timestamp' | 'name' | 'category' | 'account' | 'amount',
+	orderByDirection: 'ASC' | 'DESC'
+) {
+	const pageOffset = (thisPage - 1) * resPerPage
+	// if orderBy === category or account, ...
+
+	const db = new SQLite(getUserFilePath(user_id))
+	const sql = `
+        SELECT 
+            transaction_id, 
+            transactions.name AS transaction_name, 
+            timestamp, 
+            amount, 
+            categories.name AS category_name, 
+            accounts.name AS account_name 
+            FROM transactions 
+                INNER JOIN categories
+                    ON transactions.category_id = categories.category_id
+                INNER JOIN accounts
+                    ON transactions.account_id = accounts.account_id
+            ORDER BY ${orderBy} ${orderByDirection}
+            LIMIT ${resPerPage} OFFSET ${orderByDirection}
+        ;
+    `
+	const stmt = db.prepare(sql)
+	const res = stmt.all(
+		orderBy,
+		orderByDirection,
+		resPerPage,
+		orderByDirection
+	) as DisplayData[]
+	return res
+}
 export default getDisplayData
