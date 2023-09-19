@@ -520,6 +520,58 @@ describe('Operations', () => {
 		})
 	})
 
+	describe('Retrieving Data Tables in Display formats', () => {
+		const testCategories = [
+			{ name: 'TestCategory1', id: null },
+			{ name: 'TestCategory2', id: null },
+			{ name: 'TestCategory3', id: null },
+		]
+		const testAccounts = [
+			{ name: 'TestAccount1', id: null },
+			{ name: 'TestAccount2', id: null },
+			{ name: 'TestAccount3', id: null },
+		]
+		const testTransactions = [] // fill in next time, and loop over this
+
+		it('should create three new categories', async () => {
+			testCategories.forEach(async (category) => {
+				let response = await request(app)
+					.post('/insertcategory')
+					.send({
+						username: newUserCredentials.username,
+						token: token,
+						payload: {
+							name: category.name,
+							description: 'A new Category created by Jest.',
+						},
+					})
+				expect(response.statusCode).toBe(200)
+				if (response.statusCode === 200) {
+					category.id = response.body.newCategoryID
+				}
+			})
+		})
+		it('should create three new accounts', async () => {
+			testAccounts.forEach(async (account) => {
+				const response = await request(app)
+					.post('/insertaccount')
+					.send({
+						username: newUserCredentials.username,
+						token: token,
+						payload: {
+							name: account.name,
+							description: 'A new Account created by Jest.',
+						},
+					})
+				expect(response.statusCode).toBe(200)
+				if (response.statusCode === 200) {
+					account.id = response.body.newAccountID
+				}
+			})
+		})
+		it('should create fifteen new transactions', async () => {})
+	})
+
 	it('should delete the new user', async () => {
 		const actualResponse = await request(app)
 			.post('/deleteuser')

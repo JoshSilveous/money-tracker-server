@@ -97,7 +97,12 @@ declare global {
 	interface DisplayDataRequest {
 		resPerPage: number
 		thisPage: number
-		orderBy: 'timestamp' | 'name' | 'category' | 'account' | 'amount'
+		orderBy:
+			| 'timestamp'
+			| 'transaction_name'
+			| 'category_name'
+			| 'account_name'
+			| 'amount'
 		orderByDirection: 'ASC' | 'DESC'
 	}
 	interface TypeProfile {
