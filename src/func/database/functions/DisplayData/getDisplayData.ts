@@ -13,11 +13,15 @@ function getDisplayData(
 	user_id: number,
 	resPerPage: number,
 	thisPage: number,
-	orderBy: 'timestamp' | 'name' | 'category' | 'account' | 'amount',
+	orderBy:
+		| 'timestamp'
+		| 'transaction_name'
+		| 'category_name'
+		| 'account_name'
+		| 'amount',
 	orderByDirection: 'ASC' | 'DESC'
 ) {
 	const pageOffset = (thisPage - 1) * resPerPage
-	// if orderBy === category or account, ...
 
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
@@ -39,6 +43,7 @@ function getDisplayData(
     `
 	const stmt = db.prepare(sql)
 	const res = stmt.all() as DisplayData[]
+	console.log(res)
 	return res
 }
 export default getDisplayData
