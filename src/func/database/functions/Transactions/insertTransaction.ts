@@ -11,9 +11,9 @@ function insertTransaction(user_id: number, transaction: NewTransaction) {
 	const stmt = db.prepare(sql)
 	const res = stmt.run(
 		transaction.name,
-		Math.round(transaction.amount * 100) / 100,
+		transaction.timestamp,
 		transaction.notes,
-		transaction.amount,
+		Math.round(transaction.amount * 100) / 100,
 		transaction.category_id,
 		transaction.account_id
 	)
