@@ -43,6 +43,7 @@ function getDisplayData(
     `
 	const stmt = db.prepare(sql)
 	const res = stmt.all() as DisplayData[]
+	db.close()
 	console.log(res)
 	return res
 }
