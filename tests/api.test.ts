@@ -521,17 +521,16 @@ describe('Operations', () => {
 	})
 
 	describe('Retrieving Data Tables in Display formats', () => {
-		const testCategories = [
-			{ name: 'TestCategory1', id: null },
-			{ name: 'TestCategory2', id: null },
-			{ name: 'TestCategory3', id: null },
+		const testCategories: Category[] = [
+			{ category_id: null, name: 'TestCategory1', description: null },
+			{ category_id: null, name: 'TestCategory2', description: null },
+			{ category_id: null, name: 'TestCategory3', description: null },
 		]
-		const testAccounts = [
-			{ name: 'TestAccount1', id: null },
-			{ name: 'TestAccount2', id: null },
-			{ name: 'TestAccount3', id: null },
+		const testAccounts: Account[] = [
+			{ account_id: null, name: 'TestAccount1', description: null },
+			{ account_id: null, name: 'TestAccount2', description: null },
+			{ account_id: null, name: 'TestAccount3', description: null },
 		]
-		const testTransactions = [] // fill in next time, and loop over this
 
 		it('should create three new categories', async () => {
 			testCategories.forEach(async (category) => {
@@ -547,7 +546,7 @@ describe('Operations', () => {
 					})
 				expect(response.statusCode).toBe(200)
 				if (response.statusCode === 200) {
-					category.id = response.body.newCategoryID
+					category.category_id = response.body.newCategoryID
 				}
 			})
 		})
@@ -565,11 +564,190 @@ describe('Operations', () => {
 					})
 				expect(response.statusCode).toBe(200)
 				if (response.statusCode === 200) {
-					account.id = response.body.newAccountID
+					account.account_id = response.body.newAccountID
 				}
 			})
 		})
-		it('should create fifteen new transactions', async () => {})
+		it('should create fifteen new transactions', async () => {
+			const testTransactions: Transaction[] = [
+				{
+					transaction_id: null,
+					name: 'TestTransaction1',
+					timestamp: 163,
+					amount: -123.45,
+					notes: null,
+					category_id: testCategories[0].category_id,
+					account_id: testAccounts[0].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction2',
+					timestamp: 12,
+					amount: -1323.42,
+					notes: null,
+					category_id: testCategories[1].category_id,
+					account_id: testAccounts[2].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction3',
+					timestamp: 1,
+					amount: 474354.33,
+					notes: null,
+					category_id: testCategories[0].category_id,
+					account_id: null,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction4',
+					timestamp: 160000,
+					amount: -31323.42,
+					notes: null,
+					category_id: testCategories[0].category_id,
+					account_id: testAccounts[2].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction5',
+					timestamp: 1424,
+					amount: -13.22,
+					notes: null,
+					category_id: null,
+					account_id: testAccounts[0].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction6',
+					timestamp: 12,
+					amount: 13323.42,
+					notes: null,
+					category_id: testCategories[0].category_id,
+					account_id: testAccounts[1].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction7',
+					timestamp: 6434,
+					amount: -152.32,
+					notes: null,
+					category_id: testCategories[2].category_id,
+					account_id: testAccounts[2].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction8',
+					timestamp: 13634,
+					amount: -183.33,
+					notes: null,
+					category_id: testCategories[2].category_id,
+					account_id: testAccounts[1].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction9',
+					timestamp: 43145,
+					amount: -1333.42,
+					notes: null,
+					category_id: null,
+					account_id: testAccounts[0].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction10',
+					timestamp: 1437,
+					amount: -24.99,
+					notes: null,
+					category_id: null,
+					account_id: null,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction11',
+					timestamp: 434,
+					amount: 823,
+					notes: null,
+					category_id: testCategories[1].category_id,
+					account_id: null,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction12',
+					timestamp: 6431345,
+					amount: -393.33,
+					notes: null,
+					category_id: testCategories[2].category_id,
+					account_id: testAccounts[2].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction13',
+					timestamp: 134643,
+					amount: -999.99,
+					notes: null,
+					category_id: testCategories[0].category_id,
+					account_id: testAccounts[1].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction14',
+					timestamp: 641364,
+					amount: 32,
+					notes: null,
+					category_id: testCategories[0].category_id,
+					account_id: testAccounts[0].account_id,
+				},
+				{
+					transaction_id: null,
+					name: 'TestTransaction15',
+					timestamp: 15122,
+					amount: 0.01,
+					notes: null,
+					category_id: testCategories[1].category_id,
+					account_id: testAccounts[0].account_id,
+				},
+			]
+			testTransactions.forEach(async (transaction) => {
+				const response = await request(app)
+					.post('/inserttransaction')
+					.send({
+						username: newUserCredentials.username,
+						token: token,
+						payload: {
+							name: transaction.name,
+							timestamp: transaction.timestamp,
+							notes: transaction.notes,
+							amount: transaction.amount,
+							category_id: transaction.category_id,
+							account_id: transaction.account_id,
+						},
+					})
+				expect(response.statusCode).toBe(200)
+			})
+		})
+		it('should retrieve the most recent 10 transactions', async () => {
+			const response = await request(app)
+				.post('/getdisplaydata')
+				.send({
+					username: newUserCredentials.username,
+					token: token,
+					payload: {
+						resPerPage: 10,
+						thisPage: 1,
+						orderBy: 'timestamp',
+						orderByDirection: 'DESC',
+					},
+				})
+			expect(response.statusCode).toBe(200)
+
+			const results = response.body.displayData
+
+			const expectedResultOrder = [3, 6, 11, 14, 15, 5, 10, 1, 7, 8]
+			results.forEach((transaction, index) => {
+				expect(transaction.transaction_name).toBe(
+					`TestTransaction${expectedResultOrder[index]}`
+				)
+			})
+		})
 	})
 
 	it('should delete the new user', async () => {
