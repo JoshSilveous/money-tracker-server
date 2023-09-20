@@ -601,7 +601,7 @@ describe('Operations', () => {
 					transaction_id: null,
 					name: 'TestTransaction4',
 					timestamp: 160000,
-					amount: -31323.42,
+					amount: -21,
 					notes: null,
 					category_id: testCategories[0].category_id,
 					account_id: testAccounts[2].account_id,
@@ -741,7 +741,7 @@ describe('Operations', () => {
 
 			const results = response.body.displayData
 
-			const expectedResultOrder = [3, 6, 11, 14, 15, 5, 10, 1, 7, 8]
+			const expectedResultOrder = [12, 14, 4, 13, 9, 15, 8, 7, 10, 5]
 			results.forEach((transaction, index) => {
 				expect(transaction.transaction_name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
@@ -765,6 +765,30 @@ describe('Operations', () => {
 
 			const results = response.body.displayData
 
+			const expectedResultOrder = [3, 2, 6, 1, 11, 5, 10, 7, 8, 15]
+			results.forEach((transaction, index) => {
+				expect(transaction.transaction_name).toBe(
+					`TestTransaction${expectedResultOrder[index]}`
+				)
+			})
+		})
+		it('should retrieve the 5 most expensive transactions', async () => {
+			const response = await request(app)
+				.post('/getdisplaydata')
+				.send({
+					username: newUserCredentials.username,
+					token: token,
+					payload: {
+						resPerPage: 5,
+						thisPage: 1,
+						orderBy: 'amount',
+						orderByDirection: 'ASC',
+					},
+				})
+			expect(response.statusCode).toBe(200)
+
+			const results = response.body.displayData
+
 			// temporary function to grab IDs easier
 			const testArr = []
 			results.forEach((res) =>
@@ -772,14 +796,13 @@ describe('Operations', () => {
 			)
 			console.log(testArr)
 
-			const expectedResultOrder = [4, 9, 2, 13, 12, 8, 7, 1, 10, 5]
+			const expectedResultOrder = [9, 2, 13, 12, 8]
 			results.forEach((transaction, index) => {
 				expect(transaction.transaction_name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
 		})
-		it('should retrieve the 5 most expensive transactions', async () => {})
 		it('should retrieve the next 5 most expensive transactions', async () => {})
 		it('should retrieve the 5 least expensive transactions', async () => {})
 		it('should retrieve the next 5 least expensive transactions', async () => {})
