@@ -789,13 +789,6 @@ describe('Operations', () => {
 
 			const results = response.body.displayData
 
-			// temporary function to grab IDs easier
-			const testArr = []
-			results.forEach((res) =>
-				testArr.push(parseInt(res.transaction_name.slice(15)))
-			)
-			console.log(testArr)
-
 			const expectedResultOrder = [9, 2, 13, 12, 8]
 			results.forEach((transaction, index) => {
 				expect(transaction.transaction_name).toBe(
@@ -803,9 +796,85 @@ describe('Operations', () => {
 				)
 			})
 		})
-		it('should retrieve the next 5 most expensive transactions', async () => {})
-		it('should retrieve the 5 least expensive transactions', async () => {})
-		it('should retrieve the next 5 least expensive transactions', async () => {})
+		it('should retrieve the next 5 most expensive transactions', async () => {
+			const response = await request(app)
+				.post('/getdisplaydata')
+				.send({
+					username: newUserCredentials.username,
+					token: token,
+					payload: {
+						resPerPage: 5,
+						thisPage: 2,
+						orderBy: 'amount',
+						orderByDirection: 'ASC',
+					},
+				})
+			expect(response.statusCode).toBe(200)
+
+			const results = response.body.displayData
+
+			const expectedResultOrder = [7, 1, 10, 4, 5]
+			results.forEach((transaction, index) => {
+				expect(transaction.transaction_name).toBe(
+					`TestTransaction${expectedResultOrder[index]}`
+				)
+			})
+		})
+		it('should retrieve the 5 least expensive transactions', async () => {
+			const response = await request(app)
+				.post('/getdisplaydata')
+				.send({
+					username: newUserCredentials.username,
+					token: token,
+					payload: {
+						resPerPage: 5,
+						thisPage: 1,
+						orderBy: 'amount',
+						orderByDirection: 'DESC',
+					},
+				})
+			expect(response.statusCode).toBe(200)
+
+			const results = response.body.displayData
+
+			const expectedResultOrder = [3, 6, 11, 14, 15]
+			results.forEach((transaction, index) => {
+				expect(transaction.transaction_name).toBe(
+					`TestTransaction${expectedResultOrder[index]}`
+				)
+			})
+		})
+		it('should retrieve the next 5 least expensive transactions', async () => {
+			const response = await request(app)
+				.post('/getdisplaydata')
+				.send({
+					username: newUserCredentials.username,
+					token: token,
+					payload: {
+						resPerPage: 5,
+						thisPage: 2,
+						orderBy: 'amount',
+						orderByDirection: 'DESC',
+					},
+				})
+			expect(response.statusCode).toBe(200)
+
+			const results = response.body.displayData
+
+			// temporary function to grab IDs easier
+			const testArr = []
+			results.forEach((res) =>
+				testArr.push(parseInt(res.transaction_name.slice(15)))
+			)
+			console.log(testArr)
+
+			const expectedResultOrder = [5, 4, 10, 1, 7]
+			results.forEach((transaction, index) => {
+				expect(transaction.transaction_name).toBe(
+					`TestTransaction${expectedResultOrder[index]}`
+				)
+			})
+		})
 	})
 
 	it('should delete the new user', async () => {
