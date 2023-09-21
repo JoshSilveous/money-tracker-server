@@ -13,12 +13,6 @@ import insertTransactionSRC from './functions/Transactions/insertTransaction'
 import updateTransactionSRC from './functions/Transactions/updateTransaction'
 import deleteTransactionSRC from './functions/Transactions/deleteTransaction'
 
-import getEarningSRC from './functions/Earnings/getEarning'
-import getAllEarningsSRC from './functions/Earnings/getAllEarnings'
-import insertEarningSRC from './functions/Earnings/insertEarning'
-import updateEarningSRC from './functions/Earnings/updateEarning'
-import deleteEarningSRC from './functions/Earnings/deleteEarning'
-
 import getCategorySRC from './functions/Categories/getCategory'
 import getAllCategoriesSRC from './functions/Categories/getAllCategories'
 import insertCategorySRC from './functions/Categories/insertCategory'
@@ -125,47 +119,6 @@ export const updateTransaction = updateTransactionSRC
  */
 export const deleteTransaction = deleteTransactionSRC
 
-/* ------------------- */
-/*  EARNING FUNCTIONS  */
-/* ------------------- */
-
-/**
- * Retrieves a Earning from the user's database
- * @param user_id The user's ID
- * @param earning_id The earning's ID
- * @returns The `Earning` object
- */
-export const getEarning = getEarningSRC
-
-/**
- * Retrieves all Earnings from the user's database
- * @param user_id The user's ID
- * @returns The `Earning` object array
- */
-export const getAllEarnings = getAllEarningsSRC
-
-/**
- * Inserts a earning into a user's database
- * @param user_id The user's ID
- * @param earning The `NewEarning` object (no ID)
- * @returns The newly created `earning_id`
- */
-export const insertEarning = insertEarningSRC
-
-/**
- * Updates a earning in a user's database
- * @param user_id The user's ID
- * @param earning The `Earning` object (WITH ID)
- */
-export const updateEarning = updateEarningSRC
-
-/**
- * Deletes a earning from a user's database
- * @param user_id The user's ID
- * @param earning_id The earning's ID
- */
-export const deleteEarning = deleteEarningSRC
-
 /* -------------------- */
 /*  CATEGORY FUNCTIONS  */
 /* -------------------- */
@@ -188,7 +141,7 @@ export const getAllCategories = getAllCategoriesSRC
 /**
  * Inserts a category into a user's database
  * @param user_id The user's ID
- * @param earning The `NewCategory` object (no ID)
+ * @param category The `NewCategory` object (no ID)
  * @returns The newly created `category_id`
  */
 export const insertCategory = insertCategorySRC
@@ -196,14 +149,14 @@ export const insertCategory = insertCategorySRC
 /**
  * Updates a category in a user's database
  * @param user_id The user's ID
- * @param earning The `Category` object (WITH ID)
+ * @param category The `Category` object (WITH ID)
  */
 export const updateCategory = updateCategorySRC
 
 /**
  * Deletes a category from a user's database
  * @param user_id The user's ID
- * @param earning_id The category's ID
+ * @param category_id The category's ID
  */
 export const deleteCategory = deleteCategorySRC
 
@@ -229,7 +182,7 @@ export const getAllAccounts = getAllAccountsSRC
 /**
  * Inserts a account into a user's database
  * @param user_id The user's ID
- * @param earning The `NewAccount` object (no ID)
+ * @param account The `NewAccount` object (no ID)
  * @returns The newly created `account_id`
  */
 export const insertAccount = insertAccountSRC
@@ -237,13 +190,13 @@ export const insertAccount = insertAccountSRC
 /**
  * Updates a account in a user's database
  * @param user_id The user's ID
- * @param earning The `Account` object (WITH ID)
+ * @param account The `Account` object (WITH ID)
  */
 export const updateAccount = updateAccountSRC
 
 /**
  * Deletes a account from a user's database
  * @param user_id The user's ID
- * @param earning_id The account's ID
+ * @param account_id The account's ID
  */
 export const deleteAccount = deleteAccountSRC

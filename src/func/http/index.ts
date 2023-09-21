@@ -10,11 +10,6 @@ import handleInsertTransactionSRC from './handlers/Transactions/handleInsertTran
 import handleUpdateTransactionSRC from './handlers/Transactions/handleUpdateTransaction'
 import handleDeleteTransactionSRC from './handlers/Transactions/handleDeleteTransaction'
 
-import handleGetEarningSRC from './handlers/Earnings/handleGetEarning'
-import handleInsertEarningSRC from './handlers/Earnings/handleInsertEarning'
-import handleUpdateEarningSRC from './handlers/Earnings/handleUpdateEarning'
-import handleDeleteEarningSRC from './handlers/Earnings/handleDeleteEarning'
-
 import handleGetCategorySRC from './handlers/Categories/handleGetCategory'
 import handleInsertCategorySRC from './handlers/Categories/handleInsertCategory'
 import handleUpdateCategorySRC from './handlers/Categories/handleUpdateCategory'
@@ -77,30 +72,6 @@ export const handleUpdateTransaction = handleUpdateTransactionSRC
  * Handles HTTP Request for `/deletetransaction`
  */
 export const handleDeleteTransaction = handleDeleteTransactionSRC
-
-/* ------------------- */
-/*  EARNING FUNCTIONS  */
-/* ------------------- */
-
-/**
- * Handles HTTP Request for `/getearning`
- */
-export const handleGetEarning = handleGetEarningSRC
-
-/**
- * Handles HTTP Request for `/insertearning`
- */
-export const handleInsertEarning = handleInsertEarningSRC
-
-/**
- * Handles HTTP Request for `/updateearning`
- */
-export const handleUpdateEarning = handleUpdateEarningSRC
-
-/**
- * Handles HTTP Request for `/deleteearning`
- */
-export const handleDeleteEarning = handleDeleteEarningSRC
 
 /* -------------------- */
 /*  CATEGORY FUNCTIONS  */

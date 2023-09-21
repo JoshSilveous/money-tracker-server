@@ -68,24 +68,6 @@ declare global {
 	interface TransactionID {
 		transaction_id: number
 	}
-	interface Earning {
-		earning_id: number
-		name: string
-		timestamp: number
-		notes: string | null
-		amount: number
-		account_id: number | null
-	}
-	interface NewEarning {
-		name: string
-		timestamp: number
-		notes: string | null
-		amount: number
-		account_id: number
-	}
-	interface EarningID {
-		earning_id: number
-	}
 	interface DisplayData {
 		transaction_id: number
 		transaction_name: string
@@ -244,41 +226,6 @@ export const typeProfiles: TypeProfile[] = [
 				'number',
 				'number',
 			],
-		},
-	},
-	{
-		name: 'Earning',
-		profile: {
-			keyNames: [
-				'earning_id',
-				'name',
-				'timestamp',
-				'?notes',
-				'amount',
-				'?account_id',
-			],
-			keyTypes: [
-				'number',
-				'string',
-				'number',
-				'string',
-				'number',
-				'number',
-			],
-		},
-	},
-	{
-		name: 'NewEarning',
-		profile: {
-			keyNames: ['name', 'timestamp', '?notes', 'amount', '?account_id'],
-			keyTypes: ['string', 'number', 'string', 'number', 'number'],
-		},
-	},
-	{
-		name: 'EarningID',
-		profile: {
-			keyNames: ['earning_id'],
-			keyTypes: ['number'],
 		},
 	},
 

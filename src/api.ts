@@ -25,11 +25,6 @@ app.post('/inserttransaction', httpFunc.handleInsertTransaction)
 app.post('/updatetransaction', httpFunc.handleUpdateTransaction)
 app.post('/deletetransaction', httpFunc.handleDeleteTransaction)
 
-app.post('/getearning', httpFunc.handleGetEarning)
-app.post('/insertearning', httpFunc.handleInsertEarning)
-app.post('/updateearning', httpFunc.handleUpdateEarning)
-app.post('/deleteearning', httpFunc.handleDeleteEarning)
-
 app.post('/getcategory', httpFunc.handleGetCategory)
 app.post('/insertcategory', httpFunc.handleInsertCategory)
 app.post('/updatecategory', httpFunc.handleUpdateCategory)
