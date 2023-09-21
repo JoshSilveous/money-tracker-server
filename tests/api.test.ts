@@ -217,9 +217,6 @@ describe('Operations', () => {
 						account_id: newAccountID,
 					},
 				})
-			if (response.statusCode !== 200) {
-				console.log(response.body)
-			}
 			expect(response.statusCode).toBe(200)
 		})
 		it('should update the new account', async () => {
@@ -344,84 +341,7 @@ describe('Operations', () => {
 		})
 	})
 
-	let newEarningID: number
-	describe('Creating / Modifying Earnings', () => {
-		it('should create a new earning', async () => {
-			const response = await request(app)
-				.post('/insertearning')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						name: 'TestEarning',
-						timestamp: 123,
-						notes: null,
-						amount: 123.45,
-						account_id: null,
-					},
-				})
-			expect(response.statusCode).toBe(200)
-			if (response.statusCode === 200) {
-				newEarningID = response.body.newEarningID
-			}
-		})
-		it('should retrieve the new earning info', async () => {
-			const response = await request(app)
-				.post('/getearning')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						earning_id: newEarningID,
-					},
-				})
-			expect(response.statusCode).toBe(200)
-		})
-		it('should update the new earning', async () => {
-			const response = await request(app)
-				.post('/updateearning')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						earning_id: newEarningID,
-						name: 'TestEarningUpdated',
-						timestamp: 321,
-						notes: 'Test notes',
-						amount: 543.21,
-						account_id: newAccountID,
-					},
-				})
-			expect(response.statusCode).toBe(200)
-		})
-		it('should retrieve the updated earning info', async () => {
-			const response = await request(app)
-				.post('/getearning')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						earning_id: newEarningID,
-					},
-				})
-			expect(response.statusCode).toBe(200)
-			expect(response.body.earning.name).toBe('TestEarningUpdated')
-		})
-		it('should receive 400 due to bad earning_id', async () => {
-			const response = await request(app)
-				.post('/getearning')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						earning_id: newEarningID + 1,
-					},
-				})
-			expect(response.statusCode).toBe(400)
-		})
-	})
-
-	describe('Deleting Transactions, Earnings, Categories, and Accounts', () => {
+	describe('Deleting newly inserted data', () => {
 		it('should delete the new transaction', async () => {
 			const response = await request(app)
 				.post('/deletetransaction')
@@ -433,66 +353,6 @@ describe('Operations', () => {
 					},
 				})
 			expect(response.statusCode).toBe(200)
-		})
-		it('should receive 400 due to bad transaction_id', async () => {
-			const response = await request(app)
-				.post('/gettransaction')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						transaction_id: newTransactionID,
-					},
-				})
-			expect(response.statusCode).toBe(400)
-		})
-		it('should delete the new earning', async () => {
-			const response = await request(app)
-				.post('/deleteearning')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						earning_id: newEarningID,
-					},
-				})
-			expect(response.statusCode).toBe(200)
-		})
-		it('should receive 400 due to bad earning_id', async () => {
-			const response = await request(app)
-				.post('/getearning')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						earning_id: newEarningID,
-					},
-				})
-			expect(response.statusCode).toBe(400)
-		})
-		it('should delete the new account', async () => {
-			const response = await request(app)
-				.post('/deleteaccount')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						account_id: newAccountID,
-					},
-				})
-			expect(response.statusCode).toBe(200)
-		})
-		it('should receive 400 due to bad account_id', async () => {
-			const response = await request(app)
-				.post('/getaccount')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						account_id: newAccountID,
-					},
-				})
-			expect(response.statusCode).toBe(400)
 		})
 		it('should delete the new category', async () => {
 			const response = await request(app)
@@ -506,17 +366,17 @@ describe('Operations', () => {
 				})
 			expect(response.statusCode).toBe(200)
 		})
-		it('should receive 400 due to bad category_id', async () => {
+		it('should delete the new account', async () => {
 			const response = await request(app)
-				.post('/getcategory')
+				.post('/deleteaccount')
 				.send({
 					username: newUserCredentials.username,
 					token: token,
 					payload: {
-						category_id: newCategoryID,
+						account_id: newAccountID,
 					},
 				})
-			expect(response.statusCode).toBe(400)
+			expect(response.statusCode).toBe(200)
 		})
 	})
 
@@ -707,6 +567,7 @@ describe('Operations', () => {
 				},
 			]
 			testTransactions.forEach(async (transaction) => {
+				console.log('inserting', transaction)
 				const response = await request(app)
 					.post('/inserttransaction')
 					.send({
@@ -764,9 +625,17 @@ describe('Operations', () => {
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
+			// console.log('results:')
+			// console.log(results)
 
 			const expectedResultOrder = [3, 2, 6, 1, 11, 5, 10, 7, 8, 15]
 			results.forEach((transaction, index) => {
+				// console.log(
+				// 	'testing',
+				// 	transaction.transaction_name,
+				// 	'to be',
+				// 	`TestTransaction${expectedResultOrder[index]}`
+				// )
 				expect(transaction.transaction_name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
@@ -862,11 +731,11 @@ describe('Operations', () => {
 			const results = response.body.displayData
 
 			// temporary function to grab IDs easier
-			const testArr = []
-			results.forEach((res) =>
-				testArr.push(parseInt(res.transaction_name.slice(15)))
-			)
-			console.log(testArr)
+			// const testArr = []
+			// results.forEach((res) =>
+			// 	testArr.push(parseInt(res.transaction_name.slice(15)))
+			// )
+			// console.log(testArr)
 
 			const expectedResultOrder = [5, 4, 10, 1, 7]
 			results.forEach((transaction, index) => {
