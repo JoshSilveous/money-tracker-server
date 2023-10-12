@@ -7,11 +7,8 @@ const handleLoginUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserCredentials')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message:
-				'Incorrect data sent. Either keys or value types are incorrect',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 
@@ -24,10 +21,8 @@ const handleLoginUser: RequestHandler = function (req, res) {
 		// if user doesn't exist, send error
 		if (userInfo === undefined) {
 			res.statusCode = 406
-			res.send({
-				description: 'ERROR_CREDENTIALS',
-				message: 'Credentials provided do not match any records',
-			})
+			res.statusMessage = 'ERROR_CREDENTIALS'
+			res.send()
 		} else {
 			// if user found, generate a token and send it to the user
 			const token = encryptToken({
@@ -35,9 +30,8 @@ const handleLoginUser: RequestHandler = function (req, res) {
 				username: userInfo.username,
 			})
 			res.statusCode = 200
+			res.statusMessage = 'SUCCESS'
 			res.send({
-				description: 'SUCCESS',
-				message: 'Login OK',
 				token: token,
 			})
 		}
@@ -45,10 +39,8 @@ const handleLoginUser: RequestHandler = function (req, res) {
 		// any errors that may occur are server-side
 		// send error to user for notification
 		res.statusCode = 500
-		res.send({
-			description: 'ERROR_SERVER',
-			message: e,
-		})
+		res.statusMessage = e
+		res.send()
 	}
 }
 

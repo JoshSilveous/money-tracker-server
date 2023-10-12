@@ -6,11 +6,8 @@ const handleCreateUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserCredentials')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message:
-				'Incorrect data sent. Either keys or value types are incorrect',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 
@@ -22,30 +19,28 @@ const handleCreateUser: RequestHandler = function (req, res) {
 		// attempt creating user in database
 		const newUserID = createUser(data)
 
-		// if success, notify user
-		res.json({ description: 'SUCCESS', message: 'Account created.' })
+		// if success, send response
+		res.statusCode = 201
+		res.statusMessage = 'ACCOUNT_CREATED'
+		res.send()
 	} catch (e) {
-		// if failure, check if UNIQUE constraint was violated
 
-		res.statusCode = 406
+		// if failure, check if UNIQUE constraint was violated
 		const errMsg = (e as Error).message
+
 		if (errMsg === 'UNIQUE constraint failed: user.username') {
-			res.send({
-				description: 'ERROR_DUPLICATE_USERNAME',
-				message: 'Username already taken.',
-			})
+			res.statusCode = 406
+			res.statusMessage = 'ERROR_DUPLICATE_USERNAME'
+			res.send()
 		} else if (errMsg === 'UNIQUE constraint failed: user.password') {
-			res.send({
-				description: 'ERROR_DUPLICATE_PASSWORD',
-				message: 'Password already taken.',
-			})
+			res.statusCode = 406
+			res.statusMessage = 'ERROR_DUPLICATE_PASSWORD'
+			res.send()
 		} else {
 			// if not a SQL UNIQUE error, must be server issue, notify user
 			res.statusCode = 500
-			res.send({
-				description: 'ERROR_SERVER',
-				message: e,
-			})
+			res.statusMessage = e
+			res.send()
 		}
 	}
 }
