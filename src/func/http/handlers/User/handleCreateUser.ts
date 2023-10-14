@@ -24,17 +24,12 @@ const handleCreateUser: RequestHandler = function (req, res) {
 		res.statusMessage = 'ACCOUNT_CREATED'
 		res.send()
 	} catch (e) {
-
 		// if failure, check if UNIQUE constraint was violated
 		const errMsg = (e as Error).message
 
 		if (errMsg === 'UNIQUE constraint failed: user.username') {
 			res.statusCode = 406
 			res.statusMessage = 'ERROR_DUPLICATE_USERNAME'
-			res.send()
-		} else if (errMsg === 'UNIQUE constraint failed: user.password') {
-			res.statusCode = 406
-			res.statusMessage = 'ERROR_DUPLICATE_PASSWORD'
 			res.send()
 		} else {
 			// if not a SQL UNIQUE error, must be server issue, notify user

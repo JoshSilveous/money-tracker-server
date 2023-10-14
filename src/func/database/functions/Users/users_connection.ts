@@ -13,7 +13,7 @@ db.exec(`
     CREATE TABLE IF NOT EXISTS user (
         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
         username VARCHAR UNIQUE NOT NULL,
-        password VARCHAR UNIQUE NOT NULL
+        password VARCHAR NOT NULL
     );
 `)
 
