@@ -36,17 +36,21 @@ const handleInsertCategory: RequestHandler = function (req, res) {
 		try {
 			const newCategoryID = insertCategory(user_id, inputCategory)
 			res.statusCode = 200
+			res.statusMessage = 'SUCCESS'
 			res.send({
-				description: 'SUCCESS',
-				message: 'Data successfully inserted',
 				newCategoryID: newCategoryID,
 			})
 		} catch (e) {
-			res.statusCode = 500
-			res.send({
-				description: 'ERROR_SERVER',
-				message: 'Unexpected server error: ' + e,
-			})
+			const errMsg = (e as Error).message
+			if (errMsg === 'UNIQUE constraint failed: categories.name') {
+				res.statusCode = 406
+				res.statusMessage = 'ERROR_DUPLICATE_NAME'
+				res.send()
+			} else {
+				res.statusCode = 500
+				res.statusMessage = 'Unexpected server error: ' + e
+				res.send()
+			}
 		}
 	}
 }

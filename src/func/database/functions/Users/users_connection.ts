@@ -12,8 +12,9 @@ export const db = new SQLite(userFilePath)
 db.exec(`
     CREATE TABLE IF NOT EXISTS user (
         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username VARCHAR UNIQUE NOT NULL,
-        password VARCHAR NOT NULL
+        username VARCHAR NOT NULL,
+        password VARCHAR NOT NULL,
+        UNIQUE (username COLLATE NOCASE)
     );
 `)
 

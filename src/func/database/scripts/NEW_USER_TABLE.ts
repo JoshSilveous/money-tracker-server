@@ -1,7 +1,7 @@
 const NEW_USER_TABLE = `
     CREATE TABLE categories (
         category_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name VARCHAR NOT NULL,
+        name VARCHAR UNIQUE NOT NULL,
         description VARCHAR
     );
     CREATE TABLE accounts (
