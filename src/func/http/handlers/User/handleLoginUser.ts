@@ -18,25 +18,27 @@ const handleLoginUser: RequestHandler = function (req, res) {
 		// attempt to get user info from database
 		const userInfo = getUser(data)
 
-		// if user doesn't exist, send error
-		if (userInfo === undefined) {
-			res.statusCode = 406
-			res.statusMessage = 'ERROR_CREDENTIALS'
-			res.send()
-		} else {
-			// if user found, generate a token and send it to the user
-			const token = encryptToken({
-				user_id: userInfo.user_id,
-				username: userInfo.username,
-			})
-			res.statusCode = 200
-			res.statusMessage = 'SUCCESS'
-			res.send({
-				token: token,
-			})
-		}
+		// if user found, generate a token and send it to the user
+		const token = encryptToken({
+			user_id: userInfo.user_id,
+			username: userInfo.username,
+		})
+		res.statusCode = 200
+		res.statusMessage = 'SUCCESS'
+		res.send({
+			token: token,
+		})
 	} catch (e) {
-		// any errors that may occur are server-side
+		if (e.message === 'User does not exist') {
+			res.statusCode = 406
+			res.statusMessage = 'ERROR_INCORRECT_USERNAME'
+			res.send()
+		} else if (e.message === 'Incorrect password') {
+			res.statusCode = 406
+			res.statusMessage = 'ERROR_INCORRECT_PASSWORD'
+			res.send()
+		}
+		// any other errors that may occur are server-side
 		// send error to user for notification
 		res.statusCode = 500
 		res.statusMessage = e
