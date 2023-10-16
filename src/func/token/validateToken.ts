@@ -15,17 +15,14 @@ function validateToken(username: string, token: string, res: Response) {
 	try {
 		decryptToken(token)
 	} catch (e) {
-		res.statusCode = 406
 		if ((e as Error).message === 'jwt expired') {
-			res.send({
-				description: 'ERROR_TOKEN_EXPIRED',
-				message: 'Token expired.',
-			})
+			res.statusCode = 406
+			res.statusMessage = 'ERROR_TOKEN_EXPIRED'
+			res.send()
 		} else {
-			res.send({
-				description: 'ERROR_TOKEN_FORMAT',
-				message: 'Unexpected error decrypting token: ' + e,
-			})
+			res.statusCode = 406
+			res.statusMessage = 'ERROR_TOKEN:' + e
+			res.send()
 		}
 		return false
 	}
@@ -35,20 +32,16 @@ function validateToken(username: string, token: string, res: Response) {
 	// check if token payload matches format
 	if (!isTypeProfile(decryptedToken, 'TokenData')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_TOKEN_FORMAT',
-			message: 'Invalid token data',
-		})
+		res.statusMessage = 'ERROR_TOKEN_FORMAT'
+		res.send()
 		return false
 	}
 
 	// check if token username matches provided username
 	if (decryptedToken.username !== username) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_TOKEN_FORMAT',
-			message: 'Token does not match provided username',
-		})
+		res.statusMessage = 'ERROR_TOKEN_USERNAME'
+		res.send()
 		return false
 	}
 	return true
