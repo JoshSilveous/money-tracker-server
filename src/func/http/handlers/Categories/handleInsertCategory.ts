@@ -3,6 +3,7 @@ import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
 import { insertCategory } from '../../../database'
 import validateToken from '../../../token/validateToken'
+import encryptToken from '../../../token/encryptToken'
 
 const handleInsertCategory: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
@@ -32,6 +33,10 @@ const handleInsertCategory: RequestHandler = function (req, res) {
 	if (tokenIsValid) {
 		const inputCategory = data.payload as NewCategory
 		const user_id = (decryptToken(data.token) as TokenData).user_id
+		const refreshedToken = encryptToken({
+			user_id: user_id,
+			username: data.username,
+		})
 
 		try {
 			const newCategoryID = insertCategory(user_id, inputCategory)
@@ -39,6 +44,7 @@ const handleInsertCategory: RequestHandler = function (req, res) {
 			res.statusMessage = 'SUCCESS'
 			res.send({
 				newCategoryID: newCategoryID,
+				refreshedToken: refreshedToken,
 			})
 		} catch (e) {
 			const errMsg = (e as Error).message
