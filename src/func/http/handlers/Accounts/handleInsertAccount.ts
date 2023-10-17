@@ -3,6 +3,7 @@ import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
 import { insertAccount } from '../../../database'
 import validateToken from '../../../token/validateToken'
+import encryptToken from '../../../token/encryptToken'
 
 const handleInsertAccount: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
@@ -32,21 +33,30 @@ const handleInsertAccount: RequestHandler = function (req, res) {
 	if (tokenIsValid) {
 		const inputAccount = data.payload as NewAccount
 		const user_id = (decryptToken(data.token) as TokenData).user_id
+		const refreshedToken = encryptToken({
+			user_id: user_id,
+			username: data.username,
+		})
 
 		try {
 			const newAccountID = insertAccount(user_id, inputAccount)
 			res.statusCode = 200
+			res.statusMessage = 'SUCCESS'
 			res.send({
-				description: 'SUCCESS',
-				message: 'Data successfully inserted',
 				newAccountID: newAccountID,
+				refreshedToken,
 			})
 		} catch (e) {
-			res.statusCode = 500
-			res.send({
-				description: 'ERROR_SERVER',
-				message: 'Unexpected server error: ' + e,
-			})
+			const errMsg = (e as Error).message
+			if (errMsg === 'UNIQUE constraint failed: accounts.name') {
+				res.statusCode = 406
+				res.statusMessage = 'ERROR_DUPLICATE_NAME'
+				res.send()
+			} else {
+				res.statusCode = 500
+				res.statusMessage = 'Unexpected server error: ' + e
+				res.send()
+			}
 		}
 	}
 }
