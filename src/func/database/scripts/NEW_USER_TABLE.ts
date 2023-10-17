@@ -6,7 +6,7 @@ const NEW_USER_TABLE = `
     );
     CREATE TABLE accounts (
         account_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name VARCHAR NOT NULL,
+        name VARCHAR UNIQUE NOT NULL,
         description VARCHAR
     );
     CREATE TABLE transactions (
