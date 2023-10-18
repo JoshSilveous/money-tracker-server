@@ -11,6 +11,7 @@ import handleUpdateTransactionSRC from './handlers/Transactions/handleUpdateTran
 import handleDeleteTransactionSRC from './handlers/Transactions/handleDeleteTransaction'
 
 import handleGetCategorySRC from './handlers/Categories/handleGetCategory'
+import handleGetAllCategoriesSRC from './handlers/Categories/handleGetAllCategories'
 import handleInsertCategorySRC from './handlers/Categories/handleInsertCategory'
 import handleUpdateCategorySRC from './handlers/Categories/handleUpdateCategory'
 import handleDeleteCategorySRC from './handlers/Categories/handleDeleteCategory'
@@ -81,6 +82,11 @@ export const handleDeleteTransaction = handleDeleteTransactionSRC
  * Handles HTTP Request for `/getcategory`
  */
 export const handleGetCategory = handleGetCategorySRC
+
+/**
+ * Handles HTTP Request for `/getallcategories`
+ */
+export const handleGetAllCategories = handleGetAllCategoriesSRC
 
 /**
  * Handles HTTP Request for `/insertcategory`

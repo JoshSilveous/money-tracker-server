@@ -27,6 +27,7 @@ app.post('/api/updatetransaction', httpFunc.handleUpdateTransaction)
 app.post('/api/deletetransaction', httpFunc.handleDeleteTransaction)
 
 app.post('/api/getcategory', httpFunc.handleGetCategory)
+app.post('/api/getallcategories', httpFunc.handleGetAllCategories)
 app.post('/api/insertcategory', httpFunc.handleInsertCategory)
 app.post('/api/updatecategory', httpFunc.handleUpdateCategory)
 app.post('/api/deletecategory', httpFunc.handleDeleteCategory)
