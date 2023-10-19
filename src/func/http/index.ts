@@ -17,6 +17,7 @@ import handleUpdateCategorySRC from './handlers/Categories/handleUpdateCategory'
 import handleDeleteCategorySRC from './handlers/Categories/handleDeleteCategory'
 
 import handleGetAccountSRC from './handlers/Accounts/handleGetAccount'
+import handleGetAllAccountsSRC from './handlers/Accounts/handleGetAllAccounts'
 import handleInsertAccountSRC from './handlers/Accounts/handleInsertAccount'
 import handleUpdateAccountSRC from './handlers/Accounts/handleUpdateAccount'
 import handleDeleteAccountSRC from './handlers/Accounts/handleDeleteAccount'
@@ -111,6 +112,11 @@ export const handleDeleteCategory = handleDeleteCategorySRC
  * Handles HTTP Request for `/getaccount`
  */
 export const handleGetAccount = handleGetAccountSRC
+
+/**
+ * Handles HTTP Request for `/getallaccounts`
+ */
+export const handleGetAllAccounts = handleGetAllAccountsSRC
 
 /**
  * Handles HTTP Request for `/insertaccount`

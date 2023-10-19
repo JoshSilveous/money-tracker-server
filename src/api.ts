@@ -33,6 +33,7 @@ app.post('/api/updatecategory', httpFunc.handleUpdateCategory)
 app.post('/api/deletecategory', httpFunc.handleDeleteCategory)
 
 app.post('/api/getaccount', httpFunc.handleGetAccount)
+app.post('/api/getallaccounts', httpFunc.handleGetAllAccounts)
 app.post('/api/insertaccount', httpFunc.handleInsertAccount)
 app.post('/api/updateaccount', httpFunc.handleUpdateAccount)
 app.post('/api/deleteaccount', httpFunc.handleDeleteAccount)
