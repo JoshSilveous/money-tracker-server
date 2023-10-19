@@ -3,16 +3,14 @@ import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
 import { insertTransaction } from '../../../database'
 import validateToken from '../../../token/validateToken'
+import encryptToken from '../../../token/encryptToken'
 
 const handleInsertTransaction: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message:
-				'Incorrect data sent. Either keys or value types are incorrect',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 	const data = req.body as UserPostRequest
@@ -20,10 +18,8 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 	// make sure provided NewTransaction is in correct format
 	if (!isTypeProfile(data.payload, 'NewTransaction')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message: 'Transaction data in incorrect format.',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 
@@ -32,6 +28,10 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 	if (tokenIsValid) {
 		const inputTransaction = data.payload as NewTransaction
 		const user_id = (decryptToken(data.token) as TokenData).user_id
+		const refreshedToken = encryptToken({
+			user_id: user_id,
+			username: data.username,
+		})
 
 		try {
 			const newTransactionID = insertTransaction(
@@ -40,16 +40,13 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 			)
 			res.statusCode = 200
 			res.send({
-				description: 'SUCCESS',
-				message: 'Data successfully inserted',
-				newTransactionID: newTransactionID,
+				transaction_id: newTransactionID,
+				refreshedToken: refreshedToken
 			})
 		} catch (e) {
 			res.statusCode = 500
-			res.send({
-				description: 'ERROR_SERVER',
-				message: 'Unexpected server error: ' + e,
-			})
+			res.statusMessage = 'ERROR_SERVER:' + e
+			res.send()
 		}
 	}
 }

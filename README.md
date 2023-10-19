@@ -26,6 +26,7 @@
       category_id: number | null,
       account_id: number | null
     }
+    refreshedToken: string
   }
   ```
 
@@ -51,7 +52,8 @@ URI: `/api/inserttransaction`
   Response Body Format:
   ```
   {
-    transaction_id: number
+    transaction_id: number,
+    refreshedToken: string
   }
   ```
 
@@ -75,7 +77,34 @@ URI: `/api/updatetransaction`
   }
   ```
   
-  No response body
+  Response Body Format:
+  ```
+  {
+    refreshedToken: string
+  }
+  ```
+
+### Delete Transaction
+URI: `/api/deletetransaction`
+
+  Request Format:
+  ```
+  {
+    username: string,
+    token: string,
+    payload: {
+      transaction_id: number
+    }
+  }
+  ```
+  
+  Response Body Format:
+  ```
+  {
+    refreshedToken: string
+  }
+  ```
+
   
 ## Users
 

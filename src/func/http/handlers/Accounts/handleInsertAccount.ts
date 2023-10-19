@@ -9,11 +9,8 @@ const handleInsertAccount: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message:
-				'Incorrect data sent. Either keys or value types are incorrect',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 	const data = req.body as UserPostRequest
@@ -21,10 +18,8 @@ const handleInsertAccount: RequestHandler = function (req, res) {
 	// make sure provided NewAccount is in correct format
 	if (!isTypeProfile(data.payload, 'NewAccount')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message: 'Account data in incorrect format.',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 
@@ -41,9 +36,8 @@ const handleInsertAccount: RequestHandler = function (req, res) {
 		try {
 			const newAccountID = insertAccount(user_id, inputAccount)
 			res.statusCode = 200
-			res.statusMessage = 'SUCCESS'
 			res.send({
-				newAccountID: newAccountID,
+				account_id: newAccountID,
 				refreshedToken,
 			})
 		} catch (e) {

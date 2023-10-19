@@ -3,16 +3,14 @@ import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
 import { getAccount } from '../../../database'
 import validateToken from '../../../token/validateToken'
+import encryptToken from '../../../token/encryptToken'
 
 const handleGetAccount: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message:
-				'Incorrect data sent. Either keys or value types are incorrect',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 	const data = req.body as UserPostRequest
@@ -20,10 +18,8 @@ const handleGetAccount: RequestHandler = function (req, res) {
 	// make sure provided NewAccount is in correct format
 	if (!isTypeProfile(data.payload, 'AccountID')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message: 'Account data in incorrect format.',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 
@@ -32,28 +28,24 @@ const handleGetAccount: RequestHandler = function (req, res) {
 	if (tokenIsValid) {
 		const inputAccount = data.payload as AccountID
 		const user_id = (decryptToken(data.token) as TokenData).user_id
+		const refreshedToken = encryptToken({
+			user_id: user_id,
+			username: data.username,
+		})
 
 		try {
 			const account = getAccount(user_id, inputAccount.account_id)
 			res.statusCode = 200
-			res.send({
-				description: 'SUCCESS',
-				message: 'Data successfully retrieved',
-				account: account,
-			})
+			res.send({account: account, refreshedToken: refreshedToken})
 		} catch (e) {
 			if ((e as Error).message === 'account_id not found') {
 				res.statusCode = 400
-				res.send({
-					description: 'ERROR_ID_NOT_FOUND',
-					message: `Account ID ${inputAccount.account_id} not found.`,
-				})
+				res.statusMessage = 'ERROR_ID_NOT_FOUND'
+				res.send()
 			} else {
 				res.statusCode = 500
-				res.send({
-					description: 'ERROR_SERVER',
-					message: 'Unexpected server error: ' + e,
-				})
+				res.statusMessage = 'ERROR_SERVER:' + e
+				res.send()
 			}
 		}
 	}
