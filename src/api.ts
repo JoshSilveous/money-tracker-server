@@ -16,7 +16,6 @@ app.use(bodyParser.json())
 
 app.post('/api/createuser', httpFunc.handleCreateUser)
 app.post('/api/loginuser', httpFunc.handleLoginUser)
-app.get('/api/requestdata', httpFunc.handleRequestData)
 app.post('/api/deleteuser', httpFunc.handleDeleteUser)
 
 app.post('/api/getdisplaydata', httpFunc.handleGetDisplayData)

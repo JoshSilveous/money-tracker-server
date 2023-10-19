@@ -38,7 +38,7 @@ const handleInsertAccount: RequestHandler = function (req, res) {
 			res.statusCode = 200
 			res.send({
 				account_id: newAccountID,
-				refreshedToken,
+				refreshedToken: refreshedToken,
 			})
 		} catch (e) {
 			const errMsg = (e as Error).message
@@ -48,7 +48,7 @@ const handleInsertAccount: RequestHandler = function (req, res) {
 				res.send()
 			} else {
 				res.statusCode = 500
-				res.statusMessage = 'Unexpected server error: ' + e
+				res.statusMessage = 'ERROR_SERVER: ' + e
 				res.send()
 			}
 		}

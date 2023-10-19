@@ -1,6 +1,5 @@
 import handleCreateUserSRC from './handlers/User/handleCreateUser'
 import handleLoginUserSRC from './handlers/User/handleLoginUser'
-import handleRequestDataSRC from './handlers/User/handleRequestData'
 import handleDeleteUserSRC from './handlers/User/handleDeleteUser'
 
 import handleGetDisplayDataSRC from './handlers/DisplayData/handleGetDisplayData'
@@ -35,11 +34,6 @@ export const handleCreateUser = handleCreateUserSRC
  * Handles HTTP Request for `/loginuser`
  */
 export const handleLoginUser = handleLoginUserSRC
-
-/**
- * Handles HTTP Request for `/requestdata`
- */
-export const handleRequestData = handleRequestDataSRC
 
 /**
  * Handles HTTP Request for `/loginuser`

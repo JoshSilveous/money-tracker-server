@@ -8,11 +8,8 @@ const handleDeleteUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserGetRequest')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message:
-				'Incorrect data sent. Either keys or value types are incorrect',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 
@@ -27,23 +24,16 @@ const handleDeleteUser: RequestHandler = function (req, res) {
 		try {
 			deleteUser(user_id)
 			res.statusCode = 200
-			res.send({
-				description: 'SUCCESS',
-				message: 'User successfully deleted',
-			})
+			res.send()
 		} catch (e) {
 			if ((e as Error).message === 'user_id not found') {
 				res.statusCode = 400
-				res.send({
-					description: 'ERROR_ID_NOT_FOUND',
-					message: `User ID ${user_id} not found.`,
-				})
+				res.statusMessage = 'ERROR_ID_NOT_FOUND'
+				res.send()
 			} else {
 				res.statusCode = 500
-				res.send({
-					description: 'ERROR_SERVER',
-					message: 'Unexpected server error: ' + e,
-				})
+				res.statusMessage = 'ERROR_SERVER:' + e
+				res.send()
 			}
 		}
 	}

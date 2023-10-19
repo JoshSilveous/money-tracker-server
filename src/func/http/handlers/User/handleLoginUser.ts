@@ -37,12 +37,11 @@ const handleLoginUser: RequestHandler = function (req, res) {
 			res.statusCode = 406
 			res.statusMessage = 'ERROR_INCORRECT_PASSWORD'
 			res.send()
+		} else {
+			res.statusCode = 500
+			res.statusMessage = 'ERROR_SERVER:' + e
+			res.send()
 		}
-		// any other errors that may occur are server-side
-		// send error to user for notification
-		res.statusCode = 500
-		res.statusMessage = e
-		res.send()
 	}
 }
 

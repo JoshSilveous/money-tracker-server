@@ -33,7 +33,7 @@ const handleGetAllAccounts: RequestHandler = function (req, res) {
 			})
 		} catch (e) {
 			res.statusCode = 500
-			res.statusMessage = 'Unexpected server error: ' + e
+			res.statusMessage = 'ERROR_SERVER: ' + e
 			res.send()
 		}
 	}

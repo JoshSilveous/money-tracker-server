@@ -9,11 +9,8 @@ const handleInsertCategory: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message:
-				'Incorrect data sent. Either keys or value types are incorrect',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 	const data = req.body as UserPostRequest
@@ -21,10 +18,8 @@ const handleInsertCategory: RequestHandler = function (req, res) {
 	// make sure provided NewCategory is in correct format
 	if (!isTypeProfile(data.payload, 'NewCategory')) {
 		res.statusCode = 406
-		res.send({
-			description: 'ERROR_REQUEST_FORMAT',
-			message: 'Category data in incorrect format.',
-		})
+		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.send()
 		return
 	}
 
@@ -54,7 +49,7 @@ const handleInsertCategory: RequestHandler = function (req, res) {
 				res.send()
 			} else {
 				res.statusCode = 500
-				res.statusMessage = 'Unexpected server error: ' + e
+				res.statusMessage = 'ERROR_SERVER: ' + e
 				res.send()
 			}
 		}

@@ -3,6 +3,7 @@ import isTypeProfile from '../../../isTypeProfile'
 import decryptToken from '../../../token/decryptToken'
 import { getAllCategories } from '../../../database'
 import validateToken from '../../../token/validateToken'
+import encryptToken from '../../../token/encryptToken'
 
 const handleGetAllCategories: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
@@ -18,17 +19,21 @@ const handleGetAllCategories: RequestHandler = function (req, res) {
 
 	if (tokenIsValid) {
 		const user_id = (decryptToken(data.token) as TokenData).user_id
+		const refreshedToken = encryptToken({
+			user_id: user_id,
+			username: data.username,
+		})
 
 		try {
 			const categories = getAllCategories(user_id)
 			res.statusCode = 200
-			res.statusMessage = 'SUCCESS'
 			res.send({
 				categories: categories,
+				refreshedToken: refreshedToken
 			})
 		} catch (e) {
 			res.statusCode = 500
-			res.statusMessage = 'Unexpected server error: ' + e
+			res.statusMessage = 'ERROR_SERVER: ' + e
 			res.send()
 		}
 	}

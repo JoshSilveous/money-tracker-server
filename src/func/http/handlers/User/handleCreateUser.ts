@@ -68,7 +68,7 @@ const handleCreateUser: RequestHandler = function (req, res) {
 		} else {
 			// if not a SQL UNIQUE error, must be server issue, notify user
 			res.statusCode = 500
-			res.statusMessage = e
+			res.statusMessage = 'ERROR_SERVER: ' + e
 			res.send()
 		}
 	}
