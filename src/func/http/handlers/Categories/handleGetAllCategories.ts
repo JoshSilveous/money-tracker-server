@@ -14,9 +14,7 @@ const handleGetAllCategories: RequestHandler = function (req, res) {
 	}
 	const data = req.body as UserGetRequest
 
-	console.log('validating token')
 	const tokenIsValid = validateToken(data.username, data.token, res)
-	console.log('valid token')
 
 	if (tokenIsValid) {
 		const user_id = (decryptToken(data.token) as TokenData).user_id
