@@ -1,7 +1,6 @@
 import createUserSRC from './functions/Users/createUser'
 import getUserSRC from './functions/Users/getUser'
 import verifyDBFileExistsSRC from './functions/Users/verifyDBFileExists'
-import getUserDataSRC from './functions/Users/getUserData'
 import getUserFilePathSRC from './functions/Users/getUserFilePath'
 import deleteUserSRC from './functions/Users/deleteUser'
 
@@ -53,13 +52,6 @@ export const verifyDBFileExists = verifyDBFileExistsSRC
  * Get the path to a user's db file
  */
 export const getUserFilePath = getUserFilePathSRC
-
-/**
- * Gets all user data from the `transaction` table
- * @param user_id
- * @returns `Transaction[]`
- */
-export const getUserData = getUserDataSRC
 
 /**
  * Deletes a user from the database, and removes their file.
