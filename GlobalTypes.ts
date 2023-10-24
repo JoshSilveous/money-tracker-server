@@ -51,7 +51,7 @@ declare global {
 	interface Transaction {
 		transaction_id: number
 		name: string
-		timestamp: number
+		timestamp: string
 		notes: string | null
 		amount: number
 		category_id: number | null
@@ -59,7 +59,7 @@ declare global {
 	}
 	interface NewTransaction {
 		name: string
-		timestamp: number
+		timestamp: string
 		notes: string | null
 		amount: number
 		category_id: number | null
@@ -71,7 +71,7 @@ declare global {
 	interface DisplayData {
 		transaction_id: number
 		transaction_name: string
-		timestamp: number
+		timestamp: string
 		amount: number
 		category_name: string
 		account_name: string
@@ -192,7 +192,7 @@ export const typeProfiles: TypeProfile[] = [
 			keyTypes: [
 				'number',
 				'string',
-				'number',
+				'string',
 				'string',
 				'number',
 				'number',
@@ -220,7 +220,7 @@ export const typeProfiles: TypeProfile[] = [
 			],
 			keyTypes: [
 				'string',
-				'number',
+				'string',
 				'string',
 				'number',
 				'number',
@@ -244,7 +244,7 @@ export const typeProfiles: TypeProfile[] = [
 			keyTypes: [
 				'number',
 				'string',
-				'number',
+				'string',
 				'string',
 				'number',
 				'number',
