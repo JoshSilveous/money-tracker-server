@@ -27,7 +27,7 @@ function getDisplayData(
 	const sql = `
         SELECT 
             transaction_id, 
-            transactions.name AS transaction_name, 
+            transactions.name AS name, 
             timestamp, 
             amount, 
             categories.name AS category_name, 
