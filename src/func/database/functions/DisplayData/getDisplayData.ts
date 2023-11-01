@@ -13,12 +13,7 @@ function getDisplayData(
 	user_id: number,
 	resPerPage: number,
 	thisPage: number,
-	orderBy:
-		| 'timestamp'
-		| 'transaction_name'
-		| 'category_name'
-		| 'account_name'
-		| 'amount',
+	orderBy: 'timestamp' | 'name' | 'category_name' | 'account_name' | 'amount',
 	orderByDirection: 'ASC' | 'DESC'
 ) {
 	const pageOffset = (thisPage - 1) * resPerPage

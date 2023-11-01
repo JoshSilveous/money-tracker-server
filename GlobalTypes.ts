@@ -81,7 +81,7 @@ declare global {
 		thisPage: number
 		orderBy:
 			| 'timestamp'
-			| 'transaction_name'
+			| 'name'
 			| 'category_name'
 			| 'account_name'
 			| 'amount'
