@@ -38,7 +38,7 @@ const handleInsertCategory: RequestHandler = function (req, res) {
 			res.statusCode = 200
 			res.statusMessage = 'SUCCESS'
 			res.send({
-				newCategoryID: newCategoryID,
+				category_id: newCategoryID,
 				refreshedToken: refreshedToken,
 			})
 		} catch (e) {
