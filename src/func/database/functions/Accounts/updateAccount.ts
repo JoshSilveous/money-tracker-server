@@ -1,6 +1,12 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
-function updateAccount(user_id: number, account: Account) {
+
+/**
+ * Updates a account in a user's database
+ * @param user_id The user's ID
+ * @param account The `Account` object (WITH ID)
+ */
+export function updateAccount(user_id: number, account: Account) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         UPDATE accounts SET
@@ -16,4 +22,3 @@ function updateAccount(user_id: number, account: Account) {
 	}
 	return
 }
-export default updateAccount

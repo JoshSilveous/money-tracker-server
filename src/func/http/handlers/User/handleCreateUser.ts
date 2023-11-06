@@ -2,7 +2,10 @@ import { RequestHandler } from 'express-serve-static-core'
 import isTypeProfile from '../../../isTypeProfile'
 import { createUser } from '../../../database'
 
-const handleCreateUser: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/createuser`
+ */
+export const handleCreateUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserCredentials')) {
 		res.statusCode = 406
@@ -51,7 +54,7 @@ const handleCreateUser: RequestHandler = function (req, res) {
 
 	try {
 		// attempt creating user in database
-		const newUserID = createUser(data)
+		createUser(data)
 
 		// if success, send response
 		res.statusCode = 201
@@ -73,5 +76,3 @@ const handleCreateUser: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleCreateUser

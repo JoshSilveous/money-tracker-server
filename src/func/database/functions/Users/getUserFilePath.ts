@@ -1,4 +1,7 @@
-function getUserFilePath(user_id: number) {
+/**
+ * Get the path to a user's db file
+ */
+export function getUserFilePath(user_id: number) {
 	const parentFilePath = __dirname.split('\\')
 	parentFilePath.pop()
 	parentFilePath.pop()
@@ -6,4 +9,3 @@ function getUserFilePath(user_id: number) {
 		parentFilePath.join('\\') + '\\data\\userdata\\' + user_id + '.db'
 	return userFilePath
 }
-export default getUserFilePath

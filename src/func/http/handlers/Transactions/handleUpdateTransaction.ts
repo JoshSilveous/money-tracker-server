@@ -5,7 +5,10 @@ import { updateTransaction } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleUpdateTransaction: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/updatetransaction`
+ */
+export const handleUpdateTransaction: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -36,7 +39,7 @@ const handleUpdateTransaction: RequestHandler = function (req, res) {
 		try {
 			updateTransaction(user_id, inputTransaction)
 			res.statusCode = 200
-			res.send({refreshedToken: refreshedToken})
+			res.send({ refreshedToken: refreshedToken })
 		} catch (e) {
 			if ((e as Error).message === 'transaction_id not found') {
 				res.statusCode = 400
@@ -50,5 +53,3 @@ const handleUpdateTransaction: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleUpdateTransaction

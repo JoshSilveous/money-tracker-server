@@ -1,6 +1,13 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
-function getTransaction(user_id: number, transaction_id: number) {
+
+/**
+ * Retrieves a Transaction from the user's database
+ * @param user_id The user's ID
+ * @param transaction_id The transaction's ID
+ * @returns The `Transaction` object
+ */
+export function getTransaction(user_id: number, transaction_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         SELECT *
@@ -15,4 +22,3 @@ function getTransaction(user_id: number, transaction_id: number) {
 	}
 	return res[0] as Transaction
 }
-export default getTransaction

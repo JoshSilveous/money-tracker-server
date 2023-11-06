@@ -5,7 +5,10 @@ import { getTransaction } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleGetTransaction: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/gettransaction`
+ */
+export const handleGetTransaction: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -32,14 +35,17 @@ const handleGetTransaction: RequestHandler = function (req, res) {
 			user_id: user_id,
 			username: data.username,
 		})
-		
+
 		try {
 			const transaction = getTransaction(
 				user_id,
 				inputTransaction.transaction_id
 			)
 			res.statusCode = 200
-			res.send({transaction: transaction, refreshedToken: refreshedToken})
+			res.send({
+				transaction: transaction,
+				refreshedToken: refreshedToken,
+			})
 		} catch (e) {
 			if ((e as Error).message === 'transaction_id not found') {
 				res.statusCode = 400
@@ -53,5 +59,3 @@ const handleGetTransaction: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleGetTransaction

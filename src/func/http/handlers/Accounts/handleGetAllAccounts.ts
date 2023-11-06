@@ -5,7 +5,10 @@ import { getAllAccounts } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleGetAllAccounts: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/getallaccounts`
+ */
+export const handleGetAllAccounts: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserGetRequest')) {
 		res.statusCode = 406
@@ -29,7 +32,7 @@ const handleGetAllAccounts: RequestHandler = function (req, res) {
 			res.statusCode = 200
 			res.send({
 				accounts: accounts,
-				refreshedToken: refreshedToken
+				refreshedToken: refreshedToken,
 			})
 		} catch (e) {
 			res.statusCode = 500
@@ -38,5 +41,3 @@ const handleGetAllAccounts: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleGetAllAccounts

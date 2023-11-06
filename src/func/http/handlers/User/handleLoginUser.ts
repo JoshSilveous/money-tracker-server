@@ -3,7 +3,10 @@ import isTypeProfile from '../../../isTypeProfile'
 import { getUser } from '../../../database'
 import encryptToken from '../../../token/encryptToken'
 
-const handleLoginUser: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/loginuser`
+ */
+export const handleLoginUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserCredentials')) {
 		res.statusCode = 406
@@ -44,5 +47,3 @@ const handleLoginUser: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleLoginUser

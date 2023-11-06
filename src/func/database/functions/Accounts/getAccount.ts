@@ -1,6 +1,13 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
-function getAccount(user_id: number, account_id: number) {
+
+/**
+ * Retrieves a Account from the user's database
+ * @param user_id The user's ID
+ * @param account_id The account's ID
+ * @returns The `Account` object
+ */
+export function getAccount(user_id: number, account_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         SELECT *
@@ -15,4 +22,3 @@ function getAccount(user_id: number, account_id: number) {
 	}
 	return res[0] as Account
 }
-export default getAccount

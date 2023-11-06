@@ -5,7 +5,10 @@ import { deleteCategory } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleDeleteCategory: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/deletecategory`
+ */
+export const handleDeleteCategory: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -37,7 +40,7 @@ const handleDeleteCategory: RequestHandler = function (req, res) {
 			deleteCategory(user_id, inputCategory.category_id)
 			res.statusCode = 200
 			res.send({
-				refreshedToken: refreshedToken
+				refreshedToken: refreshedToken,
 			})
 		} catch (e) {
 			if ((e as Error).message === 'category_id not found') {
@@ -52,5 +55,3 @@ const handleDeleteCategory: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleDeleteCategory

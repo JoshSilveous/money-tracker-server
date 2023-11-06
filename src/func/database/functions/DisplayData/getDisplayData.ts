@@ -1,15 +1,16 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
-// okay, this one's gonna be complicated.
-// we need to accept parameters to limit how many results per page, and which page the user is on.
-// also accepts ORDER BY parameters
 
-// date seperation and such is handled on the front-end
-
-// Y axis
-// Timestamp  |  Name  |  Category  |  Amount  |  Account
-
-function getDisplayData(
+/**
+ * Get's a chunk of DisplayData for the user, sorted by parameters.
+ * @param user_id
+ * @param resPerPage Results per page
+ * @param thisPage The page requested
+ * @param orderBy The category name to be ordered by
+ * @param orderByDirection `"ASC"` or `"DESC"`
+ * @returns An array of `DataDisplay` objects
+ */
+export function getDisplayData(
 	user_id: number,
 	resPerPage: number,
 	thisPage: number,
@@ -41,4 +42,3 @@ function getDisplayData(
 	db.close()
 	return res
 }
-export default getDisplayData

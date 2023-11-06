@@ -5,7 +5,10 @@ import { getCategory } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleGetCategory: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/getcategory`
+ */
+export const handleGetCategory: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -53,5 +56,3 @@ const handleGetCategory: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleGetCategory

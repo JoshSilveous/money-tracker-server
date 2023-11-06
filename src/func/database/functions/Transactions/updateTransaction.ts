@@ -1,6 +1,12 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
-function updateTransaction(user_id: number, transaction: Transaction) {
+
+/**
+ * Updates a transaction in a user's database
+ * @param user_id The user's ID
+ * @param transaction The `Transaction` object (WITH ID)
+ */
+export function updateTransaction(user_id: number, transaction: Transaction) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         UPDATE transactions SET
@@ -29,4 +35,3 @@ function updateTransaction(user_id: number, transaction: Transaction) {
 	}
 	return
 }
-export default updateTransaction

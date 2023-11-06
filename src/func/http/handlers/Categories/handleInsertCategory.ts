@@ -5,7 +5,10 @@ import { insertCategory } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleInsertCategory: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/insertcategory`
+ */
+export const handleInsertCategory: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -55,5 +58,3 @@ const handleInsertCategory: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleInsertCategory
