@@ -1,5 +1,5 @@
 import NEW_USER_TABLE from '../../scripts/NEW_USER_TABLE'
-import getUserFilePath from './getUserFilePath'
+import { getUserFilePath } from './getUserFilePath'
 import { db } from './users_connection'
 import SQLite from 'better-sqlite3'
 

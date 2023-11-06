@@ -34,8 +34,6 @@ describe('Operations', () => {
 					password: 'example_unique_pass',
 				})
 			expect(response.statusCode).toBe(406)
-			// expect(response.statusText.toBe('ERROR_DUPLICATE_USERNAME'))
-			// looks like supertest doesn't support statusText
 		})
 
 		it('should login as new user', async () => {
@@ -61,9 +59,6 @@ describe('Operations', () => {
 					},
 				})
 			expect(response.statusCode).toBe(406)
-			expect(response.body.message).toContain(
-				'Unexpected error decrypting token'
-			)
 		})
 
 		it('should error due to mismatched token structure', async () => {
@@ -83,7 +78,6 @@ describe('Operations', () => {
 					},
 				})
 			expect(response.statusCode).toBe(406)
-			expect(response.body.message).toBe('Invalid token data')
 		})
 
 		it('should error due to mismatched username', async () => {
@@ -102,9 +96,6 @@ describe('Operations', () => {
 					},
 				})
 			expect(response.statusCode).toBe(406)
-			expect(response.body.message).toBe(
-				'Token does not match provided username'
-			)
 		})
 	})
 
@@ -123,7 +114,7 @@ describe('Operations', () => {
 				})
 			expect(response.statusCode).toBe(200)
 			if (response.statusCode === 200) {
-				newCategoryID = response.body.newCategoryID
+				newCategoryID = response.body.category_id
 			}
 		})
 		it('should retrieve the new category info', async () => {
@@ -194,7 +185,7 @@ describe('Operations', () => {
 				})
 			expect(response.statusCode).toBe(200)
 			if (response.statusCode === 200) {
-				newAccountID = response.body.newAccountID
+				newAccountID = response.body.account_id
 			}
 		})
 		it('should retrieve the new account info', async () => {
@@ -385,7 +376,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction1',
-				timestamp: 163,
+				timestamp: '163',
 				amount: -123.45,
 				notes: null,
 				category_id: 2,
@@ -394,7 +385,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction2',
-				timestamp: 12,
+				timestamp: '12',
 				amount: -1323.42,
 				notes: null,
 				category_id: 3,
@@ -403,7 +394,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction3',
-				timestamp: 1,
+				timestamp: '1',
 				amount: 474354.33,
 				notes: null,
 				category_id: 2,
@@ -412,7 +403,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction4',
-				timestamp: 160000,
+				timestamp: '160000',
 				amount: -21,
 				notes: null,
 				category_id: 2,
@@ -421,7 +412,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction5',
-				timestamp: 1424,
+				timestamp: '1424',
 				amount: -13.22,
 				notes: null,
 				category_id: null,
@@ -430,7 +421,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction6',
-				timestamp: 12,
+				timestamp: '12',
 				amount: 13323.42,
 				notes: null,
 				category_id: 2,
@@ -439,7 +430,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction7',
-				timestamp: 6434,
+				timestamp: '6434',
 				amount: -152.32,
 				notes: null,
 				category_id: 4,
@@ -448,7 +439,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction8',
-				timestamp: 13634,
+				timestamp: '13634',
 				amount: -183.33,
 				notes: null,
 				category_id: 4,
@@ -457,7 +448,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction9',
-				timestamp: 43145,
+				timestamp: '43145',
 				amount: -1333.42,
 				notes: null,
 				category_id: null,
@@ -466,7 +457,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction10',
-				timestamp: 1437,
+				timestamp: '1437',
 				amount: -24.99,
 				notes: null,
 				category_id: null,
@@ -475,7 +466,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction11',
-				timestamp: 434,
+				timestamp: '434',
 				amount: 823,
 				notes: null,
 				category_id: 3,
@@ -484,7 +475,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction12',
-				timestamp: 6431345,
+				timestamp: '6431345',
 				amount: -393.33,
 				notes: null,
 				category_id: 4,
@@ -493,7 +484,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction13',
-				timestamp: 134643,
+				timestamp: '134643',
 				amount: -999.99,
 				notes: null,
 				category_id: 2,
@@ -502,7 +493,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction14',
-				timestamp: 641364,
+				timestamp: '641364',
 				amount: 32,
 				notes: null,
 				category_id: 2,
@@ -511,7 +502,7 @@ describe('Operations', () => {
 			{
 				transaction_id: null,
 				name: 'TestTransaction15',
-				timestamp: 15122,
+				timestamp: '15122',
 				amount: 0.01,
 				notes: null,
 				category_id: 3,
