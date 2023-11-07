@@ -1,6 +1,19 @@
 import { RequestHandler } from 'express-serve-static-core'
 import isTypeProfile from '../../../isTypeProfile'
 import { createUser } from '../../../database'
+import Joi from 'joi'
+
+const schema = Joi.object({
+	username: Joi.string()
+		.alphanum()
+		.min(8)
+		.max(30)
+		.required(),
+	password: Joi.string()
+		.min(8)
+		.max(30)
+		.required
+})
 
 const handleCreateUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
