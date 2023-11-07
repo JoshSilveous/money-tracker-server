@@ -1,5 +1,10 @@
 import fs from 'fs'
-function verifyDBFileExists(user_id: number): boolean {
+
+/**
+ * Checks if a user has an existing DB file
+ * @return `Boolean`
+ */
+export function verifyDBFileExists(user_id: number): boolean {
 	const parentFilePath = __dirname.split('\\')
 	parentFilePath.pop()
 	parentFilePath.pop()
@@ -8,4 +13,3 @@ function verifyDBFileExists(user_id: number): boolean {
 
 	return fs.existsSync(userFilePath)
 }
-export default verifyDBFileExists

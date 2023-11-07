@@ -5,7 +5,10 @@ import { updateCategory } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleUpdateCategory: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/updatecategory`
+ */
+export const handleUpdateCategory: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -52,5 +55,3 @@ const handleUpdateCategory: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleUpdateCategory

@@ -1,6 +1,12 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
-function getAllTransactions(user_id: number) {
+
+/**
+ * Retrieves all Transactions from the user's database
+ * @param user_id The user's ID
+ * @returns The `Transaction` object array
+ */
+export function getAllTransactions(user_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         SELECT *
@@ -11,4 +17,3 @@ function getAllTransactions(user_id: number) {
 	db.close()
 	return res as Transaction[]
 }
-export default getAllTransactions

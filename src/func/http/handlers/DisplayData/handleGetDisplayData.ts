@@ -5,7 +5,10 @@ import { getDisplayData } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleGetDisplayData: RequestHandler = function (req, res) {
+/**
+ * handles HTTP Request for `/getDisplayData`
+ */
+export const handleGetDisplayData: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -44,7 +47,7 @@ const handleGetDisplayData: RequestHandler = function (req, res) {
 			res.statusCode = 200
 			res.send({
 				displayData: displayData,
-				refreshedToken: refreshedToken
+				refreshedToken: refreshedToken,
 			})
 		} catch (e) {
 			console.log('caught error!')
@@ -52,5 +55,3 @@ const handleGetDisplayData: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleGetDisplayData

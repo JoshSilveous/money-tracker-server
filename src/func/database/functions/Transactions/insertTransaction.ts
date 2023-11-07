@@ -1,7 +1,16 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
 
-function insertTransaction(user_id: number, transaction: NewTransaction) {
+/**
+ * Inserts a transaction into a user's database
+ * @param user_id The user's ID
+ * @param transaction The `NewTransaction` object (no ID)
+ * @returns The newly created `transaction_id`
+ */
+export function insertTransaction(
+	user_id: number,
+	transaction: NewTransaction
+) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         INSERT INTO transactions 
@@ -20,4 +29,3 @@ function insertTransaction(user_id: number, transaction: NewTransaction) {
 	db.close()
 	return res.lastInsertRowid as number
 }
-export default insertTransaction

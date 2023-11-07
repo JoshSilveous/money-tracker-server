@@ -5,7 +5,10 @@ import { getAccount } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleGetAccount: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/getaccount`
+ */
+export const handleGetAccount: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -36,7 +39,7 @@ const handleGetAccount: RequestHandler = function (req, res) {
 		try {
 			const account = getAccount(user_id, inputAccount.account_id)
 			res.statusCode = 200
-			res.send({account: account, refreshedToken: refreshedToken})
+			res.send({ account: account, refreshedToken: refreshedToken })
 		} catch (e) {
 			if ((e as Error).message === 'account_id not found') {
 				res.statusCode = 400
@@ -50,5 +53,3 @@ const handleGetAccount: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleGetAccount

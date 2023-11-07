@@ -5,7 +5,10 @@ import { insertTransaction } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleInsertTransaction: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/inserttransaction`
+ */
+export const handleInsertTransaction: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -41,7 +44,7 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 			res.statusCode = 200
 			res.send({
 				transaction_id: newTransactionID,
-				refreshedToken: refreshedToken
+				refreshedToken: refreshedToken,
 			})
 		} catch (e) {
 			res.statusCode = 500
@@ -50,5 +53,3 @@ const handleInsertTransaction: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleInsertTransaction

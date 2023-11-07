@@ -5,7 +5,10 @@ import { deleteAccount } from '../../../database'
 import validateToken from '../../../token/validateToken'
 import encryptToken from '../../../token/encryptToken'
 
-const handleDeleteAccount: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/deleteaccount`
+ */
+export const handleDeleteAccount: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserPostRequest')) {
 		res.statusCode = 406
@@ -36,7 +39,7 @@ const handleDeleteAccount: RequestHandler = function (req, res) {
 		try {
 			deleteAccount(user_id, inputAccount.account_id)
 			res.statusCode = 200
-			res.send({refreshedToken: refreshedToken})
+			res.send({ refreshedToken: refreshedToken })
 		} catch (e) {
 			if ((e as Error).message === 'account_id not found') {
 				res.statusCode = 400
@@ -50,5 +53,3 @@ const handleDeleteAccount: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleDeleteAccount

@@ -1,9 +1,14 @@
 import NEW_USER_TABLE from '../../scripts/NEW_USER_TABLE'
-import getUserFilePath from './getUserFilePath'
+import { getUserFilePath } from './getUserFilePath'
 import { db } from './users_connection'
 import SQLite from 'better-sqlite3'
 
-function createUser(user: UserCredentials) {
+/**
+ * Creates a new user in the database.
+ * @param user The `UserCredentials` object.
+ * @returns The newly-created `user_id`.
+ */
+export function createUser(user: UserCredentials) {
 	const sql = 'INSERT INTO user (username, password) VALUES (?, ?);'
 	const stmt = db.prepare(sql)
 	const res = stmt.run(user.username, user.password)
@@ -17,5 +22,3 @@ function createUser(user: UserCredentials) {
 
 	return res.lastInsertRowid as number
 }
-
-export default createUser

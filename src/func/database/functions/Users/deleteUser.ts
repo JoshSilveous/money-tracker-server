@@ -2,6 +2,10 @@ import { getUserFilePath } from '../..'
 import { db } from './users_connection'
 import fs from 'fs'
 
+/**
+ * Deletes a user from the database, and removes their file.
+ * @param user_id
+ */
 export function deleteUser(user_id: number) {
 	const sql = 'DELETE FROM user WHERE user_id = ?;'
 	const stmt = db.prepare(sql)
@@ -18,4 +22,3 @@ export function deleteUser(user_id: number) {
 	})
 	return
 }
-export default deleteUser

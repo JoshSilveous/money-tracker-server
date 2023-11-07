@@ -1,7 +1,12 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
 
-function deleteCategory(user_id: number, category_id: number) {
+/**
+ * Deletes a category from a user's database
+ * @param user_id The user's ID
+ * @param category_id The category's ID
+ */
+export function deleteCategory(user_id: number, category_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         DELETE FROM categories
@@ -15,4 +20,3 @@ function deleteCategory(user_id: number, category_id: number) {
 	}
 	return
 }
-export default deleteCategory

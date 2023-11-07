@@ -1,7 +1,13 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
 
-function getCategory(user_id: number, category_id: number) {
+/**
+ * Retrieves a Category from the user's database
+ * @param user_id The user's ID
+ * @param category_id The category's ID
+ * @returns The `Category` object
+ */
+export function getCategory(user_id: number, category_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         SELECT *
@@ -16,4 +22,3 @@ function getCategory(user_id: number, category_id: number) {
 	}
 	return res[0] as Category
 }
-export default getCategory

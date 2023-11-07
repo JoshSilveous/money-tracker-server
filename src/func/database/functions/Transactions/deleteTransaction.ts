@@ -1,7 +1,12 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
 
-function deleteTransaction(user_id: number, transaction_id: number) {
+/**
+ * Deletes a transaction from a user's database
+ * @param user_id The user's ID
+ * @param transaction_id The transaction's ID
+ */
+export function deleteTransaction(user_id: number, transaction_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         DELETE FROM transactions
@@ -15,4 +20,3 @@ function deleteTransaction(user_id: number, transaction_id: number) {
 	}
 	return
 }
-export default deleteTransaction

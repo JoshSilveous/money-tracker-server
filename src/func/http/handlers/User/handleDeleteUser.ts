@@ -4,7 +4,10 @@ import decryptToken from '../../../token/decryptToken'
 import { deleteUser } from '../../../database'
 import validateToken from '../../../token/validateToken'
 
-const handleDeleteUser: RequestHandler = function (req, res) {
+/**
+ * Handles HTTP Request for `/deleteuser`
+ */
+export const handleDeleteUser: RequestHandler = function (req, res) {
 	// make sure data is in correct shape
 	if (!isTypeProfile(req.body, 'UserGetRequest')) {
 		res.statusCode = 406
@@ -38,5 +41,3 @@ const handleDeleteUser: RequestHandler = function (req, res) {
 		}
 	}
 }
-
-export default handleDeleteUser

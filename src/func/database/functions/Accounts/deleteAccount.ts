@@ -1,7 +1,12 @@
 import SQLite from 'better-sqlite3'
 import { getUserFilePath } from '../..'
 
-function deleteAccount(user_id: number, account_id: number) {
+/**
+ * Deletes a account from a user's database
+ * @param user_id The user's ID
+ * @param account_id The account's ID
+ */
+export function deleteAccount(user_id: number, account_id: number) {
 	const db = new SQLite(getUserFilePath(user_id))
 	const sql = `
         DELETE FROM accounts
@@ -15,4 +20,3 @@ function deleteAccount(user_id: number, account_id: number) {
 	}
 	return
 }
-export default deleteAccount
