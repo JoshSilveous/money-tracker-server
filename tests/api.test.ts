@@ -251,7 +251,7 @@ describe('Operations', () => {
 					token: token,
 					payload: {
 						name: 'TestTransaction',
-						timestamp: 123,
+						timestamp: '11-02-2023',
 						notes: null,
 						amount: 123.45,
 						category_id: null,
@@ -260,7 +260,7 @@ describe('Operations', () => {
 				})
 			expect(response.statusCode).toBe(200)
 			if (response.statusCode === 200) {
-				newTransactionID = response.body.newTransactionID
+				newTransactionID = response.body.transaction_id
 			}
 		})
 		it('should retrieve the new transaction info', async () => {
@@ -284,7 +284,7 @@ describe('Operations', () => {
 					payload: {
 						transaction_id: newTransactionID,
 						name: 'TestTransactionUpdated',
-						timestamp: 321,
+						timestamp: '11-03-2023',
 						notes: 'Test notes',
 						amount: 543.21,
 						category_id: newCategoryID,
@@ -333,6 +333,7 @@ describe('Operations', () => {
 						transaction_id: newTransactionID,
 					},
 				})
+			console.log('api ran')
 			expect(response.statusCode).toBe(200)
 		})
 		it('should delete the new category', async () => {
@@ -586,7 +587,7 @@ describe('Operations', () => {
 
 			const expectedResultOrder = [12, 14, 4, 13, 9, 15, 8, 7, 10, 5]
 			results.forEach((transaction, index) => {
-				expect(transaction.transaction_name).toBe(
+				expect(transaction.name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
@@ -610,7 +611,7 @@ describe('Operations', () => {
 
 			const expectedResultOrder = [3, 2, 6, 1, 11, 5, 10, 7, 8, 15]
 			results.forEach((transaction, index) => {
-				expect(transaction.transaction_name).toBe(
+				expect(transaction.name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
@@ -634,7 +635,7 @@ describe('Operations', () => {
 
 			const expectedResultOrder = [9, 2, 13, 12, 8]
 			results.forEach((transaction, index) => {
-				expect(transaction.transaction_name).toBe(
+				expect(transaction.name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
@@ -658,7 +659,7 @@ describe('Operations', () => {
 
 			const expectedResultOrder = [7, 1, 10, 4, 5]
 			results.forEach((transaction, index) => {
-				expect(transaction.transaction_name).toBe(
+				expect(transaction.name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
@@ -682,7 +683,7 @@ describe('Operations', () => {
 
 			const expectedResultOrder = [3, 6, 11, 14, 15]
 			results.forEach((transaction, index) => {
-				expect(transaction.transaction_name).toBe(
+				expect(transaction.name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
@@ -706,7 +707,7 @@ describe('Operations', () => {
 
 			const expectedResultOrder = [5, 4, 10, 1, 7]
 			results.forEach((transaction, index) => {
-				expect(transaction.transaction_name).toBe(
+				expect(transaction.name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
@@ -731,15 +732,13 @@ describe('Operations', () => {
 
 			// temporary function to grab IDs easier
 			const testArr = []
-			results.forEach((res) =>
-				testArr.push(parseInt(res.transaction_name.slice(15)))
-			)
+			results.forEach((res) => testArr.push(parseInt(res.name.slice(15))))
 
 			const expectedResultOrder = [
 				5, 9, 10, 1, 3, 4, 6, 13, 14, 2, 11, 15, 7, 8, 12,
 			]
 			results.forEach((transaction, index) => {
-				expect(transaction.transaction_name).toBe(
+				expect(transaction.name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
@@ -766,7 +765,7 @@ describe('Operations', () => {
 				3, 10, 11, 1, 5, 9, 14, 15, 6, 8, 13, 2, 4, 7, 12,
 			]
 			results.forEach((transaction, index) => {
-				expect(transaction.transaction_name).toBe(
+				expect(transaction.name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
@@ -780,7 +779,7 @@ describe('Operations', () => {
 					payload: {
 						resPerPage: 15,
 						thisPage: 1,
-						orderBy: 'transaction_name',
+						orderBy: 'name',
 						orderByDirection: 'ASC',
 					},
 				})
@@ -792,7 +791,7 @@ describe('Operations', () => {
 				1, 10, 11, 12, 13, 14, 15, 2, 3, 4, 5, 6, 7, 8, 9,
 			]
 			results.forEach((transaction, index) => {
-				expect(transaction.transaction_name).toBe(
+				expect(transaction.name).toBe(
 					`TestTransaction${expectedResultOrder[index]}`
 				)
 			})
