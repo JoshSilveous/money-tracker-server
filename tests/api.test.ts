@@ -3,6 +3,9 @@ import { app } from '../src/api'
 import encryptToken from '../src/func/token/encryptToken'
 import { getUser } from '../src/func/database'
 
+// importing this file to kick off creation of users.db file (if not already created)
+import { db } from '../src/func/database/functions/Users/users_connection'
+
 let server
 beforeAll(() => {
 	server = app.listen(3000)
@@ -14,8 +17,8 @@ afterAll((done) => {
 
 describe('Operations', () => {
 	const newUserCredentials: UserCredentials = {
-		username: 'jest_test_new_user',
-		password: 'jest_test_new_user',
+		username: 'jest.test.new.user',
+		password: 'jest.test.new.user',
 	}
 	let token: string
 	describe('User / Token Functions', () => {
@@ -31,7 +34,7 @@ describe('Operations', () => {
 				.post('/api/createuser')
 				.send({
 					...newUserCredentials,
-					password: 'example_unique_pass',
+					password: 'example.unique.pass',
 				})
 			expect(response.statusCode).toBe(406)
 		})
