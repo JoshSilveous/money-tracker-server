@@ -1,6 +1,6 @@
 import request from 'supertest'
 import { app } from '../src/api'
-import encryptToken from '../src/func/token/encryptToken'
+import encryptToken from '../src/func/http/token/encryptToken'
 import { getUser } from '../src/func/database'
 
 // importing this file to kick off creation of users.db file (if not already created)

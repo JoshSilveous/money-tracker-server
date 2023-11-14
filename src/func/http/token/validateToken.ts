@@ -1,4 +1,4 @@
-import isTypeProfile from '../isTypeProfile'
+import isTypeProfile from '../../isTypeProfile'
 import decryptToken from './decryptToken'
 import { Response } from 'express'
 
