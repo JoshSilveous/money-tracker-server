@@ -8,17 +8,20 @@
     -   [x] handleUpdateTransaction
     -   [x] handleDeleteTransaction
     -   [x] handleGetCategory
-    -   [ ] handleGetAllCategories
-    -   [ ] handleInsertCategory
-    -   [ ] handleUpdateCategory
-    -   [ ] handleDeleteCategory
-    -   [ ] handleGetAccount
-    -   [ ] handleGetAllAccounts
-    -   [ ] handleInsertAccount
-    -   [ ] handleUpdateAccount
-    -   [ ] handleDeleteAccount
+    -   [x] handleGetAllCategories
+    -   [x] handleInsertCategory
+    -   [x] handleUpdateCategory
+    -   [x] handleDeleteCategory
+    -   [x] handleGetAccount
+    -   [x] handleGetAllAccounts
+    -   [x] handleInsertAccount
+    -   [x] handleUpdateAccount
+    -   [x] handleDeleteAccount
+    -   [x] handleCreateUser
+    -   [x] handleLoginUser
 
 -   [ ] remove old type checking system
+    -   [ ] validateToken ?
 -   [ ] update tests
 
 -   [ ] fix front-end fetch requests

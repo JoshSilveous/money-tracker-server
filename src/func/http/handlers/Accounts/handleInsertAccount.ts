@@ -1,59 +1,48 @@
 import { RequestHandler } from 'express'
-import isTypeProfile from '../../../isTypeProfile'
-import decryptToken from '../../token/decryptToken'
 import { insertAccount } from '../../../database'
-import validateToken from '../../token/validateToken'
 import encryptToken from '../../token/encryptToken'
+import { newAccountSchema } from '../../schemas'
 
 /**
  * Handles HTTP Request for `/insertaccount`
  */
 export const handleInsertAccount: RequestHandler = function (req, res) {
-	// make sure data is in correct shape
-	if (!isTypeProfile(req.body, 'UserPostRequest')) {
-		res.statusCode = 406
-		res.statusMessage = 'ERROR_REQUEST_FORMAT'
-		res.send()
-		return
-	}
-	const data = req.body as UserPostRequest
+	const user_id = req.user_id
+	const username = req.username
 
-	// make sure provided NewAccount is in correct format
-	if (!isTypeProfile(data.payload, 'NewAccount')) {
+	const inputAccount = req.body.payload as NewAccount
+
+	// make sure account matches format
+	if (newAccountSchema.validate(inputAccount).error) {
 		res.statusCode = 406
-		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.statusMessage = 'ERROR_PAYLOAD_FORMAT'
 		res.send()
 		return
 	}
 
-	const tokenIsValid = validateToken(data.username, data.token, res)
+	try {
+		const newAccountID = insertAccount(user_id, inputAccount)
 
-	if (tokenIsValid) {
-		const inputAccount = data.payload as NewAccount
-		const user_id = (decryptToken(data.token) as TokenData).user_id
 		const refreshedToken = encryptToken({
 			user_id: user_id,
-			username: data.username,
+			username: username,
 		})
 
-		try {
-			const newAccountID = insertAccount(user_id, inputAccount)
-			res.statusCode = 200
-			res.send({
-				account_id: newAccountID,
-				refreshedToken: refreshedToken,
-			})
-		} catch (e) {
-			const errMsg = (e as Error).message
-			if (errMsg === 'UNIQUE constraint failed: accounts.name') {
-				res.statusCode = 406
-				res.statusMessage = 'ERROR_DUPLICATE_NAME'
-				res.send()
-			} else {
-				res.statusCode = 500
-				res.statusMessage = 'ERROR_SERVER: ' + e
-				res.send()
-			}
+		res.statusCode = 200
+		res.send({
+			account_id: newAccountID,
+			refreshedToken: refreshedToken,
+		})
+	} catch (e) {
+		const errMsg = (e as Error).message
+		if (errMsg === 'UNIQUE constraint failed: accounts.name') {
+			res.statusCode = 406
+			res.statusMessage = 'ERROR_DUPLICATE_NAME'
+			res.send()
+		} else {
+			res.statusCode = 500
+			res.statusMessage = 'ERROR_SERVER: ' + e
+			res.send()
 		}
 	}
 }

@@ -1,55 +1,49 @@
 import { RequestHandler } from 'express'
-import isTypeProfile from '../../../isTypeProfile'
-import decryptToken from '../../token/decryptToken'
 import { deleteAccount } from '../../../database'
-import validateToken from '../../token/validateToken'
 import encryptToken from '../../token/encryptToken'
 
 /**
  * Handles HTTP Request for `/deleteaccount`
  */
 export const handleDeleteAccount: RequestHandler = function (req, res) {
-	// make sure data is in correct shape
-	if (!isTypeProfile(req.body, 'UserPostRequest')) {
-		res.statusCode = 406
-		res.statusMessage = 'ERROR_REQUEST_FORMAT'
-		res.send()
-		return
-	}
-	const data = req.body as UserPostRequest
+	const user_id = req.user_id
+	const username = req.username
 
-	// make sure provided NewAccount is in correct format
-	if (!isTypeProfile(data.payload, 'AccountID')) {
+	if (typeof req.headers['account_id'] !== 'string') {
 		res.statusCode = 406
-		res.statusMessage = 'ERROR_REQUEST_FORMAT'
+		res.statusMessage = 'ERROR_MISSING_HEADER'
 		res.send()
 		return
 	}
 
-	const tokenIsValid = validateToken(data.username, data.token, res)
+	const account_id = parseInt(req.headers['account_id'])
 
-	if (tokenIsValid) {
-		const inputAccount = data.payload as AccountID
-		const user_id = (decryptToken(data.token) as TokenData).user_id
+	if (Number.isNaN(account_id)) {
+		res.statusCode = 406
+		res.statusMessage = 'ERROR_HEADER_FORMAT'
+		res.send()
+		return
+	}
+
+	try {
+		deleteAccount(user_id, account_id)
+
 		const refreshedToken = encryptToken({
 			user_id: user_id,
-			username: data.username,
+			username: username,
 		})
 
-		try {
-			deleteAccount(user_id, inputAccount.account_id)
-			res.statusCode = 200
-			res.send({ refreshedToken: refreshedToken })
-		} catch (e) {
-			if ((e as Error).message === 'account_id not found') {
-				res.statusCode = 400
-				res.statusMessage = 'ERROR_ID_NOT_FOUND'
-				res.send()
-			} else {
-				res.statusCode = 500
-				res.statusMessage = 'ERROR_SERVER:' + e
-				res.send()
-			}
+		res.statusCode = 200
+		res.send({ refreshedToken: refreshedToken })
+	} catch (e) {
+		if ((e as Error).message === 'account_id not found') {
+			res.statusCode = 400
+			res.statusMessage = 'ERROR_ID_NOT_FOUND'
+			res.send()
+		} else {
+			res.statusCode = 500
+			res.statusMessage = 'ERROR_SERVER:' + e
+			res.send()
 		}
 	}
 }

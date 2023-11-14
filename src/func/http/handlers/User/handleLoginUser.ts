@@ -1,31 +1,29 @@
 import { RequestHandler } from 'express-serve-static-core'
-import isTypeProfile from '../../../isTypeProfile'
 import { getUser } from '../../../database'
 import encryptToken from '../../token/encryptToken'
+import { credentialsSchema } from '../../schemas'
 
 /**
  * Handles HTTP Request for `/loginuser`
  */
 export const handleLoginUser: RequestHandler = function (req, res) {
-	// make sure data is in correct shape
-	if (!isTypeProfile(req.body, 'UserCredentials')) {
+	const credentials = req.body as UserCredentials
+
+	if (credentialsSchema.validate(req.body)) {
 		res.statusCode = 406
 		res.statusMessage = 'ERROR_REQUEST_FORMAT'
 		res.send()
 		return
 	}
 
-	const data = req.body as UserCredentials
-
 	try {
-		// attempt to get user info from database
-		const userInfo = getUser(data)
+		const userInfo = getUser(credentials)
 
-		// if user found, generate a token and send it to the user
 		const token = encryptToken({
 			user_id: userInfo.user_id,
 			username: userInfo.username,
 		})
+
 		res.statusCode = 200
 		res.statusMessage = 'SUCCESS'
 		res.send({

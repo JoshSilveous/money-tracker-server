@@ -27,7 +27,7 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
 				res.statusMessage = 'ERROR_TOKEN_EXPIRED'
 				res.send()
 			} else {
-				res.statusMessage = 'ERROR_TOKEN:' + e
+				res.statusMessage = 'ERROR_TOKEN: ' + e.message
 				res.send()
 			}
 			return

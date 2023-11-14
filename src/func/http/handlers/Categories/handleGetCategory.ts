@@ -25,13 +25,14 @@ export const handleGetCategory: RequestHandler = function (req, res) {
 		return
 	}
 
-	const refreshedToken = encryptToken({
-		user_id: user_id,
-		username: username,
-	})
-
 	try {
 		const category = getCategory(user_id, category_id)
+
+		const refreshedToken = encryptToken({
+			user_id: user_id,
+			username: username,
+		})
+
 		res.statusCode = 200
 		res.send({
 			category: category,
