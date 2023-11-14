@@ -2,6 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import * as httpFunc from './func/http'
 import cors from 'cors'
+import { verifyToken } from './func/http/token/verifyToken'
 
 const app = express()
 
@@ -25,7 +26,7 @@ app.post('/api/inserttransaction', httpFunc.handleInsertTransaction)
 app.post('/api/updatetransaction', httpFunc.handleUpdateTransaction)
 app.post('/api/deletetransaction', httpFunc.handleDeleteTransaction)
 
-app.post('/api/getcategory', httpFunc.handleGetCategory)
+app.get('/api/getcategory', verifyToken, httpFunc.handleGetCategory)
 app.post('/api/getallcategories', httpFunc.handleGetAllCategories)
 app.post('/api/insertcategory', httpFunc.handleInsertCategory)
 app.post('/api/updatecategory', httpFunc.handleUpdateCategory)
