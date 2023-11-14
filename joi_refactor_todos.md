@@ -1,0 +1,20 @@
+-   [x] switch POSTs to GET
+-   [ ] update all request handlers
+    -   [ ] handleDeleteUser
+    -   [ ] handleGetDisplayData
+    -   [ ] handleGetTransaction
+    -   [ ] handleInsertTransaction
+    -   [ ] handleUpdateTransaction
+    -   [ ] handleDeleteTransaction
+    -   [x] handleGetCategory
+    -   [ ] handleGetAllCategories
+    -   [ ] handleInsertCategory
+    -   [ ] handleUpdateCategory
+    -   [ ] handleDeleteCategory
+    -   [ ] handleGetAccount
+    -   [ ] handleGetAllAccounts
+    -   [ ] handleInsertAccount
+    -   [ ] handleUpdateAccount
+    -   [ ] handleDeleteAccount
+-   [ ] remove old type checking system
+-   [ ] update tests
