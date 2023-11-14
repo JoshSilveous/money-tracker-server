@@ -14,6 +14,19 @@ export const credentialsSchema = Joi.object<UserCredentials>({
 	password: passwordSchema,
 })
 
+export const displayDataRequestSchema = Joi.object<DisplayDataRequest>({
+	resPerPage: Joi.number().required(),
+	thisPage: Joi.number().required(),
+	orderBy: Joi.valid(
+		'timestamp',
+		'name',
+		'category_name',
+		'account_name',
+		'amount'
+	).required(),
+	orderByDirection: Joi.valid('ASC', 'DESC').required(),
+})
+
 export const newTransactionSchema = Joi.object<NewTransaction>({
 	name: Joi.string().required(),
 	timestamp: Joi.string().required(),

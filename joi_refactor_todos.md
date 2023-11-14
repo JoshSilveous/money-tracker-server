@@ -1,8 +1,8 @@
 -   [x] switch POSTs to GET
--   [ ] update all request handlers
+-   [x] update all request handlers
 
     -   [x] handleDeleteUser
-    -   [ ] handleGetDisplayData - figure out how to pass params
+    -   [x] handleGetDisplayData - figure out how to pass params
     -   [x] handleGetTransaction
     -   [x] handleInsertTransaction
     -   [x] handleUpdateTransaction
