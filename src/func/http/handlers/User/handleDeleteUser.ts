@@ -1,8 +1,8 @@
 import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
-import decryptToken from '../../../token/decryptToken'
+import decryptToken from '../../token/decryptToken'
 import { deleteUser } from '../../../database'
-import validateToken from '../../../token/validateToken'
+import validateToken from '../../token/validateToken'
 
 /**
  * Handles HTTP Request for `/deleteuser`

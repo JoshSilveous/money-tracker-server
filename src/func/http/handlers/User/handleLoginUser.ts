@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express-serve-static-core'
 import isTypeProfile from '../../../isTypeProfile'
 import { getUser } from '../../../database'
-import encryptToken from '../../../token/encryptToken'
+import encryptToken from '../../token/encryptToken'
 
 /**
  * Handles HTTP Request for `/loginuser`

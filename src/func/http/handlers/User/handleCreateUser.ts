@@ -4,15 +4,8 @@ import { createUser } from '../../../database'
 import Joi from 'joi'
 
 const schema = Joi.object({
-	username: Joi.string()
-		.alphanum()
-		.min(8)
-		.max(30)
-		.required(),
-	password: Joi.string()
-		.min(8)
-		.max(30)
-		.required
+	username: Joi.string().alphanum().min(8).max(30).required(),
+	password: Joi.string().min(8).max(30).required(),
 })
 
 /**

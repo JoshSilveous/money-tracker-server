@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express'
 import isTypeProfile from '../../../isTypeProfile'
-import decryptToken from '../../../token/decryptToken'
+import decryptToken from '../../token/decryptToken'
 import { updateTransaction } from '../../../database'
-import validateToken from '../../../token/validateToken'
-import encryptToken from '../../../token/encryptToken'
+import validateToken from '../../token/validateToken'
+import encryptToken from '../../token/encryptToken'
 
 /**
  * Handles HTTP Request for `/updatetransaction`
