@@ -1,12 +1,12 @@
 -   [x] switch POSTs to GET
 -   [ ] update all request handlers
 
-    -   [ ] handleDeleteUser
-    -   [ ] handleGetDisplayData
-    -   [ ] handleGetTransaction
-    -   [ ] handleInsertTransaction
-    -   [ ] handleUpdateTransaction
-    -   [ ] handleDeleteTransaction
+    -   [x] handleDeleteUser
+    -   [ ] handleGetDisplayData - figure out how to pass params
+    -   [x] handleGetTransaction
+    -   [x] handleInsertTransaction
+    -   [x] handleUpdateTransaction
+    -   [x] handleDeleteTransaction
     -   [x] handleGetCategory
     -   [ ] handleGetAllCategories
     -   [ ] handleInsertCategory

@@ -1,8 +1,5 @@
 import { RequestHandler } from 'express'
-import isTypeProfile from '../../../isTypeProfile'
-import decryptToken from '../../token/decryptToken'
 import { getCategory } from '../../../database'
-import validateToken from '../../token/validateToken'
 import encryptToken from '../../token/encryptToken'
 
 /**
@@ -20,6 +17,13 @@ export const handleGetCategory: RequestHandler = function (req, res) {
 	}
 
 	const category_id = parseInt(req.headers['category_id'])
+
+	if (Number.isNaN(category_id)) {
+		res.statusCode = 406
+		res.statusMessage = 'ERROR_HEADER_FORMAT'
+		res.send()
+		return
+	}
 
 	const refreshedToken = encryptToken({
 		user_id: user_id,

@@ -17,25 +17,33 @@ app.use(bodyParser.json())
 
 app.post('/api/createuser', httpFunc.handleCreateUser)
 app.post('/api/loginuser', httpFunc.handleLoginUser)
-app.delete('/api/deleteuser', httpFunc.handleDeleteUser)
+app.delete('/api/deleteuser', verifyToken, httpFunc.handleDeleteUser)
 
-app.get('/api/getdisplaydata', httpFunc.handleGetDisplayData)
+app.get('/api/getdisplaydata', verifyToken, httpFunc.handleGetDisplayData)
 
-app.get('/api/gettransaction', httpFunc.handleGetTransaction)
-app.post('/api/inserttransaction', httpFunc.handleInsertTransaction)
-app.put('/api/updatetransaction', httpFunc.handleUpdateTransaction)
-app.delete('/api/deletetransaction', httpFunc.handleDeleteTransaction)
+app.get('/api/gettransaction', verifyToken, httpFunc.handleGetTransaction)
+app.post(
+	'/api/inserttransaction',
+	verifyToken,
+	httpFunc.handleInsertTransaction
+)
+app.put('/api/updatetransaction', verifyToken, httpFunc.handleUpdateTransaction)
+app.delete(
+	'/api/deletetransaction',
+	verifyToken,
+	httpFunc.handleDeleteTransaction
+)
 
 app.get('/api/getcategory', verifyToken, httpFunc.handleGetCategory)
-app.get('/api/getallcategories', httpFunc.handleGetAllCategories)
-app.post('/api/insertcategory', httpFunc.handleInsertCategory)
-app.put('/api/updatecategory', httpFunc.handleUpdateCategory)
-app.delete('/api/deletecategory', httpFunc.handleDeleteCategory)
+app.get('/api/getallcategories', verifyToken, httpFunc.handleGetAllCategories)
+app.post('/api/insertcategory', verifyToken, httpFunc.handleInsertCategory)
+app.put('/api/updatecategory', verifyToken, httpFunc.handleUpdateCategory)
+app.delete('/api/deletecategory', verifyToken, httpFunc.handleDeleteCategory)
 
-app.get('/api/getaccount', httpFunc.handleGetAccount)
-app.get('/api/getallaccounts', httpFunc.handleGetAllAccounts)
-app.post('/api/insertaccount', httpFunc.handleInsertAccount)
-app.put('/api/updateaccount', httpFunc.handleUpdateAccount)
-app.delete('/api/deleteaccount', httpFunc.handleDeleteAccount)
+app.get('/api/getaccount', verifyToken, httpFunc.handleGetAccount)
+app.get('/api/getallaccounts', verifyToken, httpFunc.handleGetAllAccounts)
+app.post('/api/insertaccount', verifyToken, httpFunc.handleInsertAccount)
+app.put('/api/updateaccount', verifyToken, httpFunc.handleUpdateAccount)
+app.delete('/api/deleteaccount', verifyToken, httpFunc.handleDeleteAccount)
 
 export { app }

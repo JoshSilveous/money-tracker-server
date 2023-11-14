@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express-serve-static-core'
 import decryptToken from './decryptToken'
-import { tokenSchema } from '../reqSchemas'
+import { tokenSchema } from '../schemas'
 
 /**
  * Custom middlewear that check's a token's validity (for authenticated requests).
@@ -40,6 +40,7 @@ export function verifyToken(req: Request, res: Response, next: NextFunction) {
 			res.statusCode = 406
 			res.statusMessage = 'ERROR_TOKEN_FORMAT'
 			res.send()
+			return
 		} else {
 			/* request is now verified as valid.
                attach the user_id and username (extracted from the token)
