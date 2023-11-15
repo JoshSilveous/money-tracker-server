@@ -1,7 +1,6 @@
 import { RequestHandler } from 'express'
 import { insertTransaction } from '../../../database'
 import encryptToken from '../../token/encryptToken'
-import Joi from 'joi'
 import { newTransactionSchema } from '../../schemas'
 
 /**

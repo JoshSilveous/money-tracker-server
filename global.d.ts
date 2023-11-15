@@ -58,7 +58,7 @@ interface NewTransaction {
 	category_id: number | null
 	account_id: number | null
 }
-interface DisplayData {
+interface DisplayTransaction {
 	transaction_id: number
 	transaction_name: string
 	timestamp: string

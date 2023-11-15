@@ -38,7 +38,7 @@ export function getDisplayData(
         ;
     `
 	const stmt = db.prepare(sql)
-	const res = stmt.all() as DisplayData[]
+	const res = stmt.all() as DisplayTransaction[]
 	db.close()
 	return res
 }

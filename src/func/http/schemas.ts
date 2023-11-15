@@ -30,10 +30,10 @@ export const displayDataRequestSchema = Joi.object<DisplayDataRequest>({
 export const newTransactionSchema = Joi.object<NewTransaction>({
 	name: Joi.string().required(),
 	timestamp: Joi.string().required(),
-	notes: Joi.string().allow(null),
+	notes: Joi.string().allow(null).required(),
 	amount: Joi.number().required(),
-	category_id: Joi.number().allow(null),
-	account_id: Joi.number().allow(null),
+	category_id: Joi.number().allow(null).required(),
+	account_id: Joi.number().allow(null).required(),
 })
 
 export const transactionSchema = Joi.object<Transaction>({
