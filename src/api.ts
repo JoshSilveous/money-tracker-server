@@ -6,6 +6,14 @@ import { verifyToken } from './func/http/token/verifyToken'
 
 const app = express()
 
+// allow appending user_id and username for authenticated requests
+declare module 'express-serve-static-core' {
+	interface Request {
+		user_id: number
+		username: string
+	}
+}
+
 app.use(cors())
 app.use((_req, res, next) => {
 	res.setHeader('Access-Control-Allow-Origin', '*')

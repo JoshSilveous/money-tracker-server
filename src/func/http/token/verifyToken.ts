@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express-serve-static-core'
+import { RequestHandler } from 'express'
 import decryptToken from './decryptToken'
 import { tokenSchema } from '../schemas'
 
@@ -10,7 +10,7 @@ import { tokenSchema } from '../schemas'
  *
  * If the token isn't valid, a respective error code will be sent.
  */
-export function verifyToken(req: Request, res: Response, next: NextFunction) {
+export const verifyToken: RequestHandler = (req, res, next) => {
 	const bearerHeader = req.headers['authorization']
 
 	if (typeof bearerHeader !== 'undefined') {
