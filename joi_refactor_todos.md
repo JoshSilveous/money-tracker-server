@@ -20,8 +20,8 @@
     -   [x] handleCreateUser
     -   [x] handleLoginUser
 
--   [ ] remove old type checking system
-    -   [ ] validateToken ?
+-   [x] remove old type checking system
+    -   [x] validateToken ?
 -   [ ] update tests
 
 -   [ ] fix front-end fetch requests
