@@ -11,10 +11,10 @@ export const handleGetDisplayData: RequestHandler = function (req, res) {
 	const username = req.username
 
 	if (
-		typeof req.headers['resPerPage'] !== 'string' ||
-		typeof req.headers['thisPage'] !== 'string' ||
-		typeof req.headers['orderBy'] !== 'string' ||
-		typeof req.headers['orderByDirection'] !== 'string'
+		typeof req.headers['res_per_page'] !== 'string' ||
+		typeof req.headers['this_page'] !== 'string' ||
+		typeof req.headers['order_by'] !== 'string' ||
+		typeof req.headers['order_by_direction'] !== 'string'
 	) {
 		res.statusCode = 406
 		res.statusMessage = 'ERROR_MISSING_HEADER'
@@ -23,11 +23,11 @@ export const handleGetDisplayData: RequestHandler = function (req, res) {
 	}
 
 	const requestParams: DisplayDataRequest = {
-		resPerPage: parseInt(req.headers['resPerPage']),
-		thisPage: parseInt(req.headers['thisPage']),
-		orderBy: req.headers['orderBy'] as DisplayDataRequest['orderBy'],
+		resPerPage: parseInt(req.headers['res_per_page']),
+		thisPage: parseInt(req.headers['this_page']),
+		orderBy: req.headers['order_by'] as DisplayDataRequest['orderBy'],
 		orderByDirection: req.headers[
-			'orderByDirection'
+			'order_by_direction'
 		] as DisplayDataRequest['orderByDirection'],
 	}
 

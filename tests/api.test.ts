@@ -17,8 +17,8 @@ afterAll((done) => {
 
 describe('Operations', () => {
 	const newUserCredentials: UserCredentials = {
-		username: 'jest.test.new.user',
-		password: 'jest.test.new.user',
+		username: 'jest_test_new_user',
+		password: 'jest_test_new_user',
 	}
 	let token: string
 	describe('User / Token Functions', () => {
@@ -34,7 +34,7 @@ describe('Operations', () => {
 				.post('/api/createuser')
 				.send({
 					...newUserCredentials,
-					password: 'example.unique.pass',
+					password: 'example_unique_pass',
 				})
 			expect(response.statusCode).toBe(406)
 		})
@@ -53,13 +53,10 @@ describe('Operations', () => {
 		it('should error due to token format', async () => {
 			const response = await request(app)
 				.post('/api/insertcategory')
+				.set('authorization', `Bearer BAD_TOKEN`)
 				.send({
-					username: newUserCredentials.username,
-					token: 'Invalid Token Example',
-					payload: {
-						name: 'TestCategory',
-						description: 'A new Category created by Jest.',
-					},
+					name: 'TestCategory',
+					description: 'A new Category created by Jest.',
 				})
 			expect(response.statusCode).toBe(406)
 		})
@@ -72,31 +69,10 @@ describe('Operations', () => {
 			})
 			const response = await request(app)
 				.post('/api/insertcategory')
+				.set('authorization', `Bearer ${badToken}`)
 				.send({
-					username: newUserCredentials.username,
-					token: badToken,
-					payload: {
-						name: 'TestCategory',
-						description: 'A new Category created by Jest.',
-					},
-				})
-			expect(response.statusCode).toBe(406)
-		})
-
-		it('should error due to mismatched username', async () => {
-			const badToken = encryptToken({
-				user_id: getUser(newUserCredentials).user_id,
-				username: 'Invalid Username Example',
-			})
-			const response = await request(app)
-				.post('/api/insertcategory')
-				.send({
-					username: newUserCredentials.username,
-					token: badToken,
-					payload: {
-						name: 'TestCategory',
-						description: 'A new Category created by Jest.',
-					},
+					name: 'TestCategory',
+					description: 'A new Category created by Jest.',
 				})
 			expect(response.statusCode).toBe(406)
 		})
@@ -107,13 +83,10 @@ describe('Operations', () => {
 		it('should create a new category', async () => {
 			const response = await request(app)
 				.post('/api/insertcategory')
+				.set('authorization', `Bearer ${token}`)
 				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						name: 'TestCategory',
-						description: 'A new Category created by Jest.',
-					},
+					name: 'TestCategory',
+					description: 'A new Category created by Jest.',
 				})
 			expect(response.statusCode).toBe(200)
 			if (response.statusCode === 200) {
@@ -122,53 +95,38 @@ describe('Operations', () => {
 		})
 		it('should retrieve the new category info', async () => {
 			const response = await request(app)
-				.post('/api/getcategory')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						category_id: newCategoryID,
-					},
-				})
+				.get('/api/getcategory')
+				.set('authorization', `Bearer ${token}`)
+				.set('category_id', `${newCategoryID}`)
+				.send()
 			expect(response.statusCode).toBe(200)
 		})
 		it('should update the new category', async () => {
 			const response = await request(app)
-				.post('/api/updatecategory')
+				.put('/api/updatecategory')
+				.set('authorization', `Bearer ${token}`)
 				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						category_id: newCategoryID,
-						name: 'TestCategoryUpdated',
-						description: 'A new Category created by Jest.',
-					},
+					category_id: newCategoryID,
+					name: 'TestCategoryUpdated',
+					description: 'A new Category created by Jest.',
 				})
 			expect(response.statusCode).toBe(200)
 		})
 		it('should retrieve the updated category info', async () => {
 			const response = await request(app)
-				.post('/api/getcategory')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						category_id: newCategoryID,
-					},
-				})
+				.get('/api/getcategory')
+				.set('authorization', `Bearer ${token}`)
+				.set('category_id', `${newCategoryID}`)
+				.send()
 			expect(response.statusCode).toBe(200)
 			expect(response.body.category.name).toBe('TestCategoryUpdated')
 		})
 		it('should receive 400 due to bad account_id', async () => {
 			const response = await request(app)
-				.post('/api/getcategory')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						category_id: newCategoryID + 1,
-					},
-				})
+				.get('/api/getcategory')
+				.set('authorization', `Bearer ${token}`)
+				.set('category_id', `${newCategoryID + 1}`)
+				.send()
 			expect(response.statusCode).toBe(400)
 		})
 	})
@@ -178,13 +136,10 @@ describe('Operations', () => {
 		it('should create a new account', async () => {
 			const response = await request(app)
 				.post('/api/insertaccount')
+				.set('authorization', `Bearer ${token}`)
 				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						name: 'TestAccount',
-						description: 'A new Account created by Jest.',
-					},
+					name: 'TestAccount',
+					description: 'A new Account created by Jest.',
 				})
 			expect(response.statusCode).toBe(200)
 			if (response.statusCode === 200) {
@@ -193,53 +148,38 @@ describe('Operations', () => {
 		})
 		it('should retrieve the new account info', async () => {
 			const response = await request(app)
-				.post('/api/getaccount')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						account_id: newAccountID,
-					},
-				})
+				.get('/api/getaccount')
+				.set('authorization', `Bearer ${token}`)
+				.set('account_id', `${newAccountID}`)
+				.send()
 			expect(response.statusCode).toBe(200)
 		})
 		it('should update the new account', async () => {
 			const response = await request(app)
-				.post('/api/updateaccount')
+				.put('/api/updateaccount')
+				.set('authorization', `Bearer ${token}`)
 				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						account_id: newAccountID,
-						name: 'TestAccountUpdated',
-						description: 'A new Account created by Jest.',
-					},
+					account_id: newAccountID,
+					name: 'TestAccountUpdated',
+					description: 'A new Account created by Jest.',
 				})
 			expect(response.statusCode).toBe(200)
 		})
 		it('should retrieve the updated account info', async () => {
 			const response = await request(app)
-				.post('/api/getaccount')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						account_id: newAccountID,
-					},
-				})
+				.get('/api/getaccount')
+				.set('authorization', `Bearer ${token}`)
+				.set('account_id', `${newAccountID}`)
+				.send()
 			expect(response.statusCode).toBe(200)
 			expect(response.body.account.name).toBe('TestAccountUpdated')
 		})
 		it('should receive 400 due to bad account_id', async () => {
 			const response = await request(app)
-				.post('/api/getaccount')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						account_id: newAccountID + 1,
-					},
-				})
+				.get('/api/getaccount')
+				.set('authorization', `Bearer ${token}`)
+				.set('account_id', `${newAccountID + 1}`)
+				.send()
 			expect(response.statusCode).toBe(400)
 		})
 	})
@@ -249,17 +189,14 @@ describe('Operations', () => {
 		it('should create a new transaction', async () => {
 			const response = await request(app)
 				.post('/api/inserttransaction')
+				.set('authorization', `Bearer ${token}`)
 				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						name: 'TestTransaction',
-						timestamp: '11-02-2023',
-						notes: null,
-						amount: 123.45,
-						category_id: null,
-						account_id: null,
-					},
+					name: 'TestTransaction',
+					timestamp: '11-02-2023',
+					notes: null,
+					amount: 123.45,
+					category_id: null,
+					account_id: null,
 				})
 			expect(response.statusCode).toBe(200)
 			if (response.statusCode === 200) {
@@ -268,44 +205,33 @@ describe('Operations', () => {
 		})
 		it('should retrieve the new transaction info', async () => {
 			const response = await request(app)
-				.post('/api/gettransaction')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						transaction_id: newTransactionID,
-					},
-				})
+				.get('/api/gettransaction')
+				.set('authorization', `Bearer ${token}`)
+				.set('transaction_id', `${newTransactionID}`)
+				.send()
 			expect(response.statusCode).toBe(200)
 		})
 		it('should update the new transaction', async () => {
 			const response = await request(app)
-				.post('/api/updatetransaction')
+				.put('/api/updatetransaction')
+				.set('authorization', `Bearer ${token}`)
 				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						transaction_id: newTransactionID,
-						name: 'TestTransactionUpdated',
-						timestamp: '11-03-2023',
-						notes: 'Test notes',
-						amount: 543.21,
-						category_id: newCategoryID,
-						account_id: newAccountID,
-					},
+					transaction_id: newTransactionID,
+					name: 'TestTransactionUpdated',
+					timestamp: '11-03-2023',
+					notes: 'Test notes',
+					amount: 543.21,
+					category_id: newCategoryID,
+					account_id: newAccountID,
 				})
 			expect(response.statusCode).toBe(200)
 		})
 		it('should retrieve the updated transaction info', async () => {
 			const response = await request(app)
-				.post('/api/gettransaction')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						transaction_id: newTransactionID,
-					},
-				})
+				.get('/api/gettransaction')
+				.set('authorization', `Bearer ${token}`)
+				.set('transaction_id', `${newTransactionID}`)
+				.send()
 			expect(response.statusCode).toBe(200)
 			expect(response.body.transaction.name).toBe(
 				'TestTransactionUpdated'
@@ -313,14 +239,10 @@ describe('Operations', () => {
 		})
 		it('should receive 400 due to bad transaction_id', async () => {
 			const response = await request(app)
-				.post('/api/gettransaction')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						transaction_id: newTransactionID + 1,
-					},
-				})
+				.get('/api/gettransaction')
+				.set('authorization', `Bearer ${token}`)
+				.set('transaction_id', `${newTransactionID + 1}`)
+				.send()
 			expect(response.statusCode).toBe(400)
 		})
 	})
@@ -328,39 +250,26 @@ describe('Operations', () => {
 	describe('Deleting newly inserted data', () => {
 		it('should delete the new transaction', async () => {
 			const response = await request(app)
-				.post('/api/deletetransaction')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						transaction_id: newTransactionID,
-					},
-				})
-			console.log('api ran')
+				.delete('/api/deletetransaction')
+				.set('authorization', `Bearer ${token}`)
+				.set('transaction_id', `${newTransactionID}`)
+				.send()
 			expect(response.statusCode).toBe(200)
 		})
 		it('should delete the new category', async () => {
 			const response = await request(app)
-				.post('/api/deletecategory')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						category_id: newCategoryID,
-					},
-				})
+				.delete('/api/deletecategory')
+				.set('authorization', `Bearer ${token}`)
+				.set('category_id', `${newCategoryID}`)
+				.send()
 			expect(response.statusCode).toBe(200)
 		})
 		it('should delete the new account', async () => {
 			const response = await request(app)
-				.post('/api/deleteaccount')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						account_id: newAccountID,
-					},
-				})
+				.delete('/api/deleteaccount')
+				.set('authorization', `Bearer ${token}`)
+				.set('account_id', `${newAccountID}`)
+				.send()
 			expect(response.statusCode).toBe(200)
 		})
 	})
@@ -517,13 +426,10 @@ describe('Operations', () => {
 			testCategories.forEach(async (category) => {
 				let response = await request(app)
 					.post('/api/insertcategory')
+					.set('authorization', `Bearer ${token}`)
 					.send({
-						username: newUserCredentials.username,
-						token: token,
-						payload: {
-							name: category.name,
-							description: 'A new Category created by Jest.',
-						},
+						name: category.name,
+						description: 'A new Category created by Jest.',
 					})
 				expect(response.statusCode).toBe(200)
 				if (response.statusCode === 200) {
@@ -535,13 +441,10 @@ describe('Operations', () => {
 			testAccounts.forEach(async (account) => {
 				const response = await request(app)
 					.post('/api/insertaccount')
+					.set('authorization', `Bearer ${token}`)
 					.send({
-						username: newUserCredentials.username,
-						token: token,
-						payload: {
-							name: account.name,
-							description: 'A new Account created by Jest.',
-						},
+						name: account.name,
+						description: 'A new Account created by Jest.',
 					})
 				expect(response.statusCode).toBe(200)
 
@@ -555,17 +458,14 @@ describe('Operations', () => {
 			testTransactions.forEach(async (transaction) => {
 				const response = await request(app)
 					.post('/api/inserttransaction')
+					.set('authorization', `Bearer ${token}`)
 					.send({
-						username: newUserCredentials.username,
-						token: token,
-						payload: {
-							name: transaction.name,
-							timestamp: transaction.timestamp,
-							notes: transaction.notes,
-							amount: transaction.amount,
-							category_id: transaction.category_id,
-							account_id: transaction.account_id,
-						},
+						name: transaction.name,
+						timestamp: transaction.timestamp,
+						notes: transaction.notes,
+						amount: transaction.amount,
+						category_id: transaction.category_id,
+						account_id: transaction.account_id,
 					})
 				expect(response.statusCode).toBe(200)
 			})
@@ -573,17 +473,13 @@ describe('Operations', () => {
 
 		it('should retrieve the most recent 10 transactions', async () => {
 			const response = await request(app)
-				.post('/api/getdisplaydata')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						resPerPage: 10,
-						thisPage: 1,
-						orderBy: 'timestamp',
-						orderByDirection: 'DESC',
-					},
-				})
+				.get('/api/getdisplaydata')
+				.set('authorization', `Bearer ${token}`)
+				.set('res_per_page', '10')
+				.set('this_page', '1')
+				.set('order_by', 'timestamp')
+				.set('order_by_direction', 'DESC')
+				.send()
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
@@ -597,17 +493,13 @@ describe('Operations', () => {
 		})
 		it('should retrieve the least recent 10 transactions', async () => {
 			const response = await request(app)
-				.post('/api/getdisplaydata')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						resPerPage: 10,
-						thisPage: 1,
-						orderBy: 'timestamp',
-						orderByDirection: 'ASC',
-					},
-				})
+				.get('/api/getdisplaydata')
+				.set('authorization', `Bearer ${token}`)
+				.set('res_per_page', '10')
+				.set('this_page', '1')
+				.set('order_by', 'timestamp')
+				.set('order_by_direction', 'ASC')
+				.send()
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
@@ -621,17 +513,13 @@ describe('Operations', () => {
 		})
 		it('should retrieve the 5 most expensive transactions', async () => {
 			const response = await request(app)
-				.post('/api/getdisplaydata')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						resPerPage: 5,
-						thisPage: 1,
-						orderBy: 'amount',
-						orderByDirection: 'ASC',
-					},
-				})
+				.get('/api/getdisplaydata')
+				.set('authorization', `Bearer ${token}`)
+				.set('res_per_page', '5')
+				.set('this_page', '1')
+				.set('order_by', 'amount')
+				.set('order_by_direction', 'ASC')
+				.send()
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
@@ -645,17 +533,13 @@ describe('Operations', () => {
 		})
 		it('should retrieve the next 5 most expensive transactions', async () => {
 			const response = await request(app)
-				.post('/api/getdisplaydata')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						resPerPage: 5,
-						thisPage: 2,
-						orderBy: 'amount',
-						orderByDirection: 'ASC',
-					},
-				})
+				.get('/api/getdisplaydata')
+				.set('authorization', `Bearer ${token}`)
+				.set('res_per_page', '5')
+				.set('this_page', '2')
+				.set('order_by', 'amount')
+				.set('order_by_direction', 'ASC')
+				.send()
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
@@ -669,17 +553,13 @@ describe('Operations', () => {
 		})
 		it('should retrieve the 5 least expensive transactions', async () => {
 			const response = await request(app)
-				.post('/api/getdisplaydata')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						resPerPage: 5,
-						thisPage: 1,
-						orderBy: 'amount',
-						orderByDirection: 'DESC',
-					},
-				})
+				.get('/api/getdisplaydata')
+				.set('authorization', `Bearer ${token}`)
+				.set('res_per_page', '5')
+				.set('this_page', '1')
+				.set('order_by', 'amount')
+				.set('order_by_direction', 'DESC')
+				.send()
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
@@ -693,17 +573,13 @@ describe('Operations', () => {
 		})
 		it('should retrieve the next 5 least expensive transactions', async () => {
 			const response = await request(app)
-				.post('/api/getdisplaydata')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						resPerPage: 5,
-						thisPage: 2,
-						orderBy: 'amount',
-						orderByDirection: 'DESC',
-					},
-				})
+				.get('/api/getdisplaydata')
+				.set('authorization', `Bearer ${token}`)
+				.set('res_per_page', '5')
+				.set('this_page', '2')
+				.set('order_by', 'amount')
+				.set('order_by_direction', 'DESC')
+				.send()
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
@@ -718,17 +594,13 @@ describe('Operations', () => {
 
 		it('should retrieve all transactions, sorted by category_name', async () => {
 			const response = await request(app)
-				.post('/api/getdisplaydata')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						resPerPage: 15,
-						thisPage: 1,
-						orderBy: 'category_name',
-						orderByDirection: 'ASC',
-					},
-				})
+				.get('/api/getdisplaydata')
+				.set('authorization', `Bearer ${token}`)
+				.set('res_per_page', '15')
+				.set('this_page', '1')
+				.set('order_by', 'category_name')
+				.set('order_by_direction', 'ASC')
+				.send()
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
@@ -749,17 +621,13 @@ describe('Operations', () => {
 
 		it('should retrieve all transactions, sorted by account_name', async () => {
 			const response = await request(app)
-				.post('/api/getdisplaydata')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						resPerPage: 15,
-						thisPage: 1,
-						orderBy: 'account_name',
-						orderByDirection: 'ASC',
-					},
-				})
+				.get('/api/getdisplaydata')
+				.set('authorization', `Bearer ${token}`)
+				.set('res_per_page', '15')
+				.set('this_page', '1')
+				.set('order_by', 'account_name')
+				.set('order_by_direction', 'ASC')
+				.send()
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
@@ -775,17 +643,13 @@ describe('Operations', () => {
 		})
 		it('should retrieve all transactions, sorted by transaction_name', async () => {
 			const response = await request(app)
-				.post('/api/getdisplaydata')
-				.send({
-					username: newUserCredentials.username,
-					token: token,
-					payload: {
-						resPerPage: 15,
-						thisPage: 1,
-						orderBy: 'name',
-						orderByDirection: 'ASC',
-					},
-				})
+				.get('/api/getdisplaydata')
+				.set('authorization', `Bearer ${token}`)
+				.set('res_per_page', '15')
+				.set('this_page', '1')
+				.set('order_by', 'name')
+				.set('order_by_direction', 'ASC')
+				.send()
 			expect(response.statusCode).toBe(200)
 
 			const results = response.body.displayData
@@ -803,8 +667,9 @@ describe('Operations', () => {
 
 	it('should delete the new user', async () => {
 		const actualResponse = await request(app)
-			.post('/api/deleteuser')
-			.send({ username: newUserCredentials.username, token: token })
+			.delete('/api/deleteuser')
+			.set('authorization', `Bearer ${token}`)
+			.send()
 		expect(actualResponse.status).toBe(200)
 	})
 })

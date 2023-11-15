@@ -21,7 +21,6 @@ export const verifyToken: RequestHandler = function (req, res, next) {
 		try {
 			decryptToken(encryptedToken)
 		} catch (e) {
-			console.log('token decrypt issues!!!!')
 			res.statusCode = 406
 			if ((e as Error).message === 'jwt expired') {
 				res.statusMessage = 'ERROR_TOKEN_EXPIRED'
