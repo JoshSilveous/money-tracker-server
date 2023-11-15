@@ -8,7 +8,7 @@ import { credentialsSchema } from '../../schemas'
 export const handleCreateUser: RequestHandler = function (req, res) {
 	const credentials = req.body as UserCredentials
 
-	if (credentialsSchema.validate(req.body)) {
+	if (credentialsSchema.validate(req.body).error) {
 		res.statusCode = 406
 		res.statusMessage = 'ERROR_REQUEST_FORMAT'
 		res.send()

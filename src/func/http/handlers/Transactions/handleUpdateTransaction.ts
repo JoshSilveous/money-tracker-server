@@ -10,12 +10,12 @@ export const handleUpdateTransaction: RequestHandler = function (req, res) {
 	const user_id = req.user_id
 	const username = req.username
 
-	const inputTransaction = req.body.payload as Transaction
+	const inputTransaction = req.body as Transaction
 
 	// make sure transaction matches format
 	if (transactionSchema.validate(inputTransaction).error) {
 		res.statusCode = 406
-		res.statusMessage = 'ERROR_PAYLOAD_FORMAT'
+		res.statusMessage = 'ERROR_BODY_FORMAT'
 		res.send()
 		return
 	}

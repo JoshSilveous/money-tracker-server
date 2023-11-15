@@ -10,12 +10,12 @@ export const handleInsertAccount: RequestHandler = function (req, res) {
 	const user_id = req.user_id
 	const username = req.username
 
-	const inputAccount = req.body.payload as NewAccount
+	const inputAccount = req.body as NewAccount
 
 	// make sure account matches format
 	if (newAccountSchema.validate(inputAccount).error) {
 		res.statusCode = 406
-		res.statusMessage = 'ERROR_PAYLOAD_FORMAT'
+		res.statusMessage = 'ERROR_BODY_FORMAT'
 		res.send()
 		return
 	}
